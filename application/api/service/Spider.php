@@ -17,10 +17,12 @@ class Spider
 {
     public $html = '';
     public $c_id = 0;
+    public $url = 0;
 
     public function __construct($url, $c_id, $cookie)
     {
         $this->c_id = $c_id;
+        $this->url = $url;
         if (strlen($cookie)) {
             requests::set_referer($url);
             requests::set_cookie('cookie', $cookie);
@@ -96,6 +98,7 @@ class Spider
         $params['status'] = CommonEnum::STATE_IS_OK;
         $params['theme'] = 'SizeColor';
         $params['sex'] = 'baby-boys';
+        $params['url'] = $this->url;
         $res = GoodsInfoT::create($params);
         if (!$res) {
             throw new SaveException([
@@ -146,6 +149,7 @@ class Spider
     {
 
         $res = GoodsDesT::create($params);
+        $params['title'] =$this->trimall($params['title']);
         if (!$res) {
             throw new SaveException([
                 'msg' => '保存商品标题描述失败'

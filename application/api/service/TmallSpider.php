@@ -37,7 +37,7 @@ class TmallSpider extends Spider
             $this->prefixDes();
             //保存主图
             $this->prefixMainImg();
-             Db::commit();
+            Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
