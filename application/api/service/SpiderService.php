@@ -3,29 +3,26 @@
 
 namespace app\api\service;
 
-
-use phpspider\core\requests;
-use phpspider\core\selector;
+use app\lib\exception\SaveException;
+use think\Exception;
 
 class SpiderService
 {
     private $url = '';
-    private $html = '';
+    private $c_id = 0;
+    private $cookie = '';
 
-    public function __construct($url)
+    public function __construct($url, $c_id, $cookie)
     {
-        $this->url = $url;
-        $this->html = requests::get($url);
-
+        $this->url = str_replace(PHP_EOL, '', $url);
+        $this->c_id = $c_id;
+        $this->cookie = $cookie;
     }
 
+    /**
+     * @throws Exception
+     */
     public function upload()
-    {
-        $this->prefixUrl($this->url);
-
-    }
-
-    private function prefixUrl()
     {
         //环球华品 ：https://www.chinabrands.cn/item/1806286-p.html
         //天猫：https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.1.6d1c53a4a0FlUu&id=537891514461&skuId=3211584895794&standard=1&user_id=883072941&cat_id=50920004&is_b=1&rn=db8c7c2bd50d782d427e137c2fa0c9f7
@@ -36,51 +33,59 @@ class SpiderService
 
         //$url = 'https://www.chinabrands.cn/item/1806286-p.html';
 
+        $type = $this->prefixUrlType();
+        switch ($type) {
+            case 'chinabrands':
+                (new ChinabrandsSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                break;
+            case 'tmall':
+                if (!strlen($this->cookie)) {
+                    throw new SaveException([
+                        'msg'=>'抓取天猫商品,需要传入cookie'
+                    ]);
+                }
+                (new TmallSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                break;
+            case 'taobao':
+                (new TaobaoSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                break;
+            case 'aliexpress':
+                (new AliexpressSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                break;
+            case '1688':
+                (new Ali1688Spider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                break;
+            case 'tomtop':
+                (new TomtopSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                break;
+            default:
+                '';
+        }
+    }
+
+
+    public function prefixUrlType()
+    {
         if (strpos($this->url, 'chinabrands') !== false) {
-            $this->chinabrands();
+            return 'chinabrands';
         }
         if (strpos($this->url, 'tmall') !== false) {
-            echo 'tmall';
+            return 'tmall';
         }
         if (strpos($this->url, 'taobao') !== false) {
-            echo 'taobao';
+            return 'taobao';
         }
         if (strpos($this->url, 'aliexpress') !== false) {
-            echo 'aliexpress';
+            return 'aliexpress';
         }
         if (strpos($this->url, '1688.com') !== false) {
-            echo '1688.com';
+            return '1688';
         }
         if (strpos($this->url, 'tomtop') !== false) {
-            echo 'tomtop';
+            return 'tomtop';
         }
 
     }
 
-
-    private function chinabrands()
-    {
-
-        $name_en = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/h1");
-        $name_ch = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/h3");
-
-        $color = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/ul");
-        $colors = selector::select($color, "//@data-original");
-        $colors_url = selector::select($color, "//@data-url");
-        /*    if (count($colors)) {
-                for ($i = 0; $i < count($colors); $i++) {
-
-
-                }
-
-
-            }*/
-
-        $imgs = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[1]/div");
-        $imgs_url = selector::select($imgs, "//@data-original");
-
-
-        var_dump($imgs_url);
-    }
 
 }

@@ -15,5 +15,10 @@ Route::get('think', function () {
 
 Route::get('hello/:name', 'index/hello');
 Route::post('api/:version/spider', 'api/:version.Spider/upload');
-Route::get('api/:version/token/admin', 'api/:version.Token/getAdminToken');
+Route::post('api/:version/token/admin', 'api/:version.Token/getAdminToken');
+
+Route::post('api/:version/category/save', 'api/:version.Category/save');
+Route::post('api/:version/category/handel', 'api/:version.Category/handel');
+Route::post('api/:version/category/update', 'api/:version.Category/update');
+Route::get('api/:version/categories', 'api/:version.Category/getListForCms');
 
