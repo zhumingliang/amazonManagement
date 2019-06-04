@@ -56,7 +56,7 @@ class Token extends Controller
      * @apiVersion 1.0.1
      * @apiDescription CMS退出当前账号登陆。
      * @apiExample {get}  请求样例:
-     * http://amazon.mengant.cn/api/v1/token/loginOut
+     * http://api.tljinghua.com/api/v1/token/loginOut
      * @apiSuccessExample {json} 返回样例:
      *{"msg":"ok","errorCode":0}
      * @apiSuccess (返回参数说明) {int} error_code 错误码： 0表示操作成功无错误
