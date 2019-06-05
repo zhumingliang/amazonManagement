@@ -94,7 +94,7 @@ class Spider
     public
     function saveGoodsInfo($params)
     {
-        //$params['state'] = CommonEnum::STATE_IS_OK;
+        $params['admin_id'] =1;//Token::getCurrentUid();
         $params['status'] = CommonEnum::STATE_IS_OK;
         $params['theme'] = 'SizeColor';
         $params['sex'] = 'baby-boys';

@@ -23,5 +23,11 @@ Route::post('api/:version/category/update', 'api/:version.Category/update');
 Route::get('api/:version/categories', 'api/:version.Category/getListForCms');
 
 Route::get('api/:version/goods/list', 'api/:version.Goods/goodsList');
+Route::get('api/:version/goods/info', 'api/:version.Goods/goodsInfo');
+Route::get('api/:version/goods/price', 'api/:version.Goods/goodsPrice');
+Route::get('api/:version/goods/des', 'api/:version.Goods/goodsDes');
+Route::post('api/:version/goods/info/update', 'api/:version.Goods/updateInfo');
+Route::post('api/:version/goods/price/update', 'api/:version.Goods/updatePrice');
+Route::post('api/:version/goods/des', 'api/:version.Goods/updateDes');
 
 
