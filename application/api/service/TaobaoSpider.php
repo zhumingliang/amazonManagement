@@ -42,7 +42,7 @@ class TaobaoSpider extends Spider
 
     private function prefixInfo($price)
     {
-        $data_info['price'] = $price;
+        $data_info['cost'] = $price;
         $data_info['c_id'] = $this->c_id;
         $data_info['source'] = SpiderEnum::TAOBAO;
         $data_info['sku'] = $this->sku;

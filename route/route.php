@@ -22,3 +22,6 @@ Route::post('api/:version/category/handel', 'api/:version.Category/handel');
 Route::post('api/:version/category/update', 'api/:version.Category/update');
 Route::get('api/:version/categories', 'api/:version.Category/getListForCms');
 
+Route::get('api/:version/goods/list', 'api/:version.Goods/goodsList');
+
+

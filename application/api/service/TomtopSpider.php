@@ -47,7 +47,7 @@ class TomtopSpider extends Spider
             'var product=', 'var allListingIds');
         $info_obj = json_decode($info_json, true);
         $this->title = $info_obj['title'];
-        $data_info['price'] = $info_obj['saleprice'];
+        $data_info['cost'] = $info_obj['saleprice'];
         $data_info['c_id'] = $this->c_id;
         $data_info['source'] = SpiderEnum::TOM_TOP;
         $data_info['sku'] = $this->sku;

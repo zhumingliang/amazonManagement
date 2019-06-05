@@ -39,7 +39,7 @@ class AliexpressSpider extends Spider
             }
 
             //保存商品基本信息
-            $data_info['price'] = $highPrice;
+            $data_info['cost'] = $highPrice;
             $data_info['c_id'] = $this->c_id;
             $data_info['sku'] = $sku;
             $data_info['source'] = SpiderEnum::ALI_EXPRESS;

@@ -25,7 +25,7 @@ class ChinabrandsSpider extends Spider
             $name_ch = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/h3");
             $prices = selector::select($this->html, "//@data-orgp");
             //保存商品基本信息
-            $data_info['price'] = $prices[0];
+            $data_info['cost'] = $prices[0];
             $data_info['c_id'] = $this->c_id;
             $data_info['sku'] = $sku;
             $data_info['source'] = SpiderEnum::CHINA_BRANDS;

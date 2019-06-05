@@ -30,7 +30,7 @@ class Ali1688Spider extends Spider
             $this->sku_obj = json_decode($this->get_between($this->trimall($this->html), 'iDetailData=', ';iDetailData.allTagIds'), true);
 
             //保存商品基本信息
-            $data_info['price'] = $this->prefixPrice();
+            $data_info['cost'] = $this->prefixPrice();
             $data_info['c_id'] = $this->c_id;
             $data_info['sku'] = $sku;
             $data_info['source'] = SpiderEnum::ALI_1688;

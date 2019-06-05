@@ -217,7 +217,7 @@ class TmallSpider extends Spider
             }
 
         }
-        GoodsInfoT::update(['price' => $info_price], ['id' => $this->g_id]);
+        GoodsInfoT::update(['cost' => $info_price], ['id' => $this->g_id]);
 
 
     }
