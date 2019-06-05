@@ -31,9 +31,7 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {String} order_type  排序规则：升序->ASC 降序->DESC
      * @apiParam (请求参数说明) {int} c_id  分类id
      * @apiSuccessExample {json} 返回样例:
-     * {"total":1,"per_page":10,"current_page":1,"last_page":1,"data":[{"id":246,"price":239,"url":"https:\/\/detail.tmall.com\/item.htm?id=548201159561&ali_refid=a3_430583_1006:1102990812:N:Dly1IErtGY8\/u5I4sQr9qQ==:7aa1447fe1de4602f53fbf3a28f75328&ali_trackid=1_7aa1447fe1de4602f53fbf3a28f75328&spm=a230r.1.14.1","source":3,"status":1,"cost":null,"title":"\t
-    * \n\t\t\t\t\t 明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用
-     * \n\t","create_time":"2019-06-04 16:55:50","update_time":"2019-06-04 16:56:34","image":[{"id":274,"url":"https:\/\/imgs.alicdn.com\/imgextra\/i2\/468372883\/O1CN01wvyuko1XASNwfD0dr_!!468372883.jpg"}]}]}
+     * {"total":1,"per_page":10,"current_page":1,"last_page":1,"data":[{"id":246,"price":239,"url":"https:\/\/detail.tmall.com\/item.htm?id=548201159561&ali_refid=a3_430583_1006:1102990812:N:Dly1IErtGY8\/u5I4sQr9qQ==:7aa1447fe1de4602f53fbf3a28f75328&ali_trackid=1_7aa1447fe1de4602f53fbf3a28f75328&spm=a230r.1.14.1","source":3,"status":1,"cost":null,"title":" 明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用","create_time":"2019-06-04 16:55:50","update_time":"2019-06-04 16:56:34","image":[{"id":274,"url":"https:\/\/imgs.alicdn.com\/imgextra\/i2\/468372883\/O1CN01wvyuko1XASNwfD0dr_!!468372883.jpg"}]}]}
      * @apiSuccess (返回参数说明) {int} total 数据总数
      * @apiSuccess (返回参数说明) {int} per_page 每页多少条数据
      * @apiSuccess (返回参数说明) {int} current_page 当前页码
