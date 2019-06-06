@@ -16,6 +16,7 @@ Route::get('think', function () {
 Route::get('hello/:name', 'index/hello');
 Route::post('api/:version/spider', 'api/:version.Spider/upload');
 Route::post('api/:version/token/admin', 'api/:version.Token/getAdminToken');
+Route::get('api/:version/token/login/out', 'api/:version.Token/loginOut');
 
 Route::post('api/:version/category/save', 'api/:version.Category/save');
 Route::post('api/:version/category/handel', 'api/:version.Category/handel');
