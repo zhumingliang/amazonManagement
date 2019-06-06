@@ -7,6 +7,7 @@ namespace app\api\controller\v1;
 use app\api\controller\BaseController;
 use app\api\service\GoodsService;
 use app\lib\exception\SuccessMessage;
+use app\lib\exception\UpdateException;
 
 class Goods extends BaseController
 {
@@ -53,7 +54,6 @@ class Goods extends BaseController
         return json($list);
 
     }
-
 
     /**
      * @api {GET} /api/v1/goods/info 获取指定商品基本信息
@@ -136,13 +136,33 @@ class Goods extends BaseController
 
     }
 
+    /**
+     * @api {GET} /api/v1/goods/des 获取指定商品标题描述
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  商品标题描述
+     * @apiExample {get}  请求样例:
+     * http://api.tljinghua.com/api/v1/goods/des?id=1
+     * @apiParam (请求参数说明) {int} id 商品id
+     * @apiSuccessExample {json} 返回样例:
+     * {"id":84,"title":"\t
+    * \n\t\t\t\t\t 明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用
+     * \n\t","des":"品牌: Meitoku\/明德<\/br>材质: 泡沫<\/br>图案: 叶子<\/br>风格: 简约现代<\/br>尺寸: 树叶纹【4片+8个边条】60*60*1.2cm（无甲醛，健康） 树叶纹【4片+8个边条】60*60*2.5cm（无甲醛，健康） 树叶纹【6片+12个边条】60*60*2.5cm（无甲醛，健康） 树叶纹【9片+18个边条】60*60*2.5cm（无甲醛，健康） 十字纹【18片+18个边条】30*30*1.0cm（无甲醛，健康） 十字纹【24片+24个边条】30*30*1.0cm（无甲醛，健康） 十字纹【30片+30个边条】30*30*1.0cm（无甲醛，健康） 十字纹【36片+36个边条】30*30*1.0cm（无甲醛，健康） 树叶纹【6片+12个边条】60*60*1.2cm（无甲醛，健康） 树叶纹【9片+18个边条】60*60*1.2cm（无甲醛，健康） 无甲醛放心买，需更多搭配请联系客服备注 水点纹【4片+8个边条】60*60*1.2cm（无甲醛，健康） 水点纹【6片+12个边条】60*60*1.2cm（无甲醛，健康） 水点纹【9片+18个边条】60*60*1.2cm（无甲醛，健康）<\/br>地垫适用空间: 卧室<\/br>颜色分类: 蓝色+绿色 米色 粉色 红色 绿色 蓝色 咖啡色 黄色 米色+粉色 红色+黄色 米色+绿色 米色+蓝色 米色+咖啡色 紫色 蓝色+黄色<\/br>工艺: 机器织造<\/br>地垫售卖方式: 成品地毯（元\/块）<\/br>清洗类型: 可手洗 吸尘<\/br>货号: MD-SYTZ<\/br>适用场景: 家用","abstract":"品牌: Meitoku\/明德<\/br>材质: 泡沫<\/br>图案: 叶子<\/br>风格: 简约现代","create_time":"2019-06-04 16:56:34","update_time":"2019-06-04 16:56:34","key":"明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用","g_id":246}
+     * @apiSuccess (返回参数说明) {int} id 描述id
+     * @apiSuccess (返回参数说明) {String} title 商品标题
+     * @apiSuccess (返回参数说明) {String} des 商品描述
+     * @apiSuccess (返回参数说明) {String} key 商品关键词
+     * @apiSuccess (返回参数说明) {String} abstract 简要说明
+     */
     public function goodsDes()
     {
-
+        $id = $this->request->param('id');
+        $info = (new GoodsService())->goodsDes($id);
+        return json($info);
     }
 
     /**
-     * @api {GET} /api/v1/goods/info/update 更新商品基本信息
+     * @api {POST} /api/v1/goods/info/update 更新商品基本信息
      * @apiGroup  CMS
      * @apiVersion 1.0.1
      * @apiDescription  更新商品基本信息
@@ -180,13 +200,146 @@ class Goods extends BaseController
 
     }
 
+    /**
+     * @api {POSTs} /api/v1/goods/price/update 更新商品价格
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  更新商品价格
+     * @apiExample {post}  请求样例:
+     * {"id":246,"price":10,"cost":10,"count":1000,"skus":[{"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
+     * @apiParam (请求参数说明) {int} id 商品id
+     * @apiParam (请求参数说明) {int} price 售价
+     * @apiParam (请求参数说明) {int} cost 成本
+     * @apiParam (请求参数说明) {int} count 成本
+     * @apiParam (请求参数说明) {Obj} sku 商品变体信息
+     * @apiSuccess (返回参数说明) {Obj} skus 商品变体信息
+     * @apiSuccess (返回参数说明) {int} skus->id 变体id(新添加商品没有变体id)
+     * @apiSuccess (返回参数说明) {String} skus->size 尺寸
+     * @apiSuccess (返回参数说明) {String} skus->coloe 颜色
+     * @apiSuccess (返回参数说明) {String} skus->sku sku
+     * @apiSuccess (返回参数说明) {int} skus->count 数量
+     * @apiSuccess (返回参数说明) {int} skus->price 价格
+     * @apiSuccess (返回参数说明) {String} skus->upc UPC
+     * @apiSuccess (返回参数说明) {String} skus->size_map size_map
+     * @apiSuccess (返回参数说明) {String} skus->color_map color_map
+     * @apiSuccess (返回参数说明) {String} skus->sex 性别
+     * @apiSuccess (返回参数说明) {Obj} skus->img_url 变体图片
+     * @apiSuccess (返回参数说明) {Obj} skus->img_url->url 变体图片地址
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
     public function updatePrice()
     {
-
+        $params = $this->request->param();
+        (new GoodsService())->updatePrice($params);
+        return json(new SuccessMessage());
     }
 
+
+    /**
+     * @api {POST} /api/v1/goods/des/update 更新商品标题描述
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  更新商品标题描述
+     * @apiExample {post}  请求样例:
+     * {"id":84,"title":"修改"}
+     * @apiParam (请求参数说明) {int} id 描述id
+     * @apiParam (请求参数说明) {String} title 商品标题
+     * @apiParam (请求参数说明) {String} des 商品描述
+     * @apiParam (请求参数说明) {String} key 商品关键词
+     * @apiParam (返回参数说明) {String} abstract 简要说明
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
     public function updateDes()
     {
+        $params = $this->request->param();
+        (new GoodsService())->updateDes($params);
+        return json(new SuccessMessage());
+    }
+
+    /**
+     * @api {POST} /api/v1/goods/image/delete  删除商品图片：主图/sku图片
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  删除商品图片：主图/sku图片
+     * @apiExample {POST}  请求样例:
+     * {
+     * "id": 1,
+     * "type": "main",
+     * "delete_type": "one"
+     * }
+     * @apiParam (请求参数说明) {int} id 图片id：删除单个图片时传入图片ID；清空图片时传入商品id（主图）
+     * @apiParam (请求参数说明) {String} type 商品图片类别：main->主图；sku->sku图片
+     * @apiParam (请求参数说明) {String} delete_type 删除类别：one->单个；all->清空
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+    public function deleteImage()
+    {
+        $params = $this->request->param();
+        (new GoodsService())->deleteImage($params);
+        return (new SuccessMessage());
+    }
+
+    /**
+     * @api {POST} /api/v1/goods/image/upload  添加商品图片：主图/sku图片
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  删除商品图片：主图/sku图片
+     * @apiExample {POST}  请求样例:
+     * {
+     * "id": 1,
+     * "type": "main"
+     * "image": "base64"
+     * }
+     * @apiParam (请求参数说明) {int} id 图片父级id：上传主图时传入商品id；上传sku图片时传入skuid(新增sku时，上传图片 该字段传入0)
+     * @apiParam (请求参数说明) {String} type 商品图片类别：main->主图；sku->sku图片
+     * @apiParam (请求参数说明) {String} image 图片base64数据
+     * @apiSuccessExample {json} 添加主图片或者已存在sku图片返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     * @apiSuccessExample {json} 添加新增sku图片返回样例:
+     * {"url": "url"}
+     * @apiSuccess (返回参数说明) {String} url 图片地址
+     */
+    public function uploadImage()
+    {
+        $params = $this->request->param();
+        (new GoodsService())->uploadImage($params);
+        return json(new SuccessMessage());
 
     }
+
+    /**
+     * @api {POST} /api/v1/goods/sku/delete  删除商品变体
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  删除商品变体
+     * @apiExample {POST}  请求样例:
+     * {
+     * "id": 1,
+     * "delete_type": "one"
+     * }
+     * @apiParam (请求参数说明) {int} id 父级ID：删除单个sku时传入skuID；清空sku时传入商品id
+     * @apiParam (请求参数说明) {String} delete_type 删除类别：one->单个；all->清空
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+    public function deleteSku()
+    {
+        $id = $this->request->param('id');
+        (new GoodsService())->deleteSku($id);
+        return json(new SuccessMessage());
+    }
+
 }

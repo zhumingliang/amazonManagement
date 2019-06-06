@@ -28,6 +28,10 @@ Route::get('api/:version/goods/price', 'api/:version.Goods/goodsPrice');
 Route::get('api/:version/goods/des', 'api/:version.Goods/goodsDes');
 Route::post('api/:version/goods/info/update', 'api/:version.Goods/updateInfo');
 Route::post('api/:version/goods/price/update', 'api/:version.Goods/updatePrice');
-Route::post('api/:version/goods/des', 'api/:version.Goods/updateDes');
+Route::post('api/:version/goods/des/update', 'api/:version.Goods/updateDes');
+Route::post('api/:version/goods/image/delete', 'api/:version.Goods/deleteImage');
+Route::post('api/:version/goods/sku/delete', 'api/:version.Goods/deleteSku');
+Route::post('api/:version/goods/sku/save', 'api/:version.Goods/saveSku');
+Route::post('api/:version/goods/sku/update', 'api/:version.Goods/updateSku');
 
 
