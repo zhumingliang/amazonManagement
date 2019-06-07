@@ -15,8 +15,9 @@ class Translate extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  商品描述翻译
      * @apiExample {get}  请求样例:
-     * http://api.tljinghua.com/api/v1/goods/des?id=246
-     * @apiParam (请求参数说明) {int} id 商品id
+     * http://api.tljinghua.com/api/v1/translate/des?id=84&type=zh
+     * @apiParam (请求参数说明) {int} id 描述id
+     * @apiParam (请求参数说明) {String} type 翻译语种：zh 中文；en 英文；spa 西班牙；fra 法语；it 意大利；jp 日语；pt 德语
      * @apiSuccessExample {json} 返回样例:
      * {"id":246,"title":"\t
     * \n\t\t\t\t\t 明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用
