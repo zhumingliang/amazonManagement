@@ -35,4 +35,4 @@ Route::post('api/:version/goods/sku/delete', 'api/:version.Goods/deleteSku');
 Route::post('api/:version/goods/sku/save', 'api/:version.Goods/saveSku');
 Route::post('api/:version/goods/sku/update', 'api/:version.Goods/updateSku');
 
-
+Route::get('api/:version/translate/des', 'api/:version.Translate/des');

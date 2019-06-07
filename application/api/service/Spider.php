@@ -94,7 +94,7 @@ class Spider
     public
     function saveGoodsInfo($params)
     {
-        $params['admin_id'] =1;//Token::getCurrentUid();
+        $params['admin_id'] = 1;//Token::getCurrentUid();
         $params['status'] = CommonEnum::STATE_IS_OK;
         $params['theme'] = 'SizeColor';
         $params['sex'] = 'baby-boys';
@@ -149,7 +149,8 @@ class Spider
     {
 
         $res = GoodsDesT::create($params);
-        $params['title'] =$this->trimall($params['title']);
+        $params['title'] = $this->trimall($params['title']);
+        $params['zh'] = $params['title'] . '999' . $params['des'] . '999' . $params['abstract'] . '999' . $params['key'];
         if (!$res) {
             throw new SaveException([
                 'msg' => '保存商品标题描述失败'

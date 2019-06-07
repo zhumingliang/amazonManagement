@@ -153,6 +153,13 @@ class Goods extends BaseController
      * @apiSuccess (返回参数说明) {String} des 商品描述
      * @apiSuccess (返回参数说明) {String} key 商品关键词
      * @apiSuccess (返回参数说明) {String} abstract 简要说明
+     * @apiSuccess (返回参数说明) {String} zh 中文 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} en 英文 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} spa 西班牙 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} fra 法语 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} it 意大利 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} jp 日语 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} pt 德语 以999分割 ，数组顺序：title，des，abstract，key
      */
     public function goodsDes()
     {
@@ -212,19 +219,19 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {int} cost 成本
      * @apiParam (请求参数说明) {int} count 成本
      * @apiParam (请求参数说明) {Obj} sku 商品变体信息
-     * @apiSuccess (返回参数说明) {Obj} skus 商品变体信息
-     * @apiSuccess (返回参数说明) {int} skus->id 变体id(新添加商品没有变体id)
-     * @apiSuccess (返回参数说明) {String} skus->size 尺寸
-     * @apiSuccess (返回参数说明) {String} skus->coloe 颜色
-     * @apiSuccess (返回参数说明) {String} skus->sku sku
-     * @apiSuccess (返回参数说明) {int} skus->count 数量
-     * @apiSuccess (返回参数说明) {int} skus->price 价格
-     * @apiSuccess (返回参数说明) {String} skus->upc UPC
-     * @apiSuccess (返回参数说明) {String} skus->size_map size_map
-     * @apiSuccess (返回参数说明) {String} skus->color_map color_map
-     * @apiSuccess (返回参数说明) {String} skus->sex 性别
-     * @apiSuccess (返回参数说明) {Obj} skus->img_url 变体图片
-     * @apiSuccess (返回参数说明) {Obj} skus->img_url->url 变体图片地址
+     * @apiParam (请求参数说明) {Obj} skus 商品变体信息
+     * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
+     * @apiParam (请求参数说明) {String} skus->size 尺寸
+     * @apiParam (请求参数说明) {String} skus->coloe 颜色
+     * @apiParam (请求参数说明) {String} skus->sku sku
+     * @apiParam (请求参数说明) {int} skus->count 数量
+     * @apiParam (请求参数说明) {int} skus->price 价格
+     * @apiParam (请求参数说明) {String} skus->upc UPC
+     * @apiParam (请求参数说明) {String} skus->size_map size_map
+     * @apiParam (请求参数说明) {String} skus->color_map color_map
+     * @apiParam (请求参数说明) {String} skus->sex 性别
+     * @apiParam (请求参数说明) {Obj} skus->img_url 变体图片
+     * @apiParam (请求参数说明) {Obj} skus->img_url->url 变体图片地址
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
@@ -244,11 +251,11 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  更新商品标题描述
      * @apiExample {post}  请求样例:
-     * {"id":84,"title":"修改"}
+     * {"id":246,"title":"修改"}
      * @apiParam (请求参数说明) {int} id 描述id
-     * @apiParam (请求参数说明) {String} title 商品标题
-     * @apiParam (请求参数说明) {String} des 商品描述
-     * @apiParam (请求参数说明) {String} key 商品关键词
+     * @apiParam (返回参数说明) {String} title 商品标题
+     * @apiParam (返回参数说明) {String} des 商品描述
+     * @apiParam (返回参数说明) {String} key 商品关键词
      * @apiParam (返回参数说明) {String} abstract 简要说明
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
