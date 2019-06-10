@@ -106,10 +106,6 @@ class Category extends BaseController
 
 
     /**
-     * @param $page
-     * @param $size
-     * @return \think\response\Json
-     * @throws \think\exception\DbException
      * @api {GET} /api/v1/categories 获取分类列表
      * @apiGroup  CMS
      * @apiVersion 1.0.1

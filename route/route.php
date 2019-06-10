@@ -36,3 +36,8 @@ Route::post('api/:version/goods/sku/save', 'api/:version.Goods/saveSku');
 Route::post('api/:version/goods/sku/update', 'api/:version.Goods/updateSku');
 
 Route::get('api/:version/translate/des', 'api/:version.Translate/des');
+
+Route::post('api/:version/admin/save', 'api/:version.Admin/save');
+Route::post('api/:version/admin/update', 'api/:version.Admin/updateInfo');
+Route::post('api/:version/admin/handel', 'api/:version.Admin/handel');
+Route::get('api/:version/admin/self', 'api/:version.Admin/selfInfo');

@@ -23,6 +23,7 @@ class Spider
     {
         $this->c_id = $c_id;
         $this->url = $url;
+        $this->checkUploaded();
         if (strlen($cookie)) {
             requests::set_referer($url);
             requests::set_cookie('cookie', $cookie);
@@ -30,6 +31,16 @@ class Spider
         requests::$output_encoding = 'UTF-8';
         $this->html = requests::get($url);
 
+    }
+
+    private function checkUploaded()
+    {
+        $info = GoodsInfoT::where('url_md5', md5($this->url))->find();
+        if ($info) {
+            throw new SaveException([
+                'msg' => '该商品已经抓取，无需重复获取'
+            ]);
+        }
     }
 
     /** 获取META信息 */
@@ -99,6 +110,7 @@ class Spider
         $params['theme'] = 'SizeColor';
         $params['sex'] = 'baby-boys';
         $params['url'] = $this->url;
+        $params['url_md5'] = md5($this->url);
         $res = GoodsInfoT::create($params);
         if (!$res) {
             throw new SaveException([
