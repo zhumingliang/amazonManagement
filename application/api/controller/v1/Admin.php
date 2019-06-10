@@ -6,9 +6,7 @@ namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
 use app\api\model\AdminT;
-use app\api\model\CategoryT;
 use app\api\service\AdminService;
-use app\lib\enum\CommonEnum;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\UpdateException;
 use think\facade\Request;
@@ -95,12 +93,14 @@ class Admin extends BaseController
      * "account": "张三123",
      * "email": "@email",
      * "remark": "天河区"
+     * "grade": 2
      * }
      * @apiSuccess (返回参数说明) {String} account 登陆名
      * @apiSuccess (返回参数说明) {String} phone 手机号
      * @apiSuccess (返回参数说明) {String} username 姓名
      * @apiSuccess (返回参数说明) {String} email 邮箱
      * @apiSuccess (返回参数说明) {String} remark 备注
+     * @apiSuccess (返回参数说明) {int} grade 用户级别：1->超级管理员；2->系统管理员；3-公司管理员；4->代理；5->子代理；6->学员
      */
     public function selfInfo()
     {
