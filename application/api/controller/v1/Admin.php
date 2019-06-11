@@ -50,7 +50,7 @@ class Admin extends BaseController
     }
 
     /**
-     * @api {POST} /api/v1/admin/save  用户修改账号信息
+     * @api {POST} /api/v1/admin/update  用户修改账号信息
      * @apiGroup  CMS
      * @apiVersion 1.0.1
      * @apiDescription  用户修改账号信息
@@ -140,10 +140,34 @@ class Admin extends BaseController
     }
 
 
-    public function admins($grade, $page = 1, $size = 15)
+    /**
+     * @api {GET} /api/v1/admins  1/2/3/4级用户获取子级用户列表
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription
+     * @apiExample {get}  请求样例:
+     * http://api.tljinghua.com/api/v1/admins?page=1&size=20&grade=0&key=
+     * @apiParam (请求参数说明) {int} page 当前页码
+     * @apiParam (请求参数说明) {int} size 每页多少条数据
+     * @apiParam (请求参数说明) {String} grade 可筛选用户角色：2/3/4/5
+     * @apiParam (请求参数说明) {String} key 关键字查询
+     * @apiSuccessExample {json} 返回样例:
+     * {"total":1,"per_page":"20","current_page":1,"last_page":1,"data":[{"id":2,"username":"测试-2级管理员","account":"1","grade":2,"phone":"18956225230","ip":null,"create_time":"2019-06-11 23:35:52"}]}
+     * @apiSuccess (返回参数说明) {int} total 数据总数
+     * @apiSuccess (返回参数说明) {int} per_page 每页多少条数据
+     * @apiSuccess (返回参数说明) {int} current_page 当前页码
+     * @apiSuccess (返回参数说明) {int} id 用户id
+     * @apiSuccess (返回参数说明) {String} phone 手机号
+     * @apiSuccess (返回参数说明) {String} username 姓名
+     * @apiSuccess (返回参数说明) {String} account 登陆名
+     * @apiSuccess (返回参数说明) {String} ip 登陆IP
+     * @apiSuccess (返回参数说明) {int} grade 用户角色:2->系统管理员；3-公司管理员；4->代理；5->子代理；6->学员
+     * @apiSuccess (返回参数说明) {String} create_time 创建时间
+     */
+    public function admins($grade, $page = 1, $size = 15, $key = '')
     {
-        (new AdminService())->admins($grade, $page, $size);
-        return json(new SuccessMessage());
+        $admins = (new AdminService())->admins($grade, $page, $size,$key);
+        return json($admins);
 
     }
 }

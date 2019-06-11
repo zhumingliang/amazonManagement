@@ -41,3 +41,4 @@ Route::post('api/:version/admin/save', 'api/:version.Admin/save');
 Route::post('api/:version/admin/update', 'api/:version.Admin/updateInfo');
 Route::post('api/:version/admin/handel', 'api/:version.Admin/handel');
 Route::get('api/:version/admin/self', 'api/:version.Admin/selfInfo');
+Route::get('api/:version/admins', 'api/:version.Admin/admins');
