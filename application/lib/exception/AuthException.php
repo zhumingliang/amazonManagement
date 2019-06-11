@@ -11,7 +11,7 @@ namespace app\lib\exception;
 
 class AuthException extends BaseException
 {
-    public $code = 401;
+    public $code = 200;
     public $msg = '新增分组失败';
     public $errorCode = 250001;
 

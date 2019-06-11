@@ -11,7 +11,7 @@ namespace app\lib\exception;
 
 class DeleteException extends BaseException
 {
-    public $code = 401;
+    public $code = 200;
     public $msg = '删除操作失败';
     public $errorCode = 40004;
 
