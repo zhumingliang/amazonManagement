@@ -47,7 +47,6 @@ class AdminToken extends Token
 
             if (is_null($admin)) {
                 throw new TokenException([
-                    'code' => 401,
                     'msg' => '用户不存在',
                     'errorCode' => 30000
                 ]);
@@ -55,7 +54,6 @@ class AdminToken extends Token
 
             if (sha1($this->pwd) != $admin->pwd) {
                 throw new TokenException([
-                    'code' => 401,
                     'msg' => '密码不正确',
                     'errorCode' => 30002
                 ]);
