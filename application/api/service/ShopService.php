@@ -4,6 +4,8 @@
 namespace app\api\service;
 
 
+use app\api\model\AdminBelongT;
+use app\api\model\AdminBelongV;
 use app\api\model\AdminT;
 use app\api\model\ShopT;
 use app\lib\enum\CommonEnum;
@@ -53,6 +55,7 @@ class ShopService
     public function shops($page, $size)
     {
         $grade = Token::getCurrentTokenVar('grade');
+        $u_id=Token::getCurrentUid();
         $shops = [
             'total' => 0,
             'per_page' => $size,
@@ -60,7 +63,11 @@ class ShopService
             'last_page' => 0,
             'data' => []
         ];
-        if ($grade==3){
+        if ($grade == 3) {
+            //获取属于自己的4/5级账户
+            $belongs=AdminBelongV::where('u_id',$u_id)->select();
+
+
 
         }
 

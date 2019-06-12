@@ -65,6 +65,7 @@ class Admin extends BaseController
      * "remark": "天河区",
      * "sons": 11,
      * "shop_count":2,
+     * "logining":1
      * }
      * @apiParam (请求参数说明) {int} id 修改用户id
      * @apiParam (请求参数说明) {String} phone 手机号
@@ -74,6 +75,7 @@ class Admin extends BaseController
      * @apiParam (请求参数说明) {String} remark 备注
      * @apiParam (请求参数说明) {int} sons 四级账户创建5级子代理账户的数量,默认10（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
      * @apiParam (请求参数说明) {int} shop_count 4/5级别可有拥有店铺数量,默认1（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
+     * @apiParam (请求参数说明) {int} logining 是否可以多ip登录：1-不可以；2 ->可以
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
@@ -81,7 +83,7 @@ class Admin extends BaseController
      */
     public function updateInfo()
     {
-        $params = Request::only(['phone', 'username', 'email', 'remark', 'pwd', 'sons', 'shop_count']);
+        $params = Request::only(['phone', 'username', 'email', 'remark', 'pwd', 'sons', 'shop_count', 'logining']);
         (new AdminService())->updateInfo($params);
         return json(new SuccessMessage());
     }
@@ -168,7 +170,7 @@ class Admin extends BaseController
     public function handel()
     {
         $params = $this->request->param();
-        $id = AdminT::update(['state' => $params['state']])->whereIn('id',$params['id']);
+        $id = AdminT::update(['state' => $params['state']])->whereIn('id', $params['id']);
         if (!$id) {
             throw new UpdateException();
         }
@@ -201,6 +203,7 @@ class Admin extends BaseController
      * @apiSuccess (返回参数说明) {String} create_time 创建时间
      * @apiSuccess (返回参数说明) {int} sons 四级账户创建5级子代理账户的数量,默认10（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
      * @apiSuccess (返回参数说明) {int} shop_count 4/5级别可有拥有店铺数量,默认1（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
+     * @apiSuccess (返回参数说明) {int} logining 是否可以多ip登录：1-不可以；2 ->可以（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
      */
     public function admins($grade, $page = 1, $size = 15, $key = '')
     {

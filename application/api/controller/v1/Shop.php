@@ -12,7 +12,7 @@ class Shop extends BaseController
 {
 
     /**
-     * @api {POST} /api/v1/shop/save  4/5代理新增店铺
+     * @api {POST} /api/v1/shop/save  5级代理/5级学员新增店铺
      * @apiGroup  CMS
      * @apiVersion 1.0.1
      * @apiDescription  新增店铺
@@ -45,7 +45,7 @@ class Shop extends BaseController
     }
 
     /**
-     * @api {POST} /api/v1/shop/update  4/5代理修改店铺
+     * @api {POST} /api/v1/shop/update  5级代理/5级学员修改店铺
      * @apiGroup  CMS
      * @apiVersion 1.0.1
      * @apiDescription  修改店铺

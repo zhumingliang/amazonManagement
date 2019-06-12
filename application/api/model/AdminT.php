@@ -17,7 +17,7 @@ class AdminT extends Model
     public static function admins($current_grade, $grade, $page, $size, $key)
     {
         if ($current_grade === 1 || $current_grade === 2) {
-            $field = 'id,username,account,grade,phone,ip,create_time,shop_count,sons';
+            $field = 'id,username,account,grade,phone,ip,create_time,shop_count,sons,logining';
         } else {
             $field = 'id,username,account,grade,phone,ip,create_time';
         }
