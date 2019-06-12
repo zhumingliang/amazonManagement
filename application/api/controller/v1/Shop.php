@@ -22,7 +22,6 @@ class Shop extends BaseController
      * "name": "张三的店铺",
      * "code": "1234",
      * "token": "adad23323",
-     * "sale_id": 7,
      * "state": "1",
      * "remark": "优秀的农产主"
      * }
@@ -30,7 +29,6 @@ class Shop extends BaseController
      * @apiParam (请求参数说明) {String} name 店铺名称
      * @apiParam (请求参数说明) {String} code 卖家编号
      * @apiParam (请求参数说明) {String} token MWS授权令牌
-     * @apiParam (请求参数说明) {int} sale_id 业务员id
      * @apiParam (请求参数说明) {int} state 店铺状态 ： 1 | 启用；2 | 停用
      * @apiParam (请求参数说明) {String} remark 备注
      * @apiSuccessExample {json} 返回样例:
@@ -58,7 +56,6 @@ class Shop extends BaseController
      * "name": "张三的店铺",
      * "code": "1234",
      * "token": "adad23323",
-     * "sale_id": 7,
      * "state": "1",
      * "remark": "优秀的农产主"
      * }
@@ -66,7 +63,6 @@ class Shop extends BaseController
      * @apiParam (请求参数说明) {String} name 店铺名称
      * @apiParam (请求参数说明) {String} code 卖家编号
      * @apiParam (请求参数说明) {String} token MWS授权令牌
-     * @apiParam (请求参数说明) {int} sale_id 业务员id
      * @apiParam (请求参数说明) {int} state 店铺状态 ： 1 | 启用；2 | 停用
      * @apiParam (请求参数说明) {String} remark 备注
      * @apiSuccessExample {json} 返回样例:
@@ -81,5 +77,12 @@ class Shop extends BaseController
         return json(new SuccessMessage());
 
     }
+
+    public function shops($page=1,$size=15){
+
+       $shops= (new ShopService())->shops($page,$size);
+        return json($shops);
+    }
+
 
 }

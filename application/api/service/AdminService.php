@@ -31,7 +31,7 @@ class AdminService
 
     }
 
-    public function updateInfo($params)
+    public function updateSelfInfo($params)
     {
         $res = AdminT::update($params, ['id' => Token::getCurrentUid()]);
         if (!$res) {
@@ -39,6 +39,16 @@ class AdminService
         }
 
     }
+
+    public function updateInfo($params)
+    {
+        $res = AdminT::update($params);
+        if (!$res) {
+            throw new UpdateException();
+        }
+
+    }
+
 
     public function admins($grade, $page, $size, $key)
     {

@@ -15,8 +15,7 @@ class ShopService
     public function save($params)
     {
         $params['u_id'] = Token::getCurrentUid();
-        $params['sale_id'] = Token::getCurrentUid();
-        if (!$this->checkAdminShop($params['sale_id'])) {
+        if (!$this->checkAdminShop($params['u_id'])) {
             throw  new SaveException([
                 '该用户店铺数量达到上限，不能再添加'
             ]);
@@ -31,11 +30,6 @@ class ShopService
 
     public function update($params)
     {
-        if (key_exists('sale_id', $params) && !$this->checkAdminShop($params['sale_id'])) {
-            throw  new UpdateException([
-                '该用户店铺数量达到上限，不能再添加'
-            ]);
-        }
         $res = ShopT::update($params);
         if (!$res) {
             throw new UpdateException();
@@ -54,6 +48,21 @@ class ShopService
             return false;
         }
 
+    }
+
+    public function shops($page, $size)
+    {
+        $grade = Token::getCurrentTokenVar('grade');
+        $shops = [
+            'total' => 0,
+            'per_page' => $size,
+            'current_page' => 1,
+            'last_page' => 0,
+            'data' => []
+        ];
+        if ($grade==3){
+
+        }
 
     }
 

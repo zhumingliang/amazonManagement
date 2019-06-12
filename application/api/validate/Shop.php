@@ -12,13 +12,12 @@ class Shop extends BaseValidate
         'name' => 'require|isNotEmpty',
         'code' => 'require',
         'token' => 'require',
-        'sale_id' => 'require|in:2,3,4,5',
         'state' => 'require|in:1,2',
         'remark' => 'require',
     ];
 
     protected $scene = [
-        'save' => ['market', 'name', 'code', 'token', 'sale_id', 'state'],
+        'save' => ['market', 'name', 'code', 'token', 'state'],
         'update' => ['id'],
         'handel' => ['id', 'state'],
         'distribution' => ['id', 'belong_ids'],
