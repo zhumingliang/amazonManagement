@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\model\AdminBelongT;
 use app\api\model\AdminT;
 use app\api\service\AdminService;
 use app\lib\exception\SuccessMessage;
@@ -111,7 +112,7 @@ class Admin extends BaseController
     }
 
     /**
-     * @api {POST} /api/v1/admin/handel  管理员状态操作
+     * @api {POST} /api/v1/admin/handel 用户状态操作
      * @apiGroup  CMS
      * @apiVersion 1.0.1
      * @apiDescription  管理员状态操作
@@ -139,7 +140,6 @@ class Admin extends BaseController
 
     }
 
-
     /**
      * @api {GET} /api/v1/admins  1/2/3/4级用户获取子级用户列表
      * @apiGroup  CMS
@@ -166,8 +166,62 @@ class Admin extends BaseController
      */
     public function admins($grade, $page = 1, $size = 15, $key = '')
     {
-        $admins = (new AdminService())->admins($grade, $page, $size,$key);
+        $admins = (new AdminService())->admins($grade, $page, $size, $key);
         return json($admins);
 
     }
+
+    /**
+     * @api {POST} /api/v1/admin/distribution  1/2级管理员给3级管理员分配下属4/5级用户
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription 1/2级管理员给3级管理员分配下属4/5级用户
+     * @apiExample {post}  请求样例:
+     * {
+     * "id": 3,
+     * "belong_ids": "7,8,9"
+     * }
+     * @apiParam (请求参数说明) {int} id 3级管理员id
+     * @apiParam (请求参数说明) {String} belong_ids 4/5级管理员id，多个用逗号隔开。
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+    public function distribution()
+    {
+        $params = $this->request->param();
+        (new AdminService())->distribution($params['id'], $params['belong_ids']);
+        return json(new SuccessMessage());
+    }
+
+    /**
+     * @api {POST} /api/v1/admin/distribution/handel 用户归属关系状态操作
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  用户归属关系状态操作
+     * @apiExample {POST}  请求样例:
+     * {
+     * "id": 1,
+     * "state": 1
+     * }
+     * @apiParam (请求参数说明) {int} id 用户id
+     * @apiParam (请求参数说明) {int} state 用户状态：1-启用；2-停用
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+
+    public function distributionHandel()
+    {
+        $params = $this->request->param();
+        $id = AdminBelongT::update(['state' => $params['state']], ['id' => $params['id']]);
+        if (!$id) {
+            throw new UpdateException();
+        }
+        return json(new SuccessMessage());
+    }
+
+
 }

@@ -40,5 +40,10 @@ Route::get('api/:version/translate/des', 'api/:version.Translate/des');
 Route::post('api/:version/admin/save', 'api/:version.Admin/save');
 Route::post('api/:version/admin/update', 'api/:version.Admin/updateInfo');
 Route::post('api/:version/admin/handel', 'api/:version.Admin/handel');
+Route::post('api/:version/admin/distribution', 'api/:version.Admin/distribution');
 Route::get('api/:version/admin/self', 'api/:version.Admin/selfInfo');
 Route::get('api/:version/admins', 'api/:version.Admin/admins');
+
+
+Route::post('api/:version/shop/save', 'api/:version.Shop/save');
+Route::post('api/:version/shop/update', 'api/:version.Shop/update');

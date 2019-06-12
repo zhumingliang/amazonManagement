@@ -14,11 +14,14 @@ class Admin extends BaseValidate
         'username' => 'require|isNotEmpty',
         'grade' => 'require|in:2,3,4,5',
         'state' => 'require|in:1,2',
+        'belong_ids' => 'require|isNotEmpty',
     ];
 
     protected $scene = [
         'save' => ['phone', 'pwd', 'account', 'username', 'grade'],
         'handel' => ['id', 'state'],
+        'distribution' => ['id', 'belong_ids'],
+        'distributionHandel' => ['id', 'state'],
     ];
 
 }
