@@ -30,7 +30,6 @@ class Translate extends BaseController
         $from = $this->request->param('from');
         $to = $this->request->param('to');
         $data = $this->request->param('data');
-
         $info = (new TranslateService())->translateDes($from, $to, $data);
         return json($info);
     }

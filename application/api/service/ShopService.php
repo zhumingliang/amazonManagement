@@ -8,6 +8,7 @@ use app\api\model\AdminBelongT;
 use app\api\model\AdminBelongV;
 use app\api\model\AdminT;
 use app\api\model\ShopT;
+use app\api\model\ShopV;
 use app\lib\enum\CommonEnum;
 use app\lib\exception\SaveException;
 use app\lib\exception\UpdateException;
@@ -52,25 +53,23 @@ class ShopService
 
     }
 
-    public function shops($page, $size)
+    public function shops($key_type, $key, $status, $check, $page, $size)
     {
         $grade = Token::getCurrentTokenVar('grade');
-        $u_id=Token::getCurrentUid();
-        $shops = [
-            'total' => 0,
-            'per_page' => $size,
-            'current_page' => 1,
-            'last_page' => 0,
-            'data' => []
-        ];
-        if ($grade == 3) {
-            //获取属于自己的4/5级账户
-            $belongs=AdminBelongV::where('u_id',$u_id)->select();
+        $u_id = Token::getCurrentUid();
 
+        if ($grade == 1 || $grade == 2) {
 
-
+            //拥有获取所有信息权限
+            $shop_parent = 0;
+        } else {
+            $shop_parent = (new AdminService())->shop_parent($u_id, $grade);
         }
 
+        $shops = ShopV::shopsAll($shop_parent, $key_type, $key, $status, $check, $page, $size);
+        return $shops;
+
     }
+
 
 }

@@ -48,4 +48,4 @@ Route::get('api/:version/admins', 'api/:version.Admin/admins');
 
 Route::post('api/:version/shop/save', 'api/:version.Shop/save');
 Route::post('api/:version/shop/update', 'api/:version.Shop/update');
-Route::post('api/:version/shops', 'api/:version.Shop/shops');
+Route::get('api/:version/shops', 'api/:version.Shop/shops');

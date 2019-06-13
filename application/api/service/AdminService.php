@@ -93,7 +93,7 @@ class AdminService
     {
         if (Token::getCurrentTokenVar('grade') < 3) {
             throw new SaveException([
-                'msg'=>'用户权限不足'
+                'msg' => '用户权限不足'
             ]);
         }
         $ids_arr = explode(',', $belong_ids);
@@ -114,6 +114,76 @@ class AdminService
             }
         }
 
+    }
+
+
+    /**
+     * 获取当前用户可查看店铺所属
+     * @param $u_id
+     * @param $grade
+     * @return array|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function shop_parent($u_id, $grade)
+    {
+        $five_ids = '';
+        if ($grade === 3) {
+            //3级管理员
+            //获取属于自己的4/5级账户
+            $belongs = AdminBelongV::where('u_id', $u_id)
+                ->where('state', CommonEnum::STATE_IS_OK)
+                ->select()->toArray();
+            if (!count($belongs)) {
+                return [];
+            }
+            $four = '';
+            $four_five = '';
+            $five = '';
+            foreach ($belongs as $k => $v) {
+                if ($v['grade'] == 4) {
+                    $four .= $v['son_id'] . ',';
+                } else if ($v['grade'] == 5) {
+                    $five .= $v['son_id'] . ',';
+
+                }
+            }
+            $four = substr($four, 0, -1);
+            $five = substr($five, 0, -1);
+            if (strlen($four)) {
+                $four_five = $this->getFives($four);
+            }
+
+            if (strlen($five)) {
+                $five_ids = $five;
+            }
+            if (strlen($four_five)) {
+                $five_ids = strlen($five_ids) ? $five_ids . ',' . $four_five : $four_five;
+            }
+
+
+        }
+
+        if ($grade === 4) {
+            //四级管理员
+            $five_ids = $this->getFives($u_id);
+        }
+
+        if ($grade === 5 || $grade === 6) {
+            //四级管理员
+            $five_ids = $u_id;
+        }
+        return $five_ids;
+
+    }
+
+    private function getFives($ids)
+    {
+        $four_five = AdminT::where('state', CommonEnum::STATE_IS_OK)
+            ->whereIn('parent_id', $ids)
+            ->column('group_concat(id separator "," )as id');
+        return $four_five[0];
     }
 
 }
