@@ -112,18 +112,20 @@ class Category extends BaseController
      * @apiDescription  CMS获取分类列表
      *
      * @apiExample {get}  请求样例:
-     * http://api.tljinghua.com/api/v1/category/list?page=1&size=20
+     * http://api.tljinghua.com/api/v1/category/list?page=1&size=20&key=
      * @apiParam (请求参数说明) {int} page 当前页码
      * @apiParam (请求参数说明) {int} size 每页多少条数据
+     * @apiParam (请求参数说明) {String} key 关键词
      * @apiSuccessExample {json} 返回样例:
      * [{"id":1,"parent_id":0,"name":"服饰","create_time":"2019-06-04 11:06:30","items":[{"id":2,"parent_id":1,"name":"连衣裙","create_time":"2019-06-04 11:07:19"},{"id":3,"parent_id":1,"name":"短裤","create_time":"2019-06-04 11:07:26"},{"id":4,"parent_id":1,"name":"背心","create_time":"2019-06-04 11:07:30"}]},{"id":5,"parent_id":0,"name":"鞋子","create_time":"2019-06-04 11:07:37","items":[{"id":6,"parent_id":5,"name":"篮球鞋","create_time":"2019-06-04 11:07:56"},{"id":7,"parent_id":5,"name":"足球鞋","create_time":"2019-06-04 11:08:03"}]}]
      * @apiSuccess (返回参数说明) {int} id 分类id
      * @apiSuccess (返回参数说明) {String} name 分类名称
      * @apiSuccess (返回参数说明) {Obj} items 一级分类下子分类
      */
-    public function getListForCMS()
+    public function getListForCMS($key='')
     {
-        $list = (new CategoryService())->getListForCMS();
+
+        $list = (new CategoryService())->getListForCMS($key);
         return json($list);
 
 

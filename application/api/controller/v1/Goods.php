@@ -5,7 +5,10 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\model\GoodsInfoT;
 use app\api\service\GoodsService;
+use app\lib\enum\CommonEnum;
+use app\lib\exception\DeleteException;
 use app\lib\exception\SuccessMessage;
 
 class Goods extends BaseController
@@ -175,7 +178,6 @@ class Goods extends BaseController
      * @apiExample {post}  请求样例:
      * {"id":246,"c_id":0,"sku":"qog1c4qr4i31","goods_code":null,"theme":"SizeColor","sex":"baby-boys","status":1,"weight":null,"volume_long":null,"declare_ch":null,"declare_en":null,"usd":null,"brand":null,"serial_number":null,"serial":null,"source":3,"volume_wide":null,"volume_height":null,"code_type":null}
      * @apiParam (请求参数说明) {int} id 商品id
-     * @apiParam (请求参数说明) {int} id 商品id
      * @apiParam (请求参数说明) {int} c_id 分类ID
      * @apiParam (请求参数说明) {String} sku 商品sku
      * @apiParam (请求参数说明) {String} code_type 商品UPC类别：ISBN,UPC 等
@@ -243,19 +245,25 @@ class Goods extends BaseController
         return json(new SuccessMessage());
     }
 
-
     /**
      * @api {POST} /api/v1/goods/des/update 更新商品标题描述
      * @apiGroup  CMS
      * @apiVersion 1.0.1
      * @apiDescription  更新商品标题描述
      * @apiExample {post}  请求样例:
-     * {"id":246,"title":"修改"}
-     * @apiParam (请求参数说明) {int} id 描述id
+     * {"id":246,"title":"标题","des":"修改","key":"修改","abstract":"修改","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
+     * @apiParam (请求参数说明) {int} g_id 商品标题描述ID
      * @apiParam (返回参数说明) {String} title 商品标题
      * @apiParam (返回参数说明) {String} des 商品描述
      * @apiParam (返回参数说明) {String} key 商品关键词
      * @apiParam (返回参数说明) {String} abstract 简要说明
+     * @apiParam (返回参数说明) {String} zh 中文
+     * @apiParam (返回参数说明) {String} en 英文
+     * @apiParam (返回参数说明) {String} spa 西班牙
+     * @apiParam (返回参数说明) {String} fra 法语
+     * @apiParam (返回参数说明) {String} it 意大利
+     * @apiParam (返回参数说明) {String} jp 日语
+     * @apiParam (返回参数说明) {String} pt 德语
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
@@ -347,5 +355,160 @@ class Goods extends BaseController
         (new GoodsService())->deleteSku($id);
         return json(new SuccessMessage());
     }
+
+    /**
+     * @api {POST} /api/v1/goods/delete  批量删除商品
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  批量删除商品
+     * @apiExample {POST}  请求样例:
+     * {
+     * "id": "1,2,3"
+     * }
+     * @apiParam (请求参数说明) {int} id 商品id，多个逗号隔开
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+    public function deleteGoods()
+    {
+        $id = $this->request->param('id');
+        $res = GoodsInfoT::update(['state' => CommonEnum::STATE_IS_FAIL])->whereIn('id', $id);
+        if (!$res) {
+            throw new DeleteException();
+        }
+        return json(new SuccessMessage());
+
+    }
+
+    /**
+     * @api {POST} /api/v1/goods/info/save 新增商品基本信息
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  更新商品基本信息
+     * @apiExample {post}  请求样例:
+     * {"c_id":0,"sku":"qog1c4qr4i31","goods_code":null,"theme":"SizeColor","sex":"baby-boys","status":1,"weight":null,"volume_long":null,"declare_ch":null,"declare_en":null,"usd":null,"brand":null,"serial_number":null,"serial":null,"source":3,"volume_wide":null,"volume_height":null,"code_type":null}
+     * @apiParam (请求参数说明) {int} c_id 分类ID
+     * @apiParam (请求参数说明) {String} sku 商品sku
+     * @apiParam (请求参数说明) {String} code_type 商品UPC类别：ISBN,UPC 等
+     * @apiParam (请求参数说明) {String} goods_code 商品UPC编码
+     * @apiParam (请求参数说明) {String} theme 变体主题
+     * @apiParam (请求参数说明) {String} sex 性别
+     * @apiParam (请求参数说明) {int}  status 状态:1 | 待定；2 | 上架；3 | 下架；4 | 屏蔽；5 | 删除
+     * @apiParam (请求参数说明) {int} weight 重量
+     * @apiParam (请求参数说明) {int} volume_long 体积-长
+     * @apiParam (请求参数说明) {int} volume_wide 体积-宽
+     * @apiParam (请求参数说明) {int} volume_height 体积-高
+     * @apiParam (请求参数说明) {String} declare_ch 报关名称(中文)
+     * @apiParam (请求参数说明) {String} declare_en 报关名称(英文)
+     * @apiParam (请求参数说明) {int} usd 报关价值(USD)
+     * @apiParam (请求参数说明) {String} brand 品牌
+     * @apiParam (请求参数说明) {String} serial_number  厂商编号
+     * @apiParam (请求参数说明) {String} serial 厂商
+     * @apiSuccessExample {json} 返回样例:
+     * {"id":1}
+     * @apiSuccess (返回参数说明) {int} id 商品基本信息ID
+     */
+    public function saveInfo()
+    {
+        $params = $this->request->param();
+        $id = (new GoodsService())->saveInfo($params);
+        return json(['id' => $id]);
+
+    }
+
+    /**
+     * @api {POSTs} /api/v1/goods/price/save 新增商品价格图片
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  更新商品价格
+     * @apiExample {post}  请求样例:
+     * {"id":1,"price":10,"cost":10,"count":1000,"main_image":"url1,url2,url3","skus":[{"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
+     * @apiParam (请求参数说明) {int} id 商品id
+     * @apiParam (请求参数说明) {int} price 售价
+     * @apiParam (请求参数说明) {int} cost 成本
+     * @apiParam (请求参数说明) {int} count 成本
+     * @apiParam (请求参数说明) {String} main_image 主图url，多个url用逗号隔开
+     * @apiParam (请求参数说明) {Obj} sku 商品变体信息
+     * @apiParam (请求参数说明) {Obj} skus 商品变体信息
+     * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
+     * @apiParam (请求参数说明) {String} skus->size 尺寸
+     * @apiParam (请求参数说明) {String} skus->coloe 颜色
+     * @apiParam (请求参数说明) {String} skus->sku sku
+     * @apiParam (请求参数说明) {int} skus->count 数量
+     * @apiParam (请求参数说明) {int} skus->price 价格
+     * @apiParam (请求参数说明) {String} skus->upc UPC
+     * @apiParam (请求参数说明) {String} skus->size_map size_map
+     * @apiParam (请求参数说明) {String} skus->color_map color_map
+     * @apiParam (请求参数说明) {String} skus->sex 性别
+     * @apiParam (请求参数说明) {Obj} skus->img_url 变体图片
+     * @apiParam (请求参数说明) {Obj} skus->img_url->url 变体图片地址
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+    public function savePrice()
+    {
+        $params = $this->request->param();
+        (new GoodsService())->updatePrice($params);
+        return json(new SuccessMessage());
+    }
+
+    /**
+     * @api {POST} /api/v1/goods/des/save 新增商品标题描述
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  新增商品标题描述
+     * @apiExample {post}  请求样例:
+     * {"g_id":246,"title":"标题","des":"修改","key":"修改","abstract":"修改","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
+     * @apiParam (请求参数说明) {int} g_id 商品id
+     * @apiParam (返回参数说明) {String} title 商品标题
+     * @apiParam (返回参数说明) {String} des 商品描述
+     * @apiParam (返回参数说明) {String} key 商品关键词
+     * @apiParam (返回参数说明) {String} abstract 简要说明
+     * @apiParam (返回参数说明) {String} zh 中文
+     * @apiParam (返回参数说明) {String} en 英文
+     * @apiParam (返回参数说明) {String} spa 西班牙
+     * @apiParam (返回参数说明) {String} fra 法语
+     * @apiParam (返回参数说明) {String} it 意大利
+     * @apiParam (返回参数说明) {String} jp 日语
+     * @apiParam (返回参数说明) {String} pt 德语
+     * @apiSuccessExample {json} 返回样例:
+     * {"id":1}
+     * @apiSuccess (返回参数说明) {int} id 商品标题描述ID
+     */
+    public function saveDes()
+    {
+        $params = $this->request->param();
+        $id = (new GoodsService())->saveDes($params);
+        return json(['id' => $id]);
+    }
+
+    /**
+     * @api {POSTs} /api/v1/goods/save 快速添加商品
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  快速添加商品s
+     * @apiExample {post}  请求样例:
+     * {"price":10,"cost":10,"price_unit":"CNY","main_image":"url1,url2,url3","title":"标题"}
+     * @apiParam (请求参数说明) {String} title 商品标题
+     * @apiParam (请求参数说明) {int} price 售价
+     * @apiParam (请求参数说明) {int} cost 成本
+     * @apiParam (请求参数说明) {String} price_unit 价格单位
+     * @apiParam (请求参数说明) {String} main_image 主图url，多个url用逗号隔开
+     * @apiSuccessExample {json} 返回样例:
+     * {"msg": "ok","error_code": 0}
+     * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
+     * @apiSuccess (返回参数说明) {String} msg 操作结果描述
+     */
+    public function saveGoods()
+    {
+        $params = $this->request->param();
+        (new GoodsService())->saveGoods($params);
+        return json(new SuccessMessage());
+    }
+
 
 }

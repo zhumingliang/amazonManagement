@@ -105,12 +105,13 @@ class Spider
     public
     function saveGoodsInfo($params)
     {
-        $params['admin_id'] = 1;//Token::getCurrentUid();
+        $params['admin_id'] = Token::getCurrentUid();
         $params['status'] = CommonEnum::STATE_IS_OK;
         $params['theme'] = 'SizeColor';
         $params['sex'] = 'baby-boys';
         $params['url'] = $this->url;
         $params['url_md5'] = md5($this->url);
+        $params['price_unit'] = 'CNY';
         $res = GoodsInfoT::create($params);
         if (!$res) {
             throw new SaveException([

@@ -14,13 +14,14 @@ class GoodsListV extends Model
         return $this->hasMany('GoodsMainImageT', 'g_id', 'id');
     }
 
-    public static function goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type,$c_id, $page, $size)
+    public static function goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size)
     {
-        $list = self::with([
-            'image' => function ($query) {
-                $query->where('state', '=', CommonEnum::STATE_IS_OK)->limit(0, 1);
-            }
-        ])
+        $list = self::where('state', CommonEnum::STATE_IS_OK)
+            ->with([
+                'image' => function ($query) {
+                    $query->where('state', '=', CommonEnum::STATE_IS_OK)->limit(0, 1);
+                }
+            ])
             ->where(function ($query) use ($key_type, $key) {
                 if (strlen($key_type) && strlen($key)) {
                     $query->where($key_type, 'like', '%' . $key . '%');

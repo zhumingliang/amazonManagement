@@ -51,6 +51,16 @@ class GoodsService
 
     }
 
+    public function saveInfo($params)
+    {
+        $res = GoodsInfoT::create($params);
+        if (!$res) {
+            throw new SaveException();
+        }
+        return $res->id;
+
+    }
+
     public function deleteImage($params)
     {
         $id = $params['id'];
@@ -122,17 +132,46 @@ class GoodsService
     public function updatePrice($params)
     {
         $skus = array();
+        $main_image = '';
         if (key_exists('skus', $params)) {
             $sku_json = $params['skus'];
             $skus = json_decode($sku_json, true);
             unset($params['skus']);
+        }
+        if (key_exists('main_image', $params)) {
+            $main_image = $params['main_image'];
+            $main_image = explode(',', $main_image);
+            unset($params['main_image']);
         }
         $this->updateInfo($params);
         if (count($skus)) {
             $this->prefixSku($params['id'], $skus);
         }
 
+        if (count($main_image)) {
+            $this->prefixMainImage($params['id'], $main_image);
+        }
+
     }
+
+    private function prefixMainImage($g_id, $imgs_arr)
+    {
+        $data_arr = array();
+        foreach ($imgs_arr as $k => $v) {
+            $data_arr[] = [
+                'g_id' => $g_id,
+                'url' => $v,
+                'state' => CommonEnum::STATE_IS_OK
+            ];
+        }
+        $res = (new GoodsMainImageT())->saveAll($data_arr);
+        if (!$res) {
+            throw new SaveException([
+                'msg' => '保存商品主图失败'
+            ]);
+        }
+    }
+
 
     private function prefixSku($g_id, $skus)
     {
@@ -189,6 +228,52 @@ class GoodsService
         if (!$res) {
             throw new UpdateException();
         }
+    }
+
+    public function saveDes($params)
+    {
+        $res = GoodsDesT::create($params);
+        if (!$res) {
+            throw new UpdateException();
+        }
+
+        return $res->id;
+    }
+
+    public function saveGoods($params)
+    {
+        $info_data = [
+            'sku' => getSkuID(),
+            'price' => $params['price'],
+            'cost' => $params['cost'],
+            'price_unit' => $params['price_unit'],
+            'c_id' => $params['c_id'],
+            'status' => CommonEnum::STATE_IS_OK,
+            'state' => CommonEnum::STATE_IS_OK,
+            'admin_id' => Token::getCurrentUid(),
+            'theme' => 'SizeColor',
+            'sex' => 'baby-boys',
+        ];
+        $info = GoodsInfoT::create($info_data);
+        if (!$info) {
+            throw new SaveException(['msg' => '保存商品信息失败']);
+        }
+        $des_data = [
+            'title' => $params['title'],
+            'g_id' => $info->id
+        ];
+        $des = GoodsDesT::create($des_data);
+        if (!$des) {
+            throw new SaveException(['msg' => '保存商品标题失败']);
+        }
+        if (key_exists('main_image', $params)) {
+            $main_image = $params['main_image'];
+            $main_image = explode(',', $main_image);
+            if (count($main_image)) {
+                $this->prefixMainImage($info->id, $main_image);
+            }
+        }
+
     }
 
 }

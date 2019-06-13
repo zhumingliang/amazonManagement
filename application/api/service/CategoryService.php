@@ -10,15 +10,21 @@ use phpspider\core\requests;
 
 class CategoryService
 {
-    public function getListForCMS()
+    public function getListForCMS($key)
     {
         $list = CategoryT::where('state', CommonEnum::STATE_IS_OK)
+            ->where(function ($query) use ($key) {
+                if (strlen($key)) {
+                    $query->where('name', 'like', '%' . $key . '%');
+                }
+            })
             ->field('id,parent_id,name,create_time')
             ->select()->toArray();
         if (!count($list)) {
             return $list;
         }
-        return $this->getTree($list, 0);
+
+        return strlen($key) ? $list : $this->getTree($list, 0);
 
 
     }

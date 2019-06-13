@@ -23,5 +23,6 @@ class Goods extends BaseValidate
         'deleteImage' => ['id', 'type'],
         'uploadImage' => ['id', 'type', 'image'],
         'deleteSku' => ['id', 'delete_type'],
+        'deleteGoods' => ['id'],
     ];
 }
