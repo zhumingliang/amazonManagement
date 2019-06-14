@@ -39,6 +39,7 @@ Route::post('api/:version/goods/delete', 'api/:version.Goods/deleteGoods');
 Route::post('api/:version/goods/sku/delete', 'api/:version.Goods/deleteSku');
 Route::post('api/:version/goods/sku/save', 'api/:version.Goods/saveSku');
 Route::post('api/:version/goods/sku/update', 'api/:version.Goods/updateSku');
+Route::post('api/:version/goods/image/upload', 'api/:version.Goods/uploadImage');
 
 Route::get('api/:version/translate/des', 'api/:version.Translate/des');
 

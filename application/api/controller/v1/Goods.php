@@ -375,7 +375,9 @@ class Goods extends BaseController
     public function deleteGoods()
     {
         $id = $this->request->param('id');
-        $res = GoodsInfoT::update(['state' => CommonEnum::STATE_IS_FAIL])->whereIn('id', $id);
+        //$res = GoodsInfoT::update(['state' => CommonEnum::STATE_IS_FAIL])->whereIn('id', $id);
+        $res = GoodsInfoT::where('id','in',$id)
+            ->update(['state' => CommonEnum::STATE_IS_FAIL]);
         if (!$res) {
             throw new DeleteException();
         }
