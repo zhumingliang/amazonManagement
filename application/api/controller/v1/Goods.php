@@ -299,7 +299,7 @@ class Goods extends BaseController
     {
         $params = $this->request->param();
         (new GoodsService())->deleteImage($params);
-        return (new SuccessMessage());
+        return json(new SuccessMessage());
     }
 
     /**
@@ -352,7 +352,8 @@ class Goods extends BaseController
     public function deleteSku()
     {
         $id = $this->request->param('id');
-        (new GoodsService())->deleteSku($id);
+        $delete_type = $this->request->param('delete_type');
+        (new GoodsService())->deleteSku($id, $delete_type);
         return json(new SuccessMessage());
     }
 
