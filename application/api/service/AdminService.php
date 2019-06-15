@@ -52,8 +52,8 @@ class AdminService
 
     public function admins($grade, $page, $size, $key)
     {
-        $current_grade = 1;//Token::getCurrentTokenVar('grade');
-        $u_id = 1;//Token::getCurrentUid();
+        $current_grade = Token::getCurrentTokenVar('grade');
+        $u_id = Token::getCurrentUid();
         $admins = [
             'total' => 0,
             'per_page' => $size,
@@ -73,7 +73,7 @@ class AdminService
         }
 
         if ($current_grade == 4) {
-            $admins = AdminT::admins($current_grade, $grade, $page, $size, $key);
+            $admins = AdminT::adminsForFour($current_grade, $grade, $page, $size, $key);
             return $admins;
         }
 
