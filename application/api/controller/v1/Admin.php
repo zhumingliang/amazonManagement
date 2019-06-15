@@ -7,6 +7,7 @@ namespace app\api\controller\v1;
 use app\api\controller\BaseController;
 use app\api\model\AdminBelongT;
 use app\api\model\AdminT;
+use app\api\model\BelongV;
 use app\api\service\AdminService;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\UpdateException;
@@ -190,7 +191,7 @@ class Admin extends BaseController
      * @apiParam (请求参数说明) {String} grade 可筛选用户角色：2/3/4/5
      * @apiParam (请求参数说明) {String} key 关键字查询
      * @apiSuccessExample {json} 返回样例:
-     * {"total":1,"per_page":"20","current_page":1,"last_page":1,"data":[{"id":2,"username":"测试-2级管理员","account":"1","grade":2,"phone":"18956225230","ip":null,"create_time":"2019-06-11 23:35:52"}]}
+     * {"total":9,"per_page":15,"current_page":1,"last_page":1,"data":[{"id":2,"username":"测试-2级管理员","account":"1","grade":2,"phone":"18956225230","ip":null,"create_time":"2019-06-11 23:35:52","shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":3,"username":"3","account":"3","grade":3,"phone":null,"ip":null,"create_time":null,"shop_count":1,"sons":10,"logining":1,"belong":[{"id":1,"son_id":4,"u_id":3,"admin":{"id":4,"username":"4","account":"4"}},{"id":2,"son_id":5,"u_id":3,"admin":{"id":5,"username":"5","account":"5"}}]},{"id":4,"username":"4","account":"4","grade":4,"phone":null,"ip":null,"create_time":null,"shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":5,"username":"5","account":"5","grade":5,"phone":null,"ip":null,"create_time":null,"shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":6,"username":"5-2","account":"6","grade":5,"phone":null,"ip":null,"create_time":null,"shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":7,"username":"5-3","account":"7","grade":5,"phone":null,"ip":null,"create_time":null,"shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":8,"username":"6","account":"8","grade":6,"phone":null,"ip":null,"create_time":null,"shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":9,"username":"林志鑫","account":"林志鑫","grade":2,"phone":"13415012786","ip":null,"create_time":"2019-06-15 00:19:55","shop_count":1,"sons":10,"logining":1,"belong":[]},{"id":10,"username":"林志鑫","account":"角色三","grade":3,"phone":"13415012786","ip":null,"create_time":"2019-06-15 00:35:13","shop_count":1,"sons":10,"logining":1,"belong":[]}]}
      * @apiSuccess (返回参数说明) {int} total 数据总数
      * @apiSuccess (返回参数说明) {int} per_page 每页多少条数据
      * @apiSuccess (返回参数说明) {int} current_page 当前页码
@@ -202,8 +203,9 @@ class Admin extends BaseController
      * @apiSuccess (返回参数说明) {int} grade 用户角色:2->系统管理员；3-公司管理员；4->代理；5->子代理；6->学员
      * @apiSuccess (返回参数说明) {String} create_time 创建时间
      * @apiSuccess (返回参数说明) {int} sons 四级账户创建5级子代理账户的数量,默认10（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
-     * @apiSuccess (返回参数说明) {int} shop_count 4/5级别可有拥有店铺数量,默认1（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
+     * @apiSuccess (返回参数说明) {int} shop_count 5/6级别可有拥有店铺数量,默认1（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
      * @apiSuccess (返回参数说明) {int} logining 是否可以多ip登录：1-不可以；2 ->可以（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
+     * @apiSuccess (返回参数说明) {Obj} belong 属于3级用户的4/5信息（1/2级管理员获取列表时才返回该字段）
      */
     public function admins($grade, $page = 1, $size = 15, $key = '')
     {
@@ -265,5 +267,28 @@ class Admin extends BaseController
         return json(new SuccessMessage());
     }
 
+
+    /**
+     * @api {GET} /api/v1/admins/can/belong 获取未被分配4/5级账号
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  获取用户自己个人信息
+     * @apiExample {get}  请求样例:
+     * http://api.tljinghua.com/api/v1/admins/can/belong
+     * @apiSuccessExample {json} 返回样例:
+     * [{"id":6,"username":"5-2","account":"6","grade":5},{"id":7,"username":"5-3","account":"7","grade":5}]
+     * @apiSuccess (返回参数说明) {String} id 用户id
+     * @apiSuccess (返回参数说明) {String} account 登陆名
+     * @apiSuccess (返回参数说明) {String} username 姓名
+     * @apiSuccess (返回参数说明) {String} grade 用户级别：4 | 代理；5 | 子代理
+     */
+    public function canBelongAdmin()
+    {
+        $list = BelongV::where('belong', '=', 0)
+            ->hidden(['belong'])
+            ->select();
+        return json($list);
+
+    }
 
 }

@@ -14,6 +14,12 @@ use think\Model;
 
 class AdminT extends Model
 {
+
+    public function belong()
+    {
+        return $this->hasMany('AdminBelongT', 'u_id', 'id');
+    }
+
     public static function admins($current_grade, $grade, $page, $size, $key)
     {
         if ($current_grade === 1 || $current_grade === 2) {
@@ -23,6 +29,14 @@ class AdminT extends Model
         }
         $list = self::where('state', CommonEnum::STATE_IS_OK)
             ->where('grade', '>', $current_grade)
+            ->with([
+                'belong' =>function ($query) {
+                    $query->with(['admin' => function ($query2) {
+                        $query2->field('id,username,account');
+                    }])
+                        ->field('id,son_id,u_id')->where('state', '=', CommonEnum::STATE_IS_OK);
+                }
+            ])
             ->where(function ($query) use ($grade) {
                 if ($grade) {
                     $query->where('grade', '=', $grade);

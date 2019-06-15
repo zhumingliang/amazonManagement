@@ -50,6 +50,7 @@ Route::post('api/:version/admin/handel', 'api/:version.Admin/handel');
 Route::post('api/:version/admin/distribution', 'api/:version.Admin/distribution');
 Route::get('api/:version/admin/self', 'api/:version.Admin/selfInfo');
 Route::get('api/:version/admins', 'api/:version.Admin/admins');
+Route::get('api/:version/admins/can/belong', 'api/:version.Admin/canBelongAdmin');
 
 
 Route::post('api/:version/shop/save', 'api/:version.Shop/save');
