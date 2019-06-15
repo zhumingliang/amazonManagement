@@ -147,21 +147,21 @@ class Goods extends BaseController
      * http://api.tljinghua.com/api/v1/goods/des?id=1
      * @apiParam (请求参数说明) {int} id 商品id
      * @apiSuccessExample {json} 返回样例:
-     * {"id":84,"title":"\t
-    * \n\t\t\t\t\t 明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用
-     * \n\t","des":"品牌: Meitoku\/明德<\/br>材质: 泡沫<\/br>图案: 叶子<\/br>风格: 简约现代<\/br>尺寸: 树叶纹【4片+8个边条】60*60*1.2cm（无甲醛，健康） 树叶纹【4片+8个边条】60*60*2.5cm（无甲醛，健康） 树叶纹【6片+12个边条】60*60*2.5cm（无甲醛，健康） 树叶纹【9片+18个边条】60*60*2.5cm（无甲醛，健康） 十字纹【18片+18个边条】30*30*1.0cm（无甲醛，健康） 十字纹【24片+24个边条】30*30*1.0cm（无甲醛，健康） 十字纹【30片+30个边条】30*30*1.0cm（无甲醛，健康） 十字纹【36片+36个边条】30*30*1.0cm（无甲醛，健康） 树叶纹【6片+12个边条】60*60*1.2cm（无甲醛，健康） 树叶纹【9片+18个边条】60*60*1.2cm（无甲醛，健康） 无甲醛放心买，需更多搭配请联系客服备注 水点纹【4片+8个边条】60*60*1.2cm（无甲醛，健康） 水点纹【6片+12个边条】60*60*1.2cm（无甲醛，健康） 水点纹【9片+18个边条】60*60*1.2cm（无甲醛，健康）<\/br>地垫适用空间: 卧室<\/br>颜色分类: 蓝色+绿色 米色 粉色 红色 绿色 蓝色 咖啡色 黄色 米色+粉色 红色+黄色 米色+绿色 米色+蓝色 米色+咖啡色 紫色 蓝色+黄色<\/br>工艺: 机器织造<\/br>地垫售卖方式: 成品地毯（元\/块）<\/br>清洗类型: 可手洗 吸尘<\/br>货号: MD-SYTZ<\/br>适用场景: 家用","abstract":"品牌: Meitoku\/明德<\/br>材质: 泡沫<\/br>图案: 叶子<\/br>风格: 简约现代","create_time":"2019-06-04 16:56:34","update_time":"2019-06-04 16:56:34","key":"明德儿童卧室拼图地板爬行垫宝宝大号加厚泡沫地垫拼接榻榻米家用","g_id":246}
+     * {"id":85,"title":"\t
+       \n\t\t\t\t\t 花花公子短袖T恤男2019新款夏季男士夏装体桖潮流男装上衣服潮牌
+     * \n\t","des":"品牌: PLAYBOY\/花花公子<\/br>面料分类: 棉毛布<\/br>货号: hhgz1257<\/br>基础风格: 青春流行<\/br>上市年份季节: 2019年夏季<\/br>厚薄: 常规<\/br>材质成分: 棉100%","abstract":"品牌: PLAYBOY\/花花公子<\/br>面料分类: 棉毛布<\/br>货号: hhgz1257<\/br>基础风格: 青春流行","create_time":"2019-06-08 18:47:37","update_time":"2019-06-08 18:47:37","key":"花花公子短袖T恤男2019新款夏季男士夏装体桖潮流男装上衣服潮牌","g_id":256,"en":null,"spa":null,"fra":null,"it":null,"jp":null,"pt":null,"zh":null}
      * @apiSuccess (返回参数说明) {int} id 描述id
      * @apiSuccess (返回参数说明) {String} title 商品标题
      * @apiSuccess (返回参数说明) {String} des 商品描述
      * @apiSuccess (返回参数说明) {String} key 商品关键词
      * @apiSuccess (返回参数说明) {String} abstract 简要说明
-     * @apiSuccess (返回参数说明) {String} zh 中文 以999分割 ，数组顺序：title，des，abstract，key
-     * @apiSuccess (返回参数说明) {String} en 英文 以999分割 ，数组顺序：title，des，abstract，key
-     * @apiSuccess (返回参数说明) {String} spa 西班牙 以999分割 ，数组顺序：title，des，abstract，key
-     * @apiSuccess (返回参数说明) {String} fra 法语 以999分割 ，数组顺序：title，des，abstract，key
-     * @apiSuccess (返回参数说明) {String} it 意大利 以999分割 ，数组顺序：title，des，abstract，key
-     * @apiSuccess (返回参数说明) {String} jp 日语 以999分割 ，数组顺序：title，des，abstract，key
-     * @apiSuccess (返回参数说明) {String} pt 德语 以999分割 ，数组顺序：title，des，abstract，key
+     * @apiSuccess (返回参数说明) {String} zh 中文
+     * @apiSuccess (返回参数说明) {String} en 英文
+     * @apiSuccess (返回参数说明) {String} spa 西班牙
+     * @apiSuccess (返回参数说明) {String} fra 法语
+     * @apiSuccess (返回参数说明) {String} it 意大利
+     * @apiSuccess (返回参数说明) {String} jp 日语
+     * @apiSuccess (返回参数说明) {String} pt 德语
      */
     public function goodsDes()
     {
@@ -376,7 +376,7 @@ class Goods extends BaseController
     {
         $id = $this->request->param('id');
         //$res = GoodsInfoT::update(['state' => CommonEnum::STATE_IS_FAIL])->whereIn('id', $id);
-        $res = GoodsInfoT::where('id','in',$id)
+        $res = GoodsInfoT::where('id', 'in', $id)
             ->update(['state' => CommonEnum::STATE_IS_FAIL]);
         if (!$res) {
             throw new DeleteException();
@@ -495,9 +495,10 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  快速添加商品s
      * @apiExample {post}  请求样例:
-     * {"price":10,"cost":10,"price_unit":"CNY","main_image":"url1,url2,url3","title":"标题"}
+     * {"price":10,"cost":10,"c_id":10,"price_unit":"CNY","main_image":"url1,url2,url3","title":"标题"}
      * @apiParam (请求参数说明) {String} title 商品标题
      * @apiParam (请求参数说明) {int} price 售价
+     * @apiParam (请求参数说明) {int} c_id 分类id
      * @apiParam (请求参数说明) {int} cost 成本
      * @apiParam (请求参数说明) {String} price_unit 价格单位
      * @apiParam (请求参数说明) {String} main_image 主图url，多个url用逗号隔开
