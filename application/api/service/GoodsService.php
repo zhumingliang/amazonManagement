@@ -96,7 +96,7 @@ class GoodsService
         $image = $params['image'];
         $res = 1;
         $url = $this->saveImage($image);
-        if (!$id) {
+        if ($id) {
             return $url;
         }
         if ($type == self::IMAGE_SKU) {
