@@ -40,6 +40,7 @@ Route::post('api/:version/goods/sku/update', 'api/:version.Goods/updateSku');
 Route::post('api/:version/goods/image/upload', 'api/:version.Goods/uploadImage');
 
 Route::get('api/:version/translate/des', 'api/:version.Translate/des');
+Route::get('api/:version/translate/sku', 'api/:version.Translate/sku');
 
 Route::post('api/:version/admin/save', 'api/:version.Admin/save');
 Route::post('api/:version/admin/update', 'api/:version.Admin/updateInfo');

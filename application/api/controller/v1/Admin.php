@@ -205,11 +205,11 @@ class Admin extends BaseController
      * @apiSuccess (返回参数说明) {String} remark 备注
      * @apiSuccess (返回参数说明) {String} email 邮箱
      * @apiSuccess (返回参数说明) {String} ip 登陆IP
-     * @apiSuccess (返回参数说明) {int} grade 用户角色:2->系统管理员；3-公司管理员；4->代理；5->子代理；6->学员
+     * @apiSuccess (返回参数说明) {int} grade 用户角色:2|系统管理员；3|公司管理员；4|代理；5|子代理；6|学员
      * @apiSuccess (返回参数说明) {String} create_time 创建时间
      * @apiSuccess (返回参数说明) {int} sons 四级账户创建5级子代理账户的数量,默认10（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
      * @apiSuccess (返回参数说明) {int} shop_count 5/6级别可有拥有店铺数量,默认1（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
-     * @apiSuccess (返回参数说明) {int} logining 是否可以多ip登录：1-不可以；2 ->可以（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
+     * @apiSuccess (返回参数说明) {int} logining 是否可以多ip登录：1|不可以；2|可以（1/2级管理员获取列表时才返回该字段，此字段可被管理员修改）
      * @apiSuccess (返回参数说明) {Obj} belong 属于3级用户的4/5信息（1/2级管理员获取列表时才返回该字段）
      */
     public function admins($grade, $page = 1, $size = 15, $key = '')

@@ -27,7 +27,7 @@ class TranslateService
 
             $list[] = [
                 'type' => $v,
-                'info' => $this->translate($query, $from, $v)
+                'info' => $this->translateDesRes($query, $from, $v)
             ];
 
 
@@ -36,6 +36,32 @@ class TranslateService
         return $list;
 
 
+    }
+
+
+    public function translateSku($from, $to, $data)
+    {
+        $info = json_decode($data, true);
+        $to = explode(',', $to);
+        $query_arr = array();
+        foreach ($info as $k => $v) {
+            array_push($query_arr, $v['size']);
+            array_push($query_arr, $v['color']);
+        }
+
+
+        $query = implode("\n", $query_arr);
+        $list = array();
+        foreach ($to as $k => $v) {
+            $list[] = [
+                'type' => $v,
+                'info' => $this->translateSkuRes($query, $from, $v)
+            ];
+
+
+        }
+
+        return $list;
     }
 
     public function checkLanguage($q)
@@ -48,7 +74,7 @@ class TranslateService
         return 'zh';
     }
 
-    private function translate($query, $from, $to)
+    private function translateDesRes($query, $from, $to)
     {
         $res = (new Translate())->translate($query, $from, $to);
         $return_res = [
@@ -79,5 +105,36 @@ class TranslateService
 
         }
         return json_encode($return_res);
+    }
+
+    private function translateSkuRes($query, $from, $to)
+    {
+        $res = (new Translate())->translate($query, $from, $to);
+        $return_res = [
+        ];
+
+        $list_size = [];
+        $list_color = [];
+        if (key_exists('trans_result', $res)) {
+            $trans_result = $res['trans_result'];
+            if (count($trans_result)) {
+                foreach ($trans_result as $k => $v) {
+                    $v = $v['dst'];
+                    $k % 2 == 0 ? array_push($list_size, $v) : array_push($list_color, $v);
+
+                }
+            }
+
+        }
+
+        foreach ($list_size as $k => $v) {
+            $return_res[] = [
+                'size' => $v,
+                'color' => $list_color[$k]
+            ];
+        }
+
+        return $return_res;
+
     }
 }

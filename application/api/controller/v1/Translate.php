@@ -33,5 +33,28 @@ class Translate extends BaseController
         $info = (new TranslateService())->translateDes($from, $to, $data);
         return json($info);
     }
+
+    /**
+     * @api {POST} /api/v1/translate/sku 商品sku翻译
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription  商品描述翻译
+     * @apiExample {post}  请求样例:
+     * {"from":"zh","to":"en,spa,fra,it,jp,pt","data":[{"size":"xxl","color":"蓝色"},{"size":"xxl","color":"黑色"}]}
+     * @apiParam (请求参数说明) {int} data 需要翻译json字符串
+     * @apiParam (请求参数说明) {String} from 翻译语种：zh 中文；en 英文；spa 西班牙；fra 法语；it 意大利；jp 日语；pt 德语
+     * @apiSuccessExample {json} 返回样例:
+     * [{"type":"en","info":[{"size":"XXL","color":"blue"},{"size":"XXL","color":"black"}]},{"type":"spa","info":[{"size":"Xl","color":"Azul"},{"size":"Xl","color":"Negro"}]},{"type":"fra","info":[{"size":"XXL alimentaire","color":"Bleu."},{"size":"XXL","color":"Noir"}]},{"type":"it","info":[{"size":"XXL","color":"Blu"},{"size":"XXL","color":"Nero"}]},{"type":"jp","info":[{"size":"xxl","color":"青"},{"size":"xxl","color":"ブラック"}]},{"type":"pt","info":[{"size":"XXL","color":"Azul"},{"size":"XXL","color":"Preto"}]}]
+     * @apiSuccess (返回参数说明) {String} size 尺寸
+     * @apiSuccess (返回参数说明) {String} color 颜色
+     */
+    public function sku()
+    {
+        $from = $this->request->param('from');
+        $to = $this->request->param('to');
+        $data = $this->request->param('data');
+        $info = (new TranslateService())->translateSku($from, $to, $data);
+        return json($info);
+    }
 }
 
