@@ -6,7 +6,8 @@ namespace baiduTranslateAPi;
 class Translate
 {
     const CURL_TIMEOUT = 10;
-    const URL = 'https://fanyi-api.baidu.com/api/trans/vip/translate';
+    const TRANSLATE_URL = 'https://fanyi-api.baidu.com/api/trans/vip/translate';
+    const CHECK_LANGUAGE_URL = 'https://fanyi-api.baidu.com/api/trans/vip/language';
     const APP_ID = '20190607000305573';
     const SEC_KEY = 'CDFcR6m2HySY6dyM2nk3';
 
@@ -22,9 +23,23 @@ class Translate
 
         );
         $args['sign'] = $this->buildSign($query, self::APP_ID, $args['salt'], self::SEC_KEY);
-        $ret = $this->call(self::URL, $args);
+        $ret = $this->call(self::TRANSLATE_URL, $args);
         $ret = json_decode($ret, true);
         return $ret;
+    }
+
+    public function checkLanguages($query)
+    {
+        $args = array(
+            'q' => $query,
+            'appid' => self::APP_ID,
+            'salt' => rand(10000, 99999)
+        );
+        $args['sign'] = $this->buildSign($query, self::APP_ID, $args['salt'], self::SEC_KEY);
+        $ret = $this->call(self::CHECK_LANGUAGE_URL, $args);
+        $ret = json_decode($ret, true);
+        return $ret;
+
     }
 
 //加密

@@ -9,6 +9,7 @@ use app\api\model\AdminBelongT;
 use app\api\model\AdminT;
 use app\api\model\BelongV;
 use app\api\service\AdminService;
+use app\lib\enum\CommonEnum;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\UpdateException;
 use think\facade\Request;
@@ -171,7 +172,8 @@ class Admin extends BaseController
     public function handel()
     {
         $params = $this->request->param();
-        $id = AdminT::update(['state' => $params['state']])->whereIn('id', $params['id']);
+        $id = AdminT::where('id', 'in', $params['id'])
+            ->update(['state' => $params['state']]);
         if (!$id) {
             throw new UpdateException();
         }

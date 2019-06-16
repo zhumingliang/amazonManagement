@@ -38,6 +38,16 @@ class TranslateService
 
     }
 
+    public function checkLanguage($q)
+    {
+        $res = (new Translate())->checkLanguages($q);
+
+        if (key_exists('error_code', $res) && $res['error_code'] == 0) {
+            return $res['data']['src'];
+        }
+        return 'zh';
+    }
+
     private function translate($query, $from, $to)
     {
         $res = (new Translate())->translate($query, $from, $to);
@@ -52,14 +62,14 @@ class TranslateService
             $trans_result = $res['trans_result'];
             if (count($trans_result)) {
                 foreach ($trans_result as $k => $v) {
-                    $v=$v['dst'];
+                    $v = $v['dst'];
                     if ($k == 0) {
                         $return_res['title'] = $v;
-                    }else if ($k == 1) {
+                    } else if ($k == 1) {
                         $return_res['des'] = $v;
-                    }else if ($k == 2) {
+                    } else if ($k == 2) {
                         $return_res['abstract'] = $v;
-                    }else if ($k == 3) {
+                    } else if ($k == 3) {
                         $return_res['key'] = $v;
                     }
 
