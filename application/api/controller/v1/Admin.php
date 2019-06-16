@@ -85,7 +85,7 @@ class Admin extends BaseController
      */
     public function updateInfo()
     {
-        $params = Request::only(['phone', 'username', 'email', 'remark', 'pwd', 'sons', 'shop_count', 'logining']);
+        $params = Request::only(['id','phone', 'username', 'email', 'remark', 'pwd', 'sons', 'shop_count', 'logining']);
         (new AdminService())->updateInfo($params);
         return json(new SuccessMessage());
     }
