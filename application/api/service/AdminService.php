@@ -91,7 +91,7 @@ class AdminService
 
     public function distribution($id, $belong_ids)
     {
-        if (Token::getCurrentTokenVar('grade') < 3) {
+        if (Token::getCurrentTokenVar('grade') >= 3) {
             throw new SaveException([
                 'msg' => '用户权限不足'
             ]);
