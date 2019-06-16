@@ -432,22 +432,22 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  更新商品价格
      * @apiExample {post}  请求样例:
-     * {"id":1,"price":10,"cost":10,"count":1000,"main_image":"url1,url2,url3","skus":[{"zh":{"color":"","size":""},"en":{"color":"","size":""},"sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
+     * {"id":1,"price":10,"cost":10,"count":1000,"main_image":"url1,url2,url3","skus":[{"zh":{"color":"","size":""},"en":{"color":"","size":""},"sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
      * @apiParam (请求参数说明) {int} id 商品id
      * @apiParam (请求参数说明) {int} price 售价
      * @apiParam (请求参数说明) {int} cost 成本
      * @apiParam (请求参数说明) {int} count 成本
      * @apiParam (请求参数说明) {String} main_image 主图url，多个url用逗号隔开
      * @apiParam (请求参数说明) {Obj} skus 商品变体信息
-     * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
-     * @apiParam (请求参数说明) {String} skus->zh 汉语
-     * @apiParam (请求参数说明) {String} skus->en 英语
-     * @apiParam (请求参数说明) {String} skus->spa 西班牙语言
-     * @apiParam (请求参数说明) {String} skus->fra 法语
-     * @apiParam (请求参数说明) {String} skus->it 意大利语
-     * @apiParam (请求参数说明) {String} skus->jp 日语
-     * @apiParam (请求参数说明) {String} skus->pt 德语
-     * @apiParam (请求参数说明) {String} skus->sku sku
+     * @apiParam (请求参数说明) {int} skus-id 变体id(新添加商品没有变体id)
+     * @apiParam (请求参数说明) {String} skus-zh 汉语
+     * @apiParam (请求参数说明) {String} skus-en 英语
+     * @apiParam (请求参数说明) {String} skus-spa 西班牙语言
+     * @apiParam (请求参数说明) {String} skus-fra 法语
+     * @apiParam (请求参数说明) {String} skus-it 意大利语
+     * @apiParam (请求参数说明) {String} skus-jp 日语
+     * @apiParam (请求参数说明) {String} skus-pt 德语
+     * @apiParam (请求参数说明) {String} skus-sku sku
      * @apiParam (请求参数说明) {int} skus-count 数量
      * @apiParam (请求参数说明) {int} skus-price 价格
      * @apiParam (请求参数说明) {String} skus-upc UPC
@@ -455,7 +455,7 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {String} skus-color_map color_map
      * @apiParam (请求参数说明) {String} skus-sex 性别
      * @apiParam (请求参数说明) {Obj} skus-img_url 变体图片
-     * @apiParam (请求参数说明) {Obj} skus-img_url->url 变体图片地址
+     * @apiParam (请求参数说明) {Obj} skus-img_url-url 变体图片地址
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
