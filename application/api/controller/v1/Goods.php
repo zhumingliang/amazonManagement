@@ -438,7 +438,6 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {int} cost 成本
      * @apiParam (请求参数说明) {int} count 成本
      * @apiParam (请求参数说明) {String} main_image 主图url，多个url用逗号隔开
-     * @apiParam (请求参数说明) {Obj} sku 商品变体信息
      * @apiParam (请求参数说明) {Obj} skus 商品变体信息
      * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
      * @apiParam (请求参数说明) {String} skus->zh 汉语
@@ -449,14 +448,14 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {String} skus->jp 日语
      * @apiParam (请求参数说明) {String} skus->pt 德语
      * @apiParam (请求参数说明) {String} skus->sku sku
-     * @apiParam (请求参数说明) {int} skus->count 数量
-     * @apiParam (请求参数说明) {int} skus->price 价格
-     * @apiParam (请求参数说明) {String} skus->upc UPC
-     * @apiParam (请求参数说明) {String} skus->size_map size_map
-     * @apiParam (请求参数说明) {String} skus->color_map color_map
-     * @apiParam (请求参数说明) {String} skus->sex 性别
-     * @apiParam (请求参数说明) {Obj} skus->img_url 变体图片
-     * @apiParam (请求参数说明) {Obj} skus->img_url->url 变体图片地址
+     * @apiParam (请求参数说明) {int} skus-count 数量
+     * @apiParam (请求参数说明) {int} skus-price 价格
+     * @apiParam (请求参数说明) {String} skus-upc UPC
+     * @apiParam (请求参数说明) {String} skus-size_map size_map
+     * @apiParam (请求参数说明) {String} skus-color_map color_map
+     * @apiParam (请求参数说明) {String} skus-sex 性别
+     * @apiParam (请求参数说明) {Obj} skus-img_url 变体图片
+     * @apiParam (请求参数说明) {Obj} skus-img_url->url 变体图片地址
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
