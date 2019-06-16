@@ -132,10 +132,13 @@ function makeOrderNo()
 
 function curl_file_get_contents($durl,$headers){
     // header传送格式
-   /* $headers = array(
-        "token:1111111111111",
-        "over_time:22222222222",
-    );*/
+    $headers = array(
+        'Content-Type: text/html;charset=utf-8',
+        'Accept: application/json',
+        'Accept-Language: zh-cn',
+        "Authorization: Basic QzU0NTE5Jnk2TlNMRnZGWi9nPQ==",
+    );
+
     // 初始化
     $curl = curl_init();
     // 设置url路径
@@ -160,4 +163,7 @@ function curl_file_get_contents($durl,$headers){
     // 返回数据
     return $data;
 }
+
+
+
 

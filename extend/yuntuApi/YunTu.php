@@ -15,7 +15,7 @@ class YunTu
 
     public static function getPrice()
     {
-        $token = base64_encode('C54519&3Ava2RvY8Js=');
+        $token = base64_encode('C54519&y6NSLFvFZ/g=');
         //$token=base64_encode('C88888&JCJaDQ68amA=');
         $token = 'QzU0NTE5JjNBdmEyUnZZOEpzPQ==';
         $header[] = "Content-Type: text/html;charset=utf-8";
