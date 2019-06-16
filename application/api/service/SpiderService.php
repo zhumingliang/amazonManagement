@@ -24,6 +24,12 @@ class SpiderService
      */
     public function upload()
     {
+        if (Token::getCurrentTokenVar('grade') < 5) {
+            throw new SaveException([
+                'msg' => '权限不足'
+            ]);
+        }
+
         //环球华品 ：https://www.chinabrands.cn/item/1806286-p.html
         //天猫：https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.1.6d1c53a4a0FlUu&id=537891514461&skuId=3211584895794&standard=1&user_id=883072941&cat_id=50920004&is_b=1&rn=db8c7c2bd50d782d427e137c2fa0c9f7
         //淘宝：https://item.taobao.com/item.htm?id=592406823178&ali_refid=a3_430673_1006:1109685503:N:emtiAWsF8%2Bzhhxaiwzc0Aw%3D%3D:5ded4d9aeb4ccf87cad5249a257d2425&ali_trackid=1_5ded4d9aeb4ccf87cad5249a257d2425&spm=a2e15.8261149.07626516002.20
@@ -41,7 +47,7 @@ class SpiderService
             case 'tmall':
                 if (!strlen($this->cookie)) {
                     throw new SaveException([
-                        'msg'=>'抓取天猫商品,需要传入cookie'
+                        'msg' => '抓取天猫商品,需要传入cookie'
                     ]);
                 }
                 (new TmallSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();

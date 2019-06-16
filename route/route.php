@@ -46,6 +46,7 @@ Route::post('api/:version/admin/update', 'api/:version.Admin/updateInfo');
 Route::post('api/:version/admin/update/self', 'api/:version.Admin/updateSelfInfo');
 Route::post('api/:version/admin/handel', 'api/:version.Admin/handel');
 Route::post('api/:version/admin/distribution', 'api/:version.Admin/distribution');
+Route::post('api/:version/admin/distribution/handel', 'api/:version.Admin/distributionHandel');
 Route::get('api/:version/admin/self', 'api/:version.Admin/selfInfo');
 Route::get('api/:version/admins', 'api/:version.Admin/admins');
 Route::get('api/:version/admins/can/belong', 'api/:version.Admin/canBelongAdmin');

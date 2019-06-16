@@ -11,11 +11,6 @@ use app\lib\exception\SuccessMessage;
 class Spider extends BaseController
 {
     /**
-     * @param $url
-     * @param int $c_id
-     * @param string $cookie
-     * @return \think\response\Json
-     * @throws \think\Exception
      * @api {POST} /api/v1/spider  CMS进行数据抓取
      * @apiGroup  CMS
      * @apiVersion 1.0.1
