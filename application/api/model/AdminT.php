@@ -23,9 +23,9 @@ class AdminT extends Model
     public static function admins($current_grade, $grade, $page, $size, $key)
     {
         if ($current_grade === 1 || $current_grade === 2) {
-            $field = 'id,username,account,grade,phone,ip,create_time,shop_count,sons,logining';
+            $field = 'id,username,account,grade,phone,ip,email,remark,create_time,shop_count,sons,logining';
         } else {
-            $field = 'id,username,account,grade,phone,ip,create_time';
+            $field = 'id,username,account,grade,phone,ip,email,remark,create_time';
         }
         $list = self::where('state', CommonEnum::STATE_IS_OK)
             ->where('grade', '>', $current_grade)
@@ -56,9 +56,9 @@ class AdminT extends Model
     public static function adminsForFour($current_grade, $grade, $page, $size, $key)
     {
         if ($current_grade === 1 || $current_grade === 2) {
-            $field = 'id,username,account,grade,phone,ip,create_time,shop_count,sons,logining';
+            $field = 'id,username,account,grade,phone,ip,email,remark,create_time,shop_count,sons,logining';
         } else {
-            $field = 'id,username,account,grade,phone,ip,create_time';
+            $field = 'id,username,account,grade,phone,ip,email,remark,create_time';
         }
         $list = self::where('state', CommonEnum::STATE_IS_OK)
             ->where('grade', '>', $current_grade)

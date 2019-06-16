@@ -23,7 +23,7 @@ class AdminBelongV extends Model
                     $query->where('account|username|phone', 'like', '%' . $key . '%');
                 }
             })
-            ->field('u_id as id,username,account,grade,phone,ip,create_time')
+            ->field('u_id as id,username,account,grade,phone,ip,email,remark,create_time')
             ->paginate($size, false, ['page' => $page]);
         return $list;
 
