@@ -115,25 +115,24 @@ class Goods extends BaseController
      * @apiSuccess (返回参数说明) {int} main_image->id 主图id
      * @apiSuccess (返回参数说明) {String} main_image->url 主图地址
      * @apiSuccess (返回参数说明) {Obj}  skus 商品变体信息
-     * @apiSuccess (返回参数说明) {int} skus->id 变体id
-     * @apiSuccess (返回参数说明) {String} skus->zh 汉语
-     * @apiSuccess (返回参数说明) {String} skus->en 英语
-     * @apiSuccess (返回参数说明) {String} skus->spa 西班牙语言
-     * @apiSuccess (返回参数说明) {String} skus->fra 法语
-     * @apiSuccess (返回参数说明) {String} skus->it 意大利语
-     * @apiSuccess (返回参数说明) {String} skus->jp 日语
-     * @apiSuccess (返回参数说明) {String} skus->pt 德语
-     * @apiSuccess (返回参数说明) {String} skus->sku sku
-     * @apiSuccess (返回参数说明) {int} skus->count 数量
-     * @apiSuccess (返回参数说明) {int} skus->price 价格
-     * @apiSuccess (返回参数说明) {String} skus->upc UPC
-     * @apiSuccess (返回参数说明) {String} skus->size_map size_map
-     * @apiSuccess (返回参数说明) {String} skus->color_map color_map
-     * @apiSuccess (返回参数说明) {String} skus->sex 性别
-     * @apiSuccess (返回参数说明) {Obj} skus->img_url 图片
-     * @apiSuccess (返回参数说明) {Obj} skus->img_url 图片
-     * @apiSuccess (返回参数说明) {Obj} skus->img_url->id 变体图片id
-     * @apiSuccess (返回参数说明) {Obj} skus->img_url->url 变体图片地址
+     * @apiSuccess (返回参数说明) {int} skus-id 变体id
+     * @apiSuccess (返回参数说明) {String} skus-zh 汉语
+     * @apiSuccess (返回参数说明) {String} skus-en 英语
+     * @apiSuccess (返回参数说明) {String} skus-spa 西班牙语言
+     * @apiSuccess (返回参数说明) {String} skus-fra 法语
+     * @apiSuccess (返回参数说明) {String} skus-it 意大利语
+     * @apiSuccess (返回参数说明) {String} skus-jp 日语
+     * @apiSuccess (返回参数说明) {String} skus-pt 德语
+     * @apiSuccess (返回参数说明) {String} skus-sku sku
+     * @apiSuccess (返回参数说明) {int} skus-count 数量
+     * @apiSuccess (返回参数说明) {int} skus-price 价格
+     * @apiSuccess (返回参数说明) {String} skus-upc UPC
+     * @apiSuccess (返回参数说明) {String} skus-size_map size_map
+     * @apiSuccess (返回参数说明) {String} skus-color_map color_map
+     * @apiSuccess (返回参数说明) {String} skus-sex 性别
+     * @apiSuccess (返回参数说明) {Obj} skus-img_url 图片
+     * @apiSuccess (返回参数说明) {int} skus-img_url-id 变体图片id
+     * @apiSuccess (返回参数说明) {Obj} skus-img_url-url 变体图片地址
      */
     public function goodsPrice()
     {
@@ -226,21 +225,21 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {int} count 成本
      * @apiParam (请求参数说明) {Obj} sku 商品变体信息
      * @apiParam (请求参数说明) {Obj} skus 商品变体信息
-     * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
-     * @apiParam (请求参数说明) {String} skus->sku sku
-     * @apiParam (请求参数说明) {String} skus->zh 汉语
-     * @apiParam (请求参数说明) {String} skus->en 英语
-     * @apiParam (请求参数说明) {String} skus->spa 西班牙语言
-     * @apiParam (请求参数说明) {String} skus->fra 法语
-     * @apiParam (请求参数说明) {String} skus->it 意大利语
-     * @apiParam (请求参数说明) {String} skus->jp 日语
-     * @apiParam (请求参数说明) {String} skus->pt 德语
-     * @apiParam (请求参数说明) {String} skus->upc UPC
-     * @apiParam (请求参数说明) {String} skus->size_map size_map
-     * @apiParam (请求参数说明) {String} skus->color_map color_map
-     * @apiParam (请求参数说明) {String} skus->sex 性别
-     * @apiParam (请求参数说明) {Obj} skus->img_url 变体图片
-     * @apiParam (请求参数说明) {Obj} skus->img_url->url 变体图片地址
+     * @apiParam (请求参数说明) {int} skus-id 变体id(新添加商品没有变体id)
+     * @apiParam (请求参数说明) {String} skus-sku sku
+     * @apiParam (请求参数说明) {String} skus-zh 汉语
+     * @apiParam (请求参数说明) {String} skus-en 英语
+     * @apiParam (请求参数说明) {String} skus-spa 西班牙语言
+     * @apiParam (请求参数说明) {String} skus-fra 法语
+     * @apiParam (请求参数说明) {String} skus-it 意大利语
+     * @apiParam (请求参数说明) {String} skus-jp 日语
+     * @apiParam (请求参数说明) {String} skus-pt 德语
+     * @apiParam (请求参数说明) {String} skus-upc UPC
+     * @apiParam (请求参数说明) {String} skus-size_map size_map
+     * @apiParam (请求参数说明) {String} skus-color_map color_map
+     * @apiParam (请求参数说明) {String} skus-sex 性别
+     * @apiParam (请求参数说明) {Obj} skus-img_url 变体图片
+     * @apiParam (请求参数说明) {Obj} skus-img_url-url 变体图片地址
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
@@ -319,7 +318,7 @@ class Goods extends BaseController
      * "image": "base64"
      * }
      * @apiParam (请求参数说明) {int} id 图片父级id：上传主图时传入商品id；上传sku图片时传入skuid(新增sku时，上传图片 该字段传入0)
-     * @apiParam (请求参数说明) {String} type 商品图片类别：main->主图；sku->sku图片
+     * @apiParam (请求参数说明) {String} type 商品图片类别：main | 主图；sku | sku图片
      * @apiParam (请求参数说明) {String} image 图片base64数据
      * @apiSuccessExample {json} 添加主图片或者已存在sku图片返回样例:
      * {"msg": "ok","error_code": 0}
@@ -348,7 +347,7 @@ class Goods extends BaseController
      * "delete_type": "one"
      * }
      * @apiParam (请求参数说明) {int} id 父级ID：删除单个sku时传入skuID；清空sku时传入商品id
-     * @apiParam (请求参数说明) {String} delete_type 删除类别：one->单个；all->清空
+     * @apiParam (请求参数说明) {String} delete_type 删除类别：one|单个；all|清空
      * @apiSuccessExample {json} 返回样例:
      * {"msg": "ok","error_code": 0}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
