@@ -7,7 +7,7 @@ namespace app\api\validate;
 class Admin extends BaseValidate
 {
     protected $rule = [
-        'id' => 'require|isPositiveInteger',
+        'id' => 'require',
         'phone' => 'require|isMobile',
         'pwd' => 'require|isNotEmpty',
         'account' => 'require|isNotEmpty',
