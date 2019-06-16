@@ -331,7 +331,13 @@ class Goods extends BaseController
     public function uploadImage()
     {
         $params = $this->request->param();
-        (new GoodsService())->uploadImage($params);
+        $res = (new GoodsService())->uploadImage($params);
+        if ($res) {
+            return json([
+                'url' => $res
+            ]);
+        }
+
         return json(new SuccessMessage());
 
     }

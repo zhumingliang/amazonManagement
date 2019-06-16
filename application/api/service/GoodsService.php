@@ -96,6 +96,7 @@ class GoodsService
         $image = $params['image'];
         $res = 1;
         $url = $this->saveImage($image);
+
         if (!$id) {
             return $url;
         }
