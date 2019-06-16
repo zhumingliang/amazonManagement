@@ -116,8 +116,13 @@ class Goods extends BaseController
      * @apiSuccess (返回参数说明) {String} main_image->url 主图地址
      * @apiSuccess (返回参数说明) {Obj}  skus 商品变体信息
      * @apiSuccess (返回参数说明) {int} skus->id 变体id
-     * @apiSuccess (返回参数说明) {String} skus->size 尺寸
-     * @apiSuccess (返回参数说明) {String} skus->coloe 颜色
+     * @apiSuccess (返回参数说明) {String} skus->zh 汉语
+     * @apiSuccess (返回参数说明) {String} skus->en 英语
+     * @apiSuccess (返回参数说明) {String} skus->spa 西班牙语言
+     * @apiSuccess (返回参数说明) {String} skus->fra 法语
+     * @apiSuccess (返回参数说明) {String} skus->it 意大利语
+     * @apiSuccess (返回参数说明) {String} skus->jp 日语
+     * @apiSuccess (返回参数说明) {String} skus->pt 德语
      * @apiSuccess (返回参数说明) {String} skus->sku sku
      * @apiSuccess (返回参数说明) {int} skus->count 数量
      * @apiSuccess (返回参数说明) {int} skus->price 价格
@@ -151,7 +156,7 @@ class Goods extends BaseController
        \n\t\t\t\t\t 花花公子短袖T恤男2019新款夏季男士夏装体桖潮流男装上衣服潮牌
      * \n\t","des":"品牌: PLAYBOY\/花花公子<\/br>面料分类: 棉毛布<\/br>货号: hhgz1257<\/br>基础风格: 青春流行<\/br>上市年份季节: 2019年夏季<\/br>厚薄: 常规<\/br>材质成分: 棉100%","abstract":"品牌: PLAYBOY\/花花公子<\/br>面料分类: 棉毛布<\/br>货号: hhgz1257<\/br>基础风格: 青春流行","create_time":"2019-06-08 18:47:37","update_time":"2019-06-08 18:47:37","key":"花花公子短袖T恤男2019新款夏季男士夏装体桖潮流男装上衣服潮牌","g_id":256,"en":null,"spa":null,"fra":null,"it":null,"jp":null,"pt":null,"zh":null}
      * @apiSuccess (返回参数说明) {int} id 描述id
-     * @apiSuccess (返回参数说明) {String} title 商品标题
+     * @apiSuccess (返回参数说明) {String} title 商品标题：采集时当前语言信息
      * @apiSuccess (返回参数说明) {String} des 商品描述
      * @apiSuccess (返回参数说明) {String} key 商品关键词
      * @apiSuccess (返回参数说明) {String} abstract 简要说明
@@ -214,7 +219,7 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  更新商品价格
      * @apiExample {post}  请求样例:
-     * {"id":246,"price":10,"cost":10,"count":1000,"skus":[{"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
+     * {"id":246,"price":10,"cost":10,"count":1000,"skus":[{"zh":{"color":"","size":""},"en":{"color":"","size":""},"sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
      * @apiParam (请求参数说明) {int} id 商品id
      * @apiParam (请求参数说明) {int} price 售价
      * @apiParam (请求参数说明) {int} cost 成本
@@ -222,11 +227,14 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {Obj} sku 商品变体信息
      * @apiParam (请求参数说明) {Obj} skus 商品变体信息
      * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
-     * @apiParam (请求参数说明) {String} skus->size 尺寸
-     * @apiParam (请求参数说明) {String} skus->coloe 颜色
      * @apiParam (请求参数说明) {String} skus->sku sku
-     * @apiParam (请求参数说明) {int} skus->count 数量
-     * @apiParam (请求参数说明) {int} skus->price 价格
+     * @apiParam (请求参数说明) {String} skus->zh 汉语
+     * @apiParam (请求参数说明) {String} skus->en 英语
+     * @apiParam (请求参数说明) {String} skus->spa 西班牙语言
+     * @apiParam (请求参数说明) {String} skus->fra 法语
+     * @apiParam (请求参数说明) {String} skus->it 意大利语
+     * @apiParam (请求参数说明) {String} skus->jp 日语
+     * @apiParam (请求参数说明) {String} skus->pt 德语
      * @apiParam (请求参数说明) {String} skus->upc UPC
      * @apiParam (请求参数说明) {String} skus->size_map size_map
      * @apiParam (请求参数说明) {String} skus->color_map color_map
@@ -254,9 +262,6 @@ class Goods extends BaseController
      * {"id":246,"title":"标题","des":"修改","key":"修改","abstract":"修改","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
      * @apiParam (请求参数说明) {int} g_id 商品标题描述ID
      * @apiParam (返回参数说明) {String} title 商品标题
-     * @apiParam (返回参数说明) {String} des 商品描述
-     * @apiParam (返回参数说明) {String} key 商品关键词
-     * @apiParam (返回参数说明) {String} abstract 简要说明
      * @apiParam (返回参数说明) {String} zh 中文
      * @apiParam (返回参数说明) {String} en 英文
      * @apiParam (返回参数说明) {String} spa 西班牙
@@ -427,7 +432,7 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  更新商品价格
      * @apiExample {post}  请求样例:
-     * {"id":1,"price":10,"cost":10,"count":1000,"main_image":"url1,url2,url3","skus":[{"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
+     * {"id":1,"price":10,"cost":10,"count":1000,"main_image":"url1,url2,url3","skus":[{"zh":{"color":"","size":""},"en":{"color":"","size":""},"sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp"}]}]}
      * @apiParam (请求参数说明) {int} id 商品id
      * @apiParam (请求参数说明) {int} price 售价
      * @apiParam (请求参数说明) {int} cost 成本
@@ -436,8 +441,13 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {Obj} sku 商品变体信息
      * @apiParam (请求参数说明) {Obj} skus 商品变体信息
      * @apiParam (请求参数说明) {int} skus->id 变体id(新添加商品没有变体id)
-     * @apiParam (请求参数说明) {String} skus->size 尺寸
-     * @apiParam (请求参数说明) {String} skus->coloe 颜色
+     * @apiParam (请求参数说明) {String} skus->zh 汉语
+     * @apiParam (请求参数说明) {String} skus->en 英语
+     * @apiParam (请求参数说明) {String} skus->spa 西班牙语言
+     * @apiParam (请求参数说明) {String} skus->fra 法语
+     * @apiParam (请求参数说明) {String} skus->it 意大利语
+     * @apiParam (请求参数说明) {String} skus->jp 日语
+     * @apiParam (请求参数说明) {String} skus->pt 德语
      * @apiParam (请求参数说明) {String} skus->sku sku
      * @apiParam (请求参数说明) {int} skus->count 数量
      * @apiParam (请求参数说明) {int} skus->price 价格
@@ -465,12 +475,9 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  新增商品标题描述
      * @apiExample {post}  请求样例:
-     * {"g_id":246,"title":"标题","des":"修改","key":"修改","abstract":"修改","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
+     * {"g_id":246,"title":"标题","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
      * @apiParam (请求参数说明) {int} g_id 商品id
      * @apiParam (返回参数说明) {String} title 商品标题
-     * @apiParam (返回参数说明) {String} des 商品描述
-     * @apiParam (返回参数说明) {String} key 商品关键词
-     * @apiParam (返回参数说明) {String} abstract 简要说明
      * @apiParam (返回参数说明) {String} zh 中文
      * @apiParam (返回参数说明) {String} en 英文
      * @apiParam (返回参数说明) {String} spa 西班牙

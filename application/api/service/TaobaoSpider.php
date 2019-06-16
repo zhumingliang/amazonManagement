@@ -33,7 +33,7 @@ class TaobaoSpider extends Spider
             $this->prefixDes();
             //保存主图
             $this->prefixMainImg();
-             Db::commit();
+            Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -131,8 +131,8 @@ class TaobaoSpider extends Spider
                 'g_id' => $this->g_id,
                 'count' => $v['count'],
                 'price' => $v['price'],
-                'color' => $color,
-                'size' => $size,
+                'zh' => json_encode(['color' => $color,
+                    'size' => $size,]),
                 'state' => CommonEnum::STATE_IS_OK,
                 'sku' => $this->sku . '-' . $i
             ];
@@ -184,9 +184,10 @@ class TaobaoSpider extends Spider
         $data_des = [
             'g_id' => $this->g_id,
             'title' => $title,
-            'des' => $des,
-            'key' => $this->get_sitemeta('keywords'),
-            'abstract' => $abstract,
+            'zh' => json_encode(['title' => $title,
+                'des' => $des,
+                'key' => $this->get_sitemeta('keywords'),
+                'abstract' => $abstract])
         ];
         $this->saveDes($data_des);
     }

@@ -18,6 +18,7 @@ class TomtopSpider extends Spider
     private $g_id = 0;
     private $title = '';
     private $sku = '';
+    private $language = 'en';
 
     public function uploadInfo()
     {
@@ -47,6 +48,9 @@ class TomtopSpider extends Spider
             'var product=', 'var allListingIds');
         $info_obj = json_decode($info_json, true);
         $this->title = $info_obj['title'];
+        $check_lan = $this->getLanguage($this->title);
+
+        $this->language = $check_lan ? $check_lan : $this->language;
         $data_info['cost'] = $info_obj['saleprice'];
         $data_info['c_id'] = $this->c_id;
         $data_info['source'] = SpiderEnum::TOM_TOP;
@@ -85,8 +89,10 @@ class TomtopSpider extends Spider
                 'g_id' => $this->g_id,
                 'count' => 0,
                 'price' => $price,
-                'color' => $color,
-                'size' => $size,
+                $this->language => json_encode([
+                    'color' => $color,
+                    'size' => $size
+                ]),
                 'state' => CommonEnum::STATE_IS_OK,
                 'sku' => $this->sku . '-' . ($k + 1)
             ];
@@ -142,9 +148,12 @@ class TomtopSpider extends Spider
         $data_des = [
             'g_id' => $this->g_id,
             'title' => $this->title,
-            'des' => $des,
-            'key' => '',
-            'abstract' => '',
+            $this->language => json_encode([
+                'title' => $this->title,
+                'des' => $des,
+                'key' => '',
+                'abstract' => ''
+            ]),
         ];
         $this->saveDes($data_des);
     }
@@ -157,7 +166,7 @@ class TomtopSpider extends Spider
             $img_arr[] = [
                 'g_id' => $this->g_id,
                 'url' => $v,
-                'state'=>CommonEnum::STATE_IS_OK
+                'state' => CommonEnum::STATE_IS_OK
             ];
         }
         $this->saveMainImg($img_arr);

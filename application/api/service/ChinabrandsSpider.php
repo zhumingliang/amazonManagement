@@ -36,6 +36,8 @@ class ChinabrandsSpider extends Spider
             $colors = selector::select($color, "//@data-original");
             $colors_url = selector::select($color, "//@data-url");
             $colors_value = selector::select($color, "//@title");
+
+            // $language = (new TranslateService())->checkLanguage('123蓝色');
             $data_sku_img = [];
             $data_main_img = [];
             if (count($colors)) {
@@ -43,13 +45,15 @@ class ChinabrandsSpider extends Spider
 
                     $data_sku = [
                         'g_id' => $g_id,
-                        'color' => $colors_value[$i],
+                        'zh' => json_encode([
+                            'size' => '',
+                            'color' => $colors_value[$i]
+                        ]),
                         'url' => $colors[$i],
                         'state' => CommonEnum::STATE_IS_OK,
                         'sku' => $sku . '-' . ($i + 1)
                     ];
                     $s_id = $this->saveSku($data_sku);
-
                     if ($colors_url[$i] == '#') {
                         $html = $this->html;
 
@@ -82,7 +86,14 @@ class ChinabrandsSpider extends Spider
             //保存商品标题描述
             $data_des = [
                 'g_id' => $g_id,
-                'title' => $name_ch . ' ' . $name_en
+                'title' => $name_ch . ' ' . $name_en,
+                'zh' => json_encode([
+                    'title' => $name_ch . ' ' . $name_en,
+                    'des' => '',
+                    'key' => '',
+                    'abstract' => ''
+                ]),
+
             ];
             $this->saveDes($data_des);
 

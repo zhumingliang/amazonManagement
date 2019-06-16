@@ -163,13 +163,28 @@ class Spider
 
         $res = GoodsDesT::create($params);
         $params['title'] = $this->trimall($params['title']);
-        $params['zh'] = $params['title'] . '999' . $params['des'] . '999' . $params['abstract'] . '999' . $params['key'];
         if (!$res) {
             throw new SaveException([
                 'msg' => '保存商品标题描述失败'
             ]);
         }
         return $res->id;
+    }
+
+
+    public function getLanguage($q)
+    {
+        $lt = [
+            'zh', 'en', 'spa', 'fra', 'it', 'jp', 'pt'
+        ];
+        $language = (new TranslateService())->checkLanguage($q);
+        if (in_array($language, $lt)) {
+            return $language;
+        } else {
+            return null;
+        }
+
+
     }
 
 

@@ -17,6 +17,8 @@ use think\Exception;
 class AliexpressSpider extends Spider
 {
 
+    private $language = 'en';
+
     public function uploadInfo()
     {
         Db::startTrans();
@@ -24,6 +26,8 @@ class AliexpressSpider extends Spider
             $sku = getSkuID();
             $title = selector::select($this->html, '//*[@id="j-product-detail-bd"]/div[1]/div/h1');
             // $lowPrice = selector::select($this->html, '//*[@id="j-sku-discount-price"]/span[1]');
+            $check_lan = $this->getLanguage($title);
+            $this->language = $check_lan ? $check_lan : $this->language;
             $highPrice = selector::select($this->html, '//*[@id="j-sku-discount-price"]/span[2]');
             $abstracs = selector::select($this->html, "/html/head/title/text()");
             $keys = selector::select($this->html, '/html/head/meta[2]');
@@ -49,9 +53,10 @@ class AliexpressSpider extends Spider
             $data_des = [
                 'g_id' => $g_id,
                 'title' => $title,
-                'des' => $des_info,
-                'key' => $keys,
-                'abstract' => $abstracs,
+                $this->language => json_encode(['title' => $title,
+                    'des' => $des_info,
+                    'key' => $keys,
+                    'abstract' => $abstracs]),
             ];
             $this->saveDes($data_des);
 
@@ -120,8 +125,9 @@ class AliexpressSpider extends Spider
                 'g_id' => $g_id,
                 'count' => $v['count'],
                 'price' => $v['price'],
-                'color' => $data['color'],
-                'size' => $data['size'],
+                $this->language => json_encode(
+                    ['color' => $data['color'],
+                        'size' => $data['size']]),
                 'state' => CommonEnum::STATE_IS_OK,
                 'sku' => $sku . '-' . ($k + 1),
                 'url' => $data['url']

@@ -12,6 +12,6 @@ class Index extends BaseController
     public function index()
     {
 
-       echo (new TranslateService())->checkLanguage('hello');
+       echo (new TranslateService())->checkLanguage('123蓝色');
     }
 }

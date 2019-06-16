@@ -40,9 +40,10 @@ class Ali1688Spider extends Spider
             $data_des = [
                 'g_id' => $g_id,
                 'title' => $title,
-                'des' => $des_info['des'],
-                'key' => $keys,
-                'abstract' => $des_info['abs'],
+                'zh' => json_encode(['title' => $title,
+                    'des' => $des_info['des'],
+                    'key' => $keys,
+                    'abstract' => $des_info['abs']]),
             ];
             $this->saveDes($data_des);
 
@@ -53,7 +54,7 @@ class Ali1688Spider extends Spider
             }
 
             //保存sku
-            $sku = $this->prefixSku($g_id,$sku);
+            $sku = $this->prefixSku($g_id, $sku);
             $sku_img = $sku['image'];
             if (count($sku['sku'])) {
                 //将sku存入数据库
@@ -163,7 +164,7 @@ class Ali1688Spider extends Spider
         return $price;
     }
 
-    private function prefixSku($g_id,$sku)
+    private function prefixSku($g_id, $sku)
     {
         $skuObj = $this->sku_obj['sku'];
         //处理商品sku
@@ -194,8 +195,10 @@ class Ali1688Spider extends Spider
                 'g_id' => $g_id,
                 'count' => $v['canBookCount'],
                 'price' => key_exists('price', $skuMap[$k]) ? $v['price'] : $price,
-                'color' => $color,
-                'size' => $size,
+                'zh' => json_encode([
+                    'color' => $color,
+                    'size' => $size
+                ]),
                 'state' => CommonEnum::STATE_IS_OK,
                 'sku' => $sku . '-' . $i
             ];

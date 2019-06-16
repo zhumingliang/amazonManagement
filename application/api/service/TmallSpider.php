@@ -104,9 +104,11 @@ class TmallSpider extends Spider
         $data_des = [
             'g_id' => $this->g_id,
             'title' => $title,
-            'des' => $des,
-            'key' => $this->get_sitemeta('keywords'),
-            'abstract' => $abstract,
+            'zh' => json_encode([
+                'title' => $title,
+                'des' => $des,
+                'key' => $this->get_sitemeta('keywords'),
+                'abstract' => $abstract,]),
         ];
         $this->saveDes($data_des);
     }
@@ -169,8 +171,7 @@ class TmallSpider extends Spider
                 'g_id' => $this->g_id,
                 'count' => $count,
                 'price' => $price,
-                'color' => $color,
-                'size' => $size,
+                'zh' => json_encode(['size' => $size, 'color' => $color]),
                 'state' => CommonEnum::STATE_IS_OK,
                 'sku' => $this->sku . '-' . ($k + 1)
             ];
