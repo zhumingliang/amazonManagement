@@ -18,6 +18,8 @@ class ShopService
     public function save($params)
     {
         $params['u_id'] = Token::getCurrentUid();
+        $params['sale_id'] = Token::getCurrentUid();
+        $params['check'] = CommonEnum::STATE_IS_FAIL;
         if (!$this->checkAdminShop($params['u_id'])) {
             throw  new SaveException([
                 '该用户店铺数量达到上限，不能再添加'
