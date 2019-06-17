@@ -102,7 +102,7 @@ class TranslateService
             }
 
         }
-        return json_encode($return_res);
+        return $return_res;
     }
 
     private function translateSkuRes($query, $from, $to)
