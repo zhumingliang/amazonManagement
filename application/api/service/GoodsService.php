@@ -133,7 +133,7 @@ class GoodsService
     public function updatePrice($params)
     {
         $skus = array();
-        $main_image = '';
+        $main_image = array();
         if (key_exists('skus', $params)) {
             $sku_json = $params['skus'];
             $skus = json_decode($sku_json, true);
