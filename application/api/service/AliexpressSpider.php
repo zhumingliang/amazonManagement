@@ -18,14 +18,14 @@ class AliexpressSpider extends Spider
 {
 
     private $language = 'en';
+    private $sku_id = '';
 
     public function uploadInfo()
     {
         Db::startTrans();
         try {
-            $sku = getSkuID();
+            $this->sku_id = getSkuID();
             $title = selector::select($this->html, '//*[@id="j-product-detail-bd"]/div[1]/div/h1');
-            // $lowPrice = selector::select($this->html, '//*[@id="j-sku-discount-price"]/span[1]');
             $check_lan = $this->getLanguage($title);
             $this->language = $check_lan ? $check_lan : $this->language;
             $highPrice = selector::select($this->html, '//*[@id="j-sku-discount-price"]/span[2]');
@@ -45,7 +45,7 @@ class AliexpressSpider extends Spider
             //保存商品基本信息
             $data_info['cost'] = $highPrice;
             $data_info['c_id'] = $this->c_id;
-            $data_info['sku'] = $sku;
+            $data_info['sku'] = $this->sku_id;
             $data_info['source'] = SpiderEnum::ALI_EXPRESS;
             $g_id = $this->saveGoodsInfo($data_info);
 
@@ -119,7 +119,9 @@ class AliexpressSpider extends Spider
         }
 
         $list = array();
+        $i=0;
         foreach ($sku_price as $k => $v) {
+            ++$i;
             $data = $this->getColor($k, $sku);
             $list[] = [
                 'g_id' => $g_id,
@@ -129,7 +131,7 @@ class AliexpressSpider extends Spider
                     ['color' => $data['color'],
                         'size' => $data['size']]),
                 'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $sku . '-' . ($k + 1),
+                'sku' => $this->sku_id . '-' . $i,
                 'url' => $data['url']
 
             ];

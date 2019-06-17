@@ -10,7 +10,6 @@ use app\api\model\GoodsSkuT;
 use app\lib\enum\CommonEnum;
 use app\lib\enum\SpiderEnum;
 use app\lib\exception\SaveException;
-use http\Exception\InvalidArgumentException;
 use phpspider\core\requests;
 use phpspider\core\selector;
 use phpspider\library\phpQuery;
@@ -129,55 +128,58 @@ class TmallSpider extends Spider
         $sku = array();
         $sku_image = array();
         $info_price = 0;
-        foreach ($skuList as $k => $v) {
-            $size = $color = '';
-            $names = $v['names'];
-            $skus = $v['pvs'];
-            $count = $price = 0;
-            $sku_id = ';' . $v['pvs'] . ';';
-            $url = '';
-            foreach ($skuMap as $k3 => $v3) {
-                if ($k3 == $sku_id) {
-                    $count = $v3['stock'];
-                    $price = $v3['price'];
+        if (count($skuList)) {
+            foreach ($skuList as $k => $v) {
+                $size = $color = '';
+                $names = $v['names'];
+                $skus = $v['pvs'];
+                $count = $price = 0;
+                $sku_id = ';' . $v['pvs'] . ';';
+                $url = '';
+                foreach ($skuMap as $k3 => $v3) {
+                    if ($k3 == $sku_id) {
+                        $count = $v3['stock'];
+                        $price = $v3['price'];
+                    }
+
                 }
+                $names_arr = explode(' ', $names);
+                $sku_arr = explode(';', $skus);
+                foreach ($names_arr as $k2 => $v2) {
 
-            }
-            $names_arr = explode(' ', $names);
-            $sku_arr = explode(';', $skus);
-            foreach ($names_arr as $k2 => $v2) {
-
-                if ((!strlen($color)) && strlen($v2) && strpos($v2, '色') !== false) {
-                    $color = $v2;
-                } else if (!strlen($size)) {
-                    $size = $v2;
-                }
+                    if ((!strlen($color)) && strlen($v2) && strpos($v2, '色') !== false) {
+                        $color = $v2;
+                    } else if (!strlen($size)) {
+                        $size = $v2;
+                    }
 
 
-                if (key_exists($k2, $sku_arr)) {
-                    $sku_id = ';' . $sku_arr[$k2] . ';';
-                    if (key_exists($sku_id, $propertyPics)) {
-                        $url = $propertyPics[$sku_id][0];
+                    if (key_exists($k2, $sku_arr)) {
+                        $sku_id = ';' . $sku_arr[$k2] . ';';
+                        if (key_exists($sku_id, $propertyPics)) {
+                            $url = $propertyPics[$sku_id][0];
+                        }
+
+
                     }
 
 
                 }
 
+                $info_price = $info_price > $price ? $info_price : $price;
+                $sku[] = [
+                    'g_id' => $this->g_id,
+                    'count' => $count,
+                    'price' => $price,
+                    'zh' => json_encode(['size' => $size, 'color' => $color]),
+                    'state' => CommonEnum::STATE_IS_OK,
+                    'sku' => $this->sku . '-' . ($k + 1)
+                ];
+                $sku_image[] = [
+                    'url' => $url
+                ];
 
             }
-
-            $info_price = $info_price > $price ? $info_price : $price;
-            $sku[] = [
-                'g_id' => $this->g_id,
-                'count' => $count,
-                'price' => $price,
-                'zh' => json_encode(['size' => $size, 'color' => $color]),
-                'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $this->sku . '-' . ($k + 1)
-            ];
-            $sku_image[] = [
-                'url' => $url
-            ];
 
         }
 

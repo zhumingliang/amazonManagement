@@ -34,7 +34,7 @@ class TomtopSpider extends Spider
             //保存主图
             $this->prefixMainImg();
 
-            Db::commit();
+           // Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -69,38 +69,40 @@ class TomtopSpider extends Spider
         $sku_obj = json_decode($sku_json, true);
         $sku_data = array();
         $sku_image = array();
-        foreach ($sku_obj as $k => $v) {
-            $size = '';
-            $color = '';
-            $price = 0;
-            $attributeMap = $v['attributeMap'];
-            foreach ($attributeMap as $k2 => $v2) {
-                if ($k2 == 'color') {
-                    $color = $v2['value'];
-                } else {
-                    $size = $v2['value'];
+        if (count($sku_obj)) {
+            foreach ($sku_obj as $k => $v) {
+                $size = '';
+                $color = '';
+                $price = 0;
+                $attributeMap = $v['attributeMap'];
+                foreach ($attributeMap as $k2 => $v2) {
+                    if ($k2 == 'color') {
+                        $color = $v2['value'];
+                    } else {
+                        $size = $v2['value'];
+                    }
                 }
-            }
-            $whouse = $v['whouse'];
-            foreach ($whouse as $k3 => $v3) {
-                $price = $v3['nowprice'];
-            }
-            $sku_data[] = [
-                'g_id' => $this->g_id,
-                'count' => 0,
-                'price' => $price,
-                $this->language => json_encode([
-                    'color' => $color,
-                    'size' => $size
-                ]),
-                'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $this->sku . '-' . ($k + 1)
-            ];
-            $sku_image[] = $v['imgList'];
+                $whouse = $v['whouse'];
+                foreach ($whouse as $k3 => $v3) {
+                    $price = $v3['nowprice'];
+                }
+                $sku_data[] = [
+                    'g_id' => $this->g_id,
+                    'count' => 0,
+                    'price' => $price,
+                    $this->language => json_encode([
+                        'color' => $color,
+                        'size' => $size
+                    ]),
+                    'state' => CommonEnum::STATE_IS_OK,
+                    'sku' => $this->sku . '-' . ($k + 1)
+                ];
+                $sku_image[] = $v['imgList'];
 
+
+            }
 
         }
-
         if (count($sku_data)) {
             //将sku存入数据库
             $sku_res = (new GoodsSkuT())->saveAll($sku_data);
@@ -126,7 +128,6 @@ class TomtopSpider extends Spider
                         }
                     }
                 }
-
                 //将sku_image存入数据库
                 $ku_image_res = (new GoodsSkuImgT())->saveAll($imgs);
                 if (!$ku_image_res) {
@@ -162,14 +163,17 @@ class TomtopSpider extends Spider
     {
         $img_arr = array();
         $imgs = selector::select($this->html, '//*[@id="showCaseSmallPic"]/div/ul/li/a/@data-middleimg');
-        foreach ($imgs as $k => $v) {
-            $img_arr[] = [
-                'g_id' => $this->g_id,
-                'url' => $v,
-                'state' => CommonEnum::STATE_IS_OK
-            ];
+        if (count($imgs)) {
+            foreach ($imgs as $k => $v) {
+                $img_arr[] = [
+                    'g_id' => $this->g_id,
+                    'url' => $v,
+                    'state' => CommonEnum::STATE_IS_OK
+                ];
+            }
+            $this->saveMainImg($img_arr);
         }
-        $this->saveMainImg($img_arr);
+
     }
 
 }

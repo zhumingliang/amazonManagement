@@ -258,8 +258,8 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  更新商品标题描述
      * @apiExample {post}  请求样例:
-     * {"id":246,"title":"标题","des":"修改","key":"修改","abstract":"修改","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
-     * @apiParam (请求参数说明) {int} g_id 商品标题描述ID
+     * {"g_id":246,"title":"标题","des":"修改","key":"修改","abstract":"修改","zh":"汉语","en":"英语","spa":"西班牙语","fra":"法语","it":"意大利语","jp":"日语","pt":"德语"}
+     * @apiParam (请求参数说明) {int} g_id 商品id
      * @apiParam (返回参数说明) {String} title 商品标题
      * @apiParam (返回参数说明) {String} zh 中文
      * @apiParam (返回参数说明) {String} en 英文

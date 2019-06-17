@@ -45,6 +45,7 @@ class SpiderService
                 (new ChinabrandsSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
                 break;
             case 'tmall':
+                // 'cna%3dNHGnE4KF5X4CASQH0QRSKAKf%3b+hng%3dCN%257Czh-CN%257CCNY%257C156%3b+lid%3d%25E5%25B0%258F%25E7%258C%25AA9044%3b+t%3d68418026f30d119bf80c426356bc1b86%3b+uc3%3dvt3%3dF8dBy3vNDrcbYwRrVJs%253D%26id2%3dWvKT28wlvphQ%26nk2%3dsymkLOpFP3g%253D%26lg2%3dUIHiLt3xD8xYTw%253D%253D%3b+tracknick%3d%255Cu5C0F%255Cu732A9044%3b+lgc%3d%255Cu5C0F%255Cu732A9044%3b+_tb_token_%3d35b113e56e43b%3b+cookie2%3d10d01f851f2b667d4e5bd07423682b88%3b+l%3dbBPuD9ylv5g45f0tKOCNIuI8az7OSIRxmuPRwNDMi_5aa6866ebOkbjyIFJ6Vj5RsqYB4V0hhnv9-etXi%3b+isg%3dBPn5kozsgO_m_F2YJIk6L1BOCGMTru2-kf5vnBsudSCfohg0Y1I1iTbwJMbxJoXw'
                 if (!strlen($this->cookie)) {
                     throw new SaveException([
                         'msg' => '抓取天猫商品,需要传入cookie'

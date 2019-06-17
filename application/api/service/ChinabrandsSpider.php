@@ -4,8 +4,11 @@
 namespace app\api\service;
 
 
+use app\api\model\GoodsSkuImgT;
+use app\api\model\GoodsSkuT;
 use app\lib\enum\CommonEnum;
 use app\lib\enum\SpiderEnum;
+use app\lib\exception\SaveException;
 use phpspider\core\requests;
 use phpspider\core\selector;
 use think\Db;
@@ -15,6 +18,7 @@ class ChinabrandsSpider extends Spider
 {
     private $g_id = 0;
     private $sku = '';
+    private $price = 0;
 
     //环球华品
     public function uploadInfo()
@@ -22,45 +26,14 @@ class ChinabrandsSpider extends Spider
 
         Db::startTrans();
         try {
-
             $this->sku = getSkuID();
             //保存商品基本信息
             $this->prefixInfo();
             //保存sku
             $this->prefixSku();
             //保存标题
-            //$this->prefixDes();
-            //保存主图
-            // $this->prefixMainImg();
-
-
-            $name_en = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/h1");
-            $name_ch = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/h3");
-
-
-            /*   //保存商品sku
-
-                   //保存商品主图
-                   // print_r($data_main_img);
-                   $this->saveMainImg($data_main_img);
-
-               }
-
-               //保存商品标题描述
-               $data_des = [
-                   'g_id' => $g_id,
-                   'title' => $name_ch . ' ' . $name_en,
-                   'zh' => json_encode([
-                       'title' => $name_ch . ' ' . $name_en,
-                       'des' => '',
-                       'key' => '',
-                       'abstract' => ''
-                   ]),
-
-               ];
-               $this->saveDes($data_des);*/
-
-            // Db::commit();
+            $this->prefixDes();
+            Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -82,25 +55,72 @@ class ChinabrandsSpider extends Spider
 
     private function prefixSku()
     {
-        //$color = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[3]/div[2]/div[2]/ul");
         $colors = selector::select($this->html, "//ul[@data-type='Color']/li");
-
-        $color_arr = [];
+        $data_sku = [];
+        $data_sku_img = [];
+        $data_main_img = [];
         foreach ($colors as $k => $v) {
-            $color_arr[] = [
-                ''
 
+            $url = selector::select($v, "//@data-original");
+            $name = selector::select($v, "//@title");
+            $sku_url = selector::select($v, "//@data-url");
+            $main_image = $this->getMainImage($sku_url);
+            $data_sku [] = [
+                'g_id' => $this->g_id,
+                'price' => $this->price,
+                'zh' => json_encode([
+                    'size' => '',
+                    'color' => $name
+                ]),
+                'state' => CommonEnum::STATE_IS_OK,
+                'sku' => $this->sku . '-' . ($k + 1)
             ];
+            $data_sku_img[] = $url;
+            $data_main_img = array_merge($data_main_img, $main_image);
+
         }
 
-        /*  $colors = selector::select($color, "//@data-original");
-          $colors_url = selector::select($color, "//@data-url");
-          $colors_value = selector::select($color, "//@title");*/
+        if (count($data_sku)) {
+            $sku_res = (new GoodsSkuT())->saveAll($data_sku)->toArray();
+            if (!$sku_res) {
+                throw  new SaveException([
+                    'msg' => '存储商品sku失败'
+                ]);
+            }
+
+            if (count($data_sku_img)) {
+                $imgs = array();
+                //存储sku_image
+                foreach ($sku_res as $k => $v) {
+                    $image = $data_sku_img[$k];
+                    $imgs[] =
+                        [
+                            's_id' => $v['id'],
+                            'url' => $image,
+                            'state' => CommonEnum::STATE_IS_OK
+                        ];
+                }
+
+                //将sku_image存入数据库
+                $ku_image_res = (new GoodsSkuImgT())->saveAll($imgs);
+                if (!$ku_image_res) {
+                    throw  new SaveException([
+                        'msg' => '存储商品sku图片失败'
+                    ]);
+                }
+            }
 
 
-        /*  $data_sku_img = [];
-          $data_main_img = [];*/
-        /*if (count($colors)) {
+        }
+
+
+        $data_sku_img = [];
+        $data_main_img = [];
+        /*if (count($color_arr)) {
+
+            foreach ($color_arr as $k => $v) {
+
+            }
             for ($i = 0; $i < count($colors); $i++) {
 
                 $data_sku = [
@@ -138,5 +158,42 @@ class ChinabrandsSpider extends Spider
 
             $this->saveSkuImg($data_sku_img);
         }*/
+    }
+
+    private function prefixDes()
+    {
+        $name_en = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/h1");
+        $name_ch = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/h3");
+        $data_des = [
+            'g_id' => $this->g_id,
+            'title' => $name_ch . ' ' . $name_en,
+            'zh' => json_encode([
+                'title' => $name_ch . ' ' . $name_en,
+                'des' => '',
+                'key' => '',
+                'abstract' => ''
+            ]),
+
+        ];
+        $this->saveDes($data_des);
+    }
+
+    private function getMainImage($url)
+    {
+        $data_main_img = array();
+        $html = $url == '#' ? $this->html : requests::get($url);
+        $prices = selector::select($this->html, "//@data-orgp");
+        $this->price = $prices[0];
+        $imgs = selector::select($html, "/html/body/div[1]/div[2]/div[1]/div[1]/div");
+        $imgs_url = selector::select($imgs, "//@data-original");
+        for ($j = 0; $j < count($imgs_url); $j++) {
+
+            array_push($data_main_img, [
+                'g_id' => $this->g_id,
+                'url' => $imgs_url[$j],
+                'state' => CommonEnum::STATE_IS_OK
+            ]);
+        }
+        return $data_main_img;
     }
 }

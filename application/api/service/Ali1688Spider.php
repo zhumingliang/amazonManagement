@@ -24,8 +24,7 @@ class Ali1688Spider extends Spider
         try {
             $sku = getSkuID();
             $title = selector::select($this->html, '//*[@id="mod-detail-title"]/h1');
-            $meta = $this->get_sitemeta();
-            $keys = $meta['keywords'];
+            $keys = $this->get_sitemeta('keywords');
             $des_info = $this->prefixInfo();
             $this->sku_obj = json_decode($this->get_between($this->trimall($this->html), 'iDetailData=', ';iDetailData.allTagIds'), true);
 

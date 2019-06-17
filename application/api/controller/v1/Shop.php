@@ -79,8 +79,8 @@ class Shop extends BaseController
     }
 
     /**
-     * @api {GET} /api/v1/shops 获取商品列表
-     * @apiGroup  获取商品列表
+     * @api {GET} /api/v1/shops 获取店铺列表
+     * @apiGroup  获取店铺列表
      * @apiVersion 1.0.1
      * @apiDescription
      * @apiExample {get}  请求样例:
