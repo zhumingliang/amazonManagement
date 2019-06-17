@@ -11,7 +11,7 @@ class GoodsListV extends Model
 {
     public function image()
     {
-        return $this->hasMany('GoodsMainImageT', 'g_id', 'id');
+        return $this->hasOne('GoodsMainImageT', 'g_id', 'id');
     }
 
     public static function goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size)
