@@ -165,7 +165,7 @@ class GoodsService
                 'state' => CommonEnum::STATE_IS_OK
             ];
         }
-        if (count($data_arr)){
+        if (count($data_arr)) {
             $res = (new GoodsMainImageT())->saveAll($data_arr);
             if (!$res) {
                 throw new SaveException([
@@ -228,7 +228,9 @@ class GoodsService
 
     public function updateDes($params)
     {
-        $res = GoodsDesT::update($params);
+        $g_id = $params['g_id'];
+        unset($params['g_id']);
+        $res = GoodsDesT::update($params, ['g_id' => $g_id]);
         if (!$res) {
             throw new UpdateException();
         }
