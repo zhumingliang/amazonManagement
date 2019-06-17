@@ -83,15 +83,23 @@ class ChinabrandsSpider extends Spider
     private function prefixSku()
     {
         //$color = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[3]/div[2]/div[2]/ul");
-        $color = selector::select($this->html, "//ul[@data-type='Color']/li");
-       var_dump($color);
-      /*  $colors = selector::select($color, "//@data-original");
-        $colors_url = selector::select($color, "//@data-url");
-        $colors_value = selector::select($color, "//@title");*/
+        $colors = selector::select($this->html, "//ul[@data-type='Color']/li");
+
+        $color_arr = [];
+        foreach ($colors as $k => $v) {
+            $color_arr[] = [
+                ''
+
+            ];
+        }
+
+        /*  $colors = selector::select($color, "//@data-original");
+          $colors_url = selector::select($color, "//@data-url");
+          $colors_value = selector::select($color, "//@title");*/
 
 
-      /*  $data_sku_img = [];
-        $data_main_img = [];*/
+        /*  $data_sku_img = [];
+          $data_main_img = [];*/
         /*if (count($colors)) {
             for ($i = 0; $i < count($colors); $i++) {
 
