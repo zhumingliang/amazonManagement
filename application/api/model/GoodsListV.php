@@ -19,7 +19,7 @@ class GoodsListV extends Model
         $list = self::where('state', CommonEnum::STATE_IS_OK)
             ->with([
                 'image' => function ($query) {
-                    $query->where('state', '=', CommonEnum::STATE_IS_OK)->limit(s1);
+                    $query->where('state', '=', CommonEnum::STATE_IS_OK)->limit(1);
                 }
             ])
             ->where(function ($query) use ($key_type, $key) {
