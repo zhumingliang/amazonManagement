@@ -56,3 +56,7 @@ Route::get('api/:version/admins/can/belong', 'api/:version.Admin/canBelongAdmin'
 Route::post('api/:version/shop/save', 'api/:version.Shop/save');
 Route::post('api/:version/shop/update', 'api/:version.Shop/update');
 Route::get('api/:version/shops', 'api/:version.Shop/shops');
+
+Route::get('api/:version/counties', 'api/:version.Logistics/countries');
+Route::get('api/:version/price', 'api/:version.Logistics/price');
+

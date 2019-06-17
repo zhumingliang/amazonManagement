@@ -12,7 +12,7 @@ class Index extends BaseController
 {
     public function index()
     {
-        YunTu::getPrice();
+        (new YunTu())->getPrice();
 
     }
 }
