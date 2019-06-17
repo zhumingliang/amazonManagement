@@ -4,8 +4,6 @@
 namespace app\api\service;
 
 
-use \baiduTranslateAPi\Translate;
-
 class TranslateService
 {
 

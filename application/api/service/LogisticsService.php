@@ -5,7 +5,7 @@ namespace app\api\service;
 
 
 use think\facade\Cache;
-use \yuntuApi\YunTu;
+
 
 class LogisticsService
 {
