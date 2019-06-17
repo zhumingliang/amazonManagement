@@ -165,12 +165,15 @@ class GoodsService
                 'state' => CommonEnum::STATE_IS_OK
             ];
         }
-        $res = (new GoodsMainImageT())->saveAll($data_arr);
-        if (!$res) {
-            throw new SaveException([
-                'msg' => '保存商品主图失败'
-            ]);
+        if (count($data_arr)){
+            $res = (new GoodsMainImageT())->saveAll($data_arr);
+            if (!$res) {
+                throw new SaveException([
+                    'msg' => '保存商品主图失败'
+                ]);
+            }
         }
+
     }
 
 
