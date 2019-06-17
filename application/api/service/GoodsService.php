@@ -83,7 +83,7 @@ class GoodsService
     public function deleteSku($id, $delete_type)
     {
         $field = $delete_type == 'one' ? 'id' : 'g_id';
-        $res = GoodsSkuImgT::update(['state' => CommonEnum::STATE_IS_FAIL], [$field => $id]);
+        $res = GoodsSkuT::update(['state' => CommonEnum::STATE_IS_FAIL], [$field => $id]);
         if (!$res) {
             throw new DeleteException();
         }
