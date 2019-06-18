@@ -180,10 +180,19 @@ class GoodsService
     private function prefixSku($g_id, $skus)
     {
         foreach ($skus as $k => $v) {
+
+            $v['zh'] = json_encode($v['zh']);
+            $v['en'] = json_encode($v['en']);
+            $v['spa'] = json_encode($v['spa']);
+            $v['fra'] = json_encode($v['fra']);
+            $v['it'] = json_encode($v['it']);
+            $v['jp'] = json_encode($v['jp']);
+            $v['pt'] = json_encode($v['pt']);
+
             $img_url = array();
             if (key_exists('img_url', $v)) {
                 $img_url = $v['img_url'];
-                unset($skus[$k]['img_url']);
+                unset($v['img_url']);
             }
             if (key_exists('id', $v)) {
                 $sku_id = $v['id'];
@@ -194,12 +203,12 @@ class GoodsService
             } else {
                 $v['state'] = CommonEnum::STATE_IS_OK;
                 $v['g_id'] = $g_id;
+
                 $res = GoodsSkuT::create($v);
                 $sku_id = $res->id;
                 if (!$res) {
                     throw  new UpdateException(['msg' => '新增变体信息失败']);
                 }
-
             }
 
             if (count($img_url)) {
