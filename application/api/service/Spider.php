@@ -23,14 +23,14 @@ class Spider
     {
         $this->c_id = $c_id;
         $this->url = urldecode($url);
-        echo 'url---'.$url;
+        echo 'url---'.$this->url;
         //$this->checkUploaded();
         if (strlen($cookie)) {
             requests::set_referer($url);
             requests::set_cookie('cookie', $cookie);
         }
         requests::$output_encoding = 'UTF-8';
-        $this->html = requests::get($url);
+        $this->html = requests::get($this->url);
 
     }
 
