@@ -77,6 +77,7 @@ class TaobaoSpider extends Spider
     private function prefixSku($sku_price)
     {
         $sku_obj = selector::select($this->html, '//*[@id="J_isku"]/div/dl');
+        var_dump($sku_obj);
         $sku_all = array();
         if (count($sku_obj)) {
             foreach ($sku_obj as $k => $v) {

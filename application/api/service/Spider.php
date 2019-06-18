@@ -24,6 +24,7 @@ class Spider
         $this->c_id = $c_id;
         $this->url = $url;
         //$this->checkUploaded();
+        echo 'cookie----'.strlen($cookie);
         if (strlen($cookie)) {
             requests::set_referer($url);
             requests::set_cookie('cookie', $cookie);
