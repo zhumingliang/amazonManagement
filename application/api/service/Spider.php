@@ -22,7 +22,7 @@ class Spider
     public function __construct($url, $c_id, $cookie)
     {
         $this->c_id = $c_id;
-        $this->url = $url;
+        $this->url = urldecode($url);
         echo 'url---'.$url;
         //$this->checkUploaded();
         if (strlen($cookie)) {
