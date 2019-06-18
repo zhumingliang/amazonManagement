@@ -23,6 +23,7 @@ class TaobaoSpider extends Spider
     {
         Db::startTrans();
         try {
+            echo $this->html;
             $this->sku = getSkuID();
             $sku_price = $this->prefixSkuPrice();
             //保存商品基本信息
@@ -77,9 +78,8 @@ class TaobaoSpider extends Spider
     private function prefixSku($sku_price)
     {
         $sku_obj = selector::select($this->html, '//*[@id="J_isku"]/div/dl');
-        var_dump($sku_obj);
         $sku_all = array();
-        if (count($sku_obj)) {
+        if ($sku_obj && count($sku_obj)) {
             foreach ($sku_obj as $k => $v) {
                 $sku_type = selector::select($v, '//dt[@class="tb-property-type"]');
                 if ($sku_type == "数量") {
