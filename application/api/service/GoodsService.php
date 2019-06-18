@@ -104,13 +104,13 @@ class GoodsService
             $res = GoodsSkuImgT::create([
                 'state' => CommonEnum::STATE_IS_OK,
                 'url' => $url,
-                'g_id' => $id
+                's_id' => $id
             ]);
         } else if ($type == self::IMAGE_MAIN) {
             $res = GoodsMainImageT::create([
                 'state' => CommonEnum::STATE_IS_OK,
                 'url' => $url,
-                's_id' => $id
+                'g_id' => $id
             ]);
         }
         if (!$res) {
