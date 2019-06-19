@@ -209,7 +209,6 @@ class Ali1688Spider extends Spider
                 'url' => count($color_arr) ? $color_arr[$k_arr[$COLOR_NUM]] : '',
                 'state' => CommonEnum::STATE_IS_OK
             ];
-            print_r($return_sku_image);
 
 
         }
