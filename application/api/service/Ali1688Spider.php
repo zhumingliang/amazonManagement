@@ -157,8 +157,8 @@ class Ali1688Spider extends Spider
             $price_arr = explode('-', $sku['price']);
             $price = count($price_arr) - 1 ? $price_arr[1] : $price_arr[0];
         } else {
-            var_dump($sku);
-            if (key_exists('priceRange', $sku) && count($sku['priceRange'])) {
+
+            if (count($sku) && key_exists('priceRange', $sku) && count($sku['priceRange'])) {
 
                 $price = $sku['priceRange'][0][1];
 
@@ -209,6 +209,7 @@ class Ali1688Spider extends Spider
                 'url' => count($color_arr) ? $color_arr[$k_arr[$COLOR_NUM]] : '',
                 'state' => CommonEnum::STATE_IS_OK
             ];
+            print_r($return_sku_image);
 
 
         }
