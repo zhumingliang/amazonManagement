@@ -128,7 +128,7 @@ class Ali1688Spider extends Spider
             }
         }
 
-        if (count($sub_info)) {
+        if ($sub_info && count($sub_info)) {
             $des_sub = '';
             foreach ($sub_info as $k => $v) {
 
