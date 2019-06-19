@@ -22,6 +22,7 @@ class Ali1688Spider extends Spider
     {
         Db::startTrans();
         try {
+            echo $this->html;
             $sku = getSkuID();
             $title = selector::select($this->html, '//*[@id="mod-detail-title"]/h1');
             $keys = $this->get_sitemeta('keywords');
