@@ -12,7 +12,6 @@ use app\lib\enum\SpiderEnum;
 use app\lib\exception\SaveException;
 use phpspider\core\requests;
 use phpspider\core\selector;
-use phpspider\library\phpQuery;
 use think\Db;
 use think\Exception;
 
@@ -63,15 +62,25 @@ class TmallSpider extends Spider
         $sku_json = $this->get_between($this->html,
             'TShop.Setup(', '})();');
         $sku_json = str_replace(');', " ", $sku_json);
-
         $sku_obj = json_decode($sku_json, true);
-        $this->des_url = 'http:' . $sku_obj['api']['descUrl'];
-        $imgs_html = requests::get($this->des_url);
-        $imgs_html = explode("desc='", $imgs_html);
-        $imgs_html = stripslashes($imgs_html[1]);
-        $preg = '/<img.*?src=[\"|\']?(.*?)[\"|\']?\s.*?>/i';
-        preg_match_all($preg, $imgs_html, $match);
-        $imgs_arr = $match[1];
+        if (key_exists('default', $sku_obj['propertyPics']) && count($sku_obj['propertyPics']['default'])) {
+            $imgs_arr = $sku_obj['propertyPics']['default'];
+            foreach ($imgs_arr as $k => $v) {
+                $imgs_arr[$k] = 'http:' . $v;
+            }
+        } else {
+            $this->des_url = 'http:' . $sku_obj['api']['descUrl'];
+            $imgs_html = requests::get($this->des_url);
+            $imgs_html = explode("desc='", $imgs_html);
+
+            if (count($imgs_html) < 2) {
+                return false;
+            }
+            $imgs_html = stripslashes($imgs_html[1]);
+            $preg = '/<img.*?src=[\"|\']?(.*?)[\"|\']?\s.*?>/i';
+            preg_match_all($preg, $imgs_html, $match);
+            $imgs_arr = $match[1];
+        }
         $data_arr = array();
         if (count($imgs_arr)) {
             foreach ($imgs_arr as $k => $v) {
@@ -97,7 +106,7 @@ class TmallSpider extends Spider
         $abstract = array_slice($des, 0, 4);
         $des = implode('</br>', $des);
         $abstract = implode('</br>', $abstract);
-        $title = selector::select($this->html, '//*[@id="J_DetailMeta"]/div[1]/div[1]/div/div[1]/h1');
+        $title = selector::select($this->html, '//*[@id="J_DetailMeta"]/div[1]/div[1]/div/div[1]/h1/a');
 
         //保存商品标题描述
         $data_des = [
@@ -146,13 +155,11 @@ class TmallSpider extends Spider
                 $names_arr = explode(' ', $names);
                 $sku_arr = explode(';', $skus);
                 foreach ($names_arr as $k2 => $v2) {
-
                     if ((!strlen($color)) && strlen($v2) && strpos($v2, '色') !== false) {
                         $color = $v2;
                     } else if (!strlen($size)) {
                         $size = $v2;
                     }
-
 
                     if (key_exists($k2, $sku_arr)) {
                         $sku_id = ';' . $sku_arr[$k2] . ';';
@@ -201,12 +208,11 @@ class TmallSpider extends Spider
                         $imgs[] =
                             [
                                 's_id' => $v['id'],
-                                'url' => substr($image['url'], 2, -1),
+                                'url' => 'http:' . $image['url'],
                                 'state' => CommonEnum::STATE_IS_OK
                             ];
                     }
                 }
-
 
                 //将sku_image存入数据库
                 $ku_image_res = (new GoodsSkuImgT())->saveAll($imgs);
