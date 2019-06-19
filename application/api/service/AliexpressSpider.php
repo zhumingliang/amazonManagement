@@ -19,77 +19,22 @@ class AliexpressSpider extends Spider
 
     private $language = 'en';
     private $sku_id = '';
+    private $g_id = 0;
 
     public function uploadInfo()
     {
         Db::startTrans();
         try {
             $this->sku_id = getSkuID();
-            $title = selector::select($this->html, '//*[@id="j-product-detail-bd"]/div[1]/div/h1');
-            $check_lan = $this->getLanguage($title);
-            $this->language = $check_lan ? $check_lan : $this->language;
-            $highPrice = selector::select($this->html, '//*[@id="j-sku-discount-price"]/span[2]');
-            $abstracs = selector::select($this->html, "/html/head/title/text()");
-            $keys = selector::select($this->html, '/html/head/meta[2]');
-            $des = selector::select($this->html, '//*[@class="property-item"]');
-            $des_info = '';
-            if (count($des)) {
-                $des_arr = array();
-                foreach ($des as $k => $v) {
-                    $info = selector::select($v, "//span[1]") . selector::select($v, "//span[2]");
-                    array_push($des_arr, $info);
-                }
-                $des_info = implode('</br>', $des_arr);
-            }
-
             //保存商品基本信息
-            $data_info['cost'] = $highPrice;
-            $data_info['c_id'] = $this->c_id;
-            $data_info['sku'] = $this->sku_id;
-            $data_info['source'] = SpiderEnum::ALI_EXPRESS;
-            $g_id = $this->saveGoodsInfo($data_info);
+            $this->prefixInfo();
+            //保存sku
+            $this->prefixSku();
+            //保存标题
+            $this->prefixDes();
+            //保存主图
+            $this->prefixMainImg();
 
-            //保存商品标题描述
-            $data_des = [
-                'g_id' => $g_id,
-                'title' => $title,
-                $this->language => json_encode(['title' => $title,
-                    'des' => $des_info,
-                    'key' => $keys,
-                    'abstract' => $abstracs]),
-            ];
-            $this->saveDes($data_des);
-
-            //获取商品价格
-            $sku_price = $this->get_between($this->trimall($this->html), 'skuProducts=', ';varGaData');
-            $sku_price = $this->prefixAliexpressPrice($sku_price);
-
-            //处理sku
-            $skus = selector::select($this->html, '//*[@id="j-product-info-sku"]/dl');
-            $this->prefixAliexpressSku($skus, $g_id, $sku_price);
-
-            //保存商品标题描述
-            $data_des = [
-                'g_id' => $g_id,
-                'title' => $title
-            ];
-            $this->saveDes($data_des);
-            //存储商品主图
-            $image_main = selector::select($this->html, '//*[@id="j-image-thumb-list"]/li/span/img');
-            if (count($image_main)) {
-                $main = array();
-                foreach ($image_main as $k => $v) {
-                    $unit = substr($v, -4, 4);
-                    $v = "https://" . $this->get_between($v, "//", '_50x50' . $unit);
-                    $main[] = [
-                        'g_id' => $g_id,
-                        'url' => $v,
-                        'state' => CommonEnum::STATE_IS_OK
-                    ];
-                }
-
-                (new GoodsMainImageT())->saveAll($main);
-            }
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
@@ -97,6 +42,80 @@ class AliexpressSpider extends Spider
         }
     }
 
+
+    private function prefixInfo()
+    {
+        //保存商品基本信息
+        $highPrice = selector::select($this->html, '//*[@id="j-sku-discount-price"]/span[2]');
+        $data_info['cost'] = $highPrice;
+        $data_info['c_id'] = $this->c_id;
+        $data_info['sku'] = $this->sku_id;
+        $data_info['source'] = SpiderEnum::ALI_EXPRESS;
+        $g_id = $this->saveGoodsInfo($data_info);
+        $this->g_id = $g_id;
+    }
+
+    private function prefixDes()
+    {
+        $abstracs = selector::select($this->html, "/html/head/title/text()");
+        $keys = selector::select($this->html, '/html/head/meta[2]');
+        $des = selector::select($this->html, '//*[@class="property-item"]');
+        $des_info = '';
+
+        $title = selector::select($this->html, '//*[@id="j-product-detail-bd"]/div[1]/div/h1');
+        $check_lan = $this->getLanguage($title);
+        $this->language = $check_lan ? $check_lan : $this->language;
+        
+        if (count($des)) {
+            $des_arr = array();
+            foreach ($des as $k => $v) {
+                $info = selector::select($v, "//span[1]") . selector::select($v, "//span[2]");
+                array_push($des_arr, $info);
+            }
+            $des_info = implode('</br>', $des_arr);
+        }
+        $data_des = [
+            'g_id' => $this->g_id,
+            'title' => $title,
+            $this->language => json_encode(['title' => $title,
+                'des' => $des_info,
+                'key' => $keys,
+                'abstract' => $abstracs]),
+        ];
+        $this->saveDes($data_des);
+    }
+
+    private function prefixSku()
+    {
+        //获取商品价格
+        $sku_price = $this->get_between($this->trimall($this->html), 'skuProducts=', ';varGaData');
+        $sku_price = $this->prefixAliexpressPrice($sku_price);
+
+        //处理sku
+        $skus = selector::select($this->html, '//*[@id="j-product-info-sku"]/dl');
+        $this->prefixAliexpressSku($skus, $this->g_id, $sku_price);
+    }
+
+    private function prefixMainImg()
+    {
+
+        //存储商品主图
+        $image_main = selector::select($this->html, '//*[@id="j-image-thumb-list"]/li/span/img');
+        if (count($image_main)) {
+            $main = array();
+            foreach ($image_main as $k => $v) {
+                $unit = substr($v, -4, 4);
+                $v = "https://" . $this->get_between($v, "//", '_50x50' . $unit);
+                $main[] = [
+                    'g_id' => $this->g_id,
+                    'url' => $v,
+                    'state' => CommonEnum::STATE_IS_OK
+                ];
+            }
+
+            (new GoodsMainImageT())->saveAll($main);
+        }
+    }
 
     /**
      * 处理速卖通商品sku
