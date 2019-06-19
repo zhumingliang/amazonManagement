@@ -92,7 +92,7 @@ class TaobaoSpider extends Spider
                     $url = selector::select($v2, '//@style');
                     if (strlen($url)) {
                         $url = $this->get_between($url, '(//', ')');
-                        $url = str_replace('30', '400', $url);
+                        $url = 'http://' . str_replace('30x30', '400x400', $url);
 
                     }
 
@@ -149,7 +149,6 @@ class TaobaoSpider extends Spider
                 ]);
             }
 
-            // print_r($sku_image);
             if (count($sku_image)) {
                 $imgs = array();
                 //存储sku_image
@@ -198,12 +197,11 @@ class TaobaoSpider extends Spider
         $img_arr = array();
         $imgs = selector::select($this->html, '//*[@id="J_UlThumb"]/li/div/a/img/@data-src');
         foreach ($imgs as $k => $v) {
-            if (substr($v, 0, 2) == "//") {
-                $v = "http:" . $v;
-            }
+            $unit = substr($v, -4, 4);
+            $v = $this->get_between($v, "//", '_50x50' . $unit);
             $img_arr[] = [
                 'g_id' => $this->g_id,
-                'url' => str_replace('50', 500, $v),
+                'url' => 'http://' . $v,
                 'state' => CommonEnum::STATE_IS_OK
             ];
         }
