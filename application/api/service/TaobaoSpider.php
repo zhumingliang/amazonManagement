@@ -116,7 +116,7 @@ class TaobaoSpider extends Spider
             $url = '';
             foreach ($ids as $k2 => $v2) {
                 $res = $sku_all[$v2];
-                if (strpos($res['sku_type'], '尺寸') !== false) {
+                if (strpos($res['sku_type'], '尺') !== false) {
                     $size = $res['name'];
                 } else if (strpos($res['sku_type'], '颜色') !== false) {
                     $color = $res['name'];
@@ -149,6 +149,7 @@ class TaobaoSpider extends Spider
                 ]);
             }
 
+            // print_r($sku_image);
             if (count($sku_image)) {
                 $imgs = array();
                 //存储sku_image
@@ -197,6 +198,9 @@ class TaobaoSpider extends Spider
         $img_arr = array();
         $imgs = selector::select($this->html, '//*[@id="J_UlThumb"]/li/div/a/img/@data-src');
         foreach ($imgs as $k => $v) {
+            if (substr($v, 0, 2) == "//") {
+                $v = "http:" . $v;
+            }
             $img_arr[] = [
                 'g_id' => $this->g_id,
                 'url' => str_replace('50', 500, $v),
