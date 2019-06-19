@@ -12,10 +12,10 @@ class TranslateService
         $info = json_decode($data, true);
         $to = explode(',', $to);
         $query_arr = [
-            'title' => $info['title'],
-            'des' => $info['des'],
-            'abstract' => $info['abstract'],
-            'key' => $info['key'],
+            'title' => strlen($info['title']) ? $info['title'] : '=',
+            'des' => strlen($info['des']) ? $info['title'] : '=',
+            'abstract' => strlen($info['abstract']) ? $info['abstract'] : '=',
+            'key' => strlen($info['key']) ? $info['key'] : '=',
         ];
 
 
@@ -43,8 +43,8 @@ class TranslateService
         $to = explode(',', $to);
         $query_arr = array();
         foreach ($info as $k => $v) {
-            array_push($query_arr, $v['size']);
-            array_push($query_arr, $v['color']);
+            array_push($query_arr, $v['size'] == '' ? '=' : $v['size']);
+            array_push($query_arr, $v['color'] == '' ? '=' : $v['color']);
         }
 
 
@@ -86,7 +86,11 @@ class TranslateService
             $trans_result = $res['trans_result'];
             if (count($trans_result)) {
                 foreach ($trans_result as $k => $v) {
-                    $v = $v['dst'];
+                    if ($v['src'] == '=') {
+                        $v = '';
+                    } else {
+                        $v = $v['dst'];
+                    }
                     if ($k == 0) {
                         $return_res['title'] = $v;
                     } else if ($k == 1) {
@@ -117,9 +121,17 @@ class TranslateService
             $trans_result = $res['trans_result'];
             if (count($trans_result)) {
                 foreach ($trans_result as $k => $v) {
-                    $v = $v['dst'];
-                    $k % 2 == 0 ? array_push($list_size, $v) : array_push($list_color, $v);
+                    if ($v['src'] == '=') {
+                        $param = '';
+                    } else {
+                        $param = $v['dst'];
+                    }
 
+                    if ($k % 2 == 0) {
+                        array_push($list_size, $param);
+                    } else {
+                        array_push($list_color, $param);
+                    }
                 }
             }
 
@@ -131,7 +143,6 @@ class TranslateService
                 'color' => $list_color[$k]
             ];
         }
-
         return $return_res;
 
     }

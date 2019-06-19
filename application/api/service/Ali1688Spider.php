@@ -22,7 +22,6 @@ class Ali1688Spider extends Spider
     {
         Db::startTrans();
         try {
-            echo $this->html;
             $sku = getSkuID();
             $title = selector::select($this->html, '//*[@id="mod-detail-title"]/h1');
             $keys = $this->get_sitemeta('keywords');
@@ -90,7 +89,7 @@ class Ali1688Spider extends Spider
     {
         $images = selector::select($this->html, '//*[@id="dt-tab"]/div/ul/li/@data-imgs');
         $main = array();
-        if (count($images)) {
+        if ($images && count($images)) {
             foreach ($images as $k => $v) {
                 $v = json_decode($v, true);
                 $main[] = [
