@@ -80,7 +80,7 @@ class AliexpressSpider extends Spider
                 $main = array();
                 foreach ($image_main as $k => $v) {
                     $unit = substr($v, -4, 4);
-                    $v = $this->get_between($v, "//", '_50x50' . $unit);
+                    $v = "https://" . $this->get_between($v, "//", '_50x50' . $unit);
                     $main[] = [
                         'g_id' => $g_id,
                         'url' => $v,
@@ -121,7 +121,7 @@ class AliexpressSpider extends Spider
         }
 
         $list = array();
-        $i=0;
+        $i = 0;
         foreach ($sku_price as $k => $v) {
             ++$i;
             $data = $this->getColor($k, $sku);
