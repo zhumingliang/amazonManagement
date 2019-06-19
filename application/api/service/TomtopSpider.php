@@ -33,8 +33,7 @@ class TomtopSpider extends Spider
             $this->prefixDes();
             //保存主图
             $this->prefixMainImg();
-
-           // Db::commit();
+             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -119,6 +118,9 @@ class TomtopSpider extends Spider
                     $image = $sku_image[$k];
                     if (count($image)) {
                         foreach ($image as $k2 => $v2) {
+                            if ($k2 > 5) {
+                                break;
+                            }
                             $imgs[] =
                                 [
                                     's_id' => $v['id'],
@@ -163,7 +165,7 @@ class TomtopSpider extends Spider
     {
         $img_arr = array();
         $imgs = selector::select($this->html, '//*[@id="showCaseSmallPic"]/div/ul/li/a/@data-middleimg');
-        if (count($imgs)) {
+        if ($imgs && count($imgs)) {
             foreach ($imgs as $k => $v) {
                 $img_arr[] = [
                     'g_id' => $this->g_id,

@@ -35,7 +35,7 @@ class AliexpressSpider extends Spider
             //保存主图
             $this->prefixMainImg();
 
-            Db::commit();
+            //Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -65,7 +65,7 @@ class AliexpressSpider extends Spider
         $title = selector::select($this->html, '//*[@id="j-product-detail-bd"]/div[1]/div/h1');
         $check_lan = $this->getLanguage($title);
         $this->language = $check_lan ? $check_lan : $this->language;
-        
+
         if (count($des)) {
             $des_arr = array();
             foreach ($des as $k => $v) {
@@ -144,6 +144,7 @@ class AliexpressSpider extends Spider
         foreach ($sku_price as $k => $v) {
             ++$i;
             $data = $this->getColor($k, $sku);
+
             $list[] = [
                 'g_id' => $g_id,
                 'count' => $v['count'],
@@ -206,6 +207,7 @@ class AliexpressSpider extends Spider
 
             }
         }
+
         return [
             'color' => $color,
             'size' => $size,

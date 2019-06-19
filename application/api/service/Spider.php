@@ -84,7 +84,7 @@ class Spider
             }
         }
 
-        return $meta[$param];
+        return key_exists($param, $meta) ? $meta[$param] : '';
     }
 
 
