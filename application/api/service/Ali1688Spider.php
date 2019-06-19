@@ -108,23 +108,26 @@ class Ali1688Spider extends Spider
         $des = '';
         $sub_info = selector::select($this->html, '//*[@id="site_content"]/div[1]/div/div[1]/div/div[2]/div/div/div/div/div[3]/div/div/div[1]/div/dl/dd/span');
         $info = selector::select($this->html, '//*[@id="mod-detail-attributes"]/div[1]/table/tbody/tr/td');
-        foreach ($info as $k => $v) {
+        if ($info && count($info)) {
+            foreach ($info as $k => $v) {
 
-            if ($k % 2 == 0) {
-                $des .= $v . ':';
-                if ($k < 8) {
-                    $abs .= $v . ':';
+                if ($k % 2 == 0) {
+                    $des .= $v . ':';
+                    if ($k < 8) {
+                        $abs .= $v . ':';
+                    }
                 }
-            }
-            if ($k % 2 == 1) {
-                $des .= $v . '</br>';
-                if ($k < 8) {
-                    $abs .= $v . '</br>';
+                if ($k % 2 == 1) {
+                    $des .= $v . '</br>';
+                    if ($k < 8) {
+                        $abs .= $v . '</br>';
+                    }
                 }
+
+
             }
-
-
         }
+
         if (count($sub_info)) {
             $des_sub = '';
             foreach ($sub_info as $k => $v) {
@@ -219,7 +222,9 @@ class Ali1688Spider extends Spider
     {
         $return_res = [];
         foreach ($color as $k => $v) {
-            $return_res[$v['name']] = $v['imageUrl'];
+            $name = key_exists('name', $v) ? $v['name'] : '';
+            $imageUrl = key_exists('imageUrl', $v) ? $v['imageUrl'] : '';
+            $return_res[$name] = $imageUrl;
 
         }
         return $return_res;
