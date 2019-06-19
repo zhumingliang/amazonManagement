@@ -41,7 +41,6 @@ class Spider
 
         requests::$output_encoding = 'UTF-8';
         $this->html = requests::get($this->url);
-        var_dump($this->html);
 
     }
 
