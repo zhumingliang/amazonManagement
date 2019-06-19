@@ -29,6 +29,13 @@ class Spider
             requests::set_referer($url);
             requests::set_cookie('cookie', $cookie);
         }
+
+        requests::set_useragent(array(
+            "Mozilla/4.0 (compatible; MSIE 6.0; ) Opera/UCWEB7.0.2.37/28/",
+            "Opera/9.80 (Android 3.2.1; Linux; Opera Tablet/ADR-1109081720; U; ja) Presto/2.8.149 Version/11.10",
+            "Mozilla/5.0 (Android; Linux armv7l; rv:9.0) Gecko/20111216 Firefox/9.0 Fennec/9.0"
+        ));
+
         requests::$output_encoding = 'UTF-8';
         $this->html = requests::get($this->url);
 
