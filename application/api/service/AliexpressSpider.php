@@ -79,6 +79,8 @@ class AliexpressSpider extends Spider
             if (count($image_main)) {
                 $main = array();
                 foreach ($image_main as $k => $v) {
+                    $unit = substr($v, -4, 4);
+                    $v = $this->get_between($v, "//", '_50x50' . $unit);
                     $main[] = [
                         'g_id' => $g_id,
                         'url' => $v,
