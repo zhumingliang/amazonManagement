@@ -26,7 +26,7 @@ class GoodsService
         if ($grade == 5 || $grade == 6) {
             $admin_id = Token::getCurrentUid();
         }
-        $list = GoodsListV::goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size,$admin_id);
+        $list = GoodsListV::goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size, $admin_id);
         return $list;
 
     }
@@ -144,8 +144,8 @@ class GoodsService
             unset($params['skus']);
         }
         if (key_exists('main_image', $params)) {
-            $main_image = $params['main_image'];
-            $main_image = explode(',', $main_image);
+            $main = $params['main_image'];
+            $main_image = json_decode($main, true);
             unset($params['main_image']);
         }
         $this->updateInfo($params);
@@ -154,28 +154,40 @@ class GoodsService
         }
 
         if (count($main_image)) {
-            $this->prefixMainImage($params['id'], $main_image);
+            // $this->prefixMainImage($params['id'], $main_image);
+            $this->prefixMainImage($main_image);
         }
 
     }
 
-    private function prefixMainImage($g_id, $imgs_arr)
+    /* private function prefixMainImage($g_id, $imgs_arr)
+     {
+         $data_arr = array();
+         foreach ($imgs_arr as $k => $v) {
+             $data_arr[] = [
+                 'g_id' => $g_id,
+                 'url' => $v,
+                 'state' => CommonEnum::STATE_IS_OK
+             ];
+         }
+         if (count($data_arr)) {
+             $res = (new GoodsMainImageT())->saveAll($data_arr);
+             if (!$res) {
+                 throw new SaveException([
+                     'msg' => '保存商品主图失败'
+                 ]);
+             }
+         }
+
+     }
+     */
+    private function prefixMainImage($imgs_arr)
     {
-        $data_arr = array();
-        foreach ($imgs_arr as $k => $v) {
-            $data_arr[] = [
-                'g_id' => $g_id,
-                'url' => $v,
-                'state' => CommonEnum::STATE_IS_OK
-            ];
-        }
-        if (count($data_arr)) {
-            $res = (new GoodsMainImageT())->saveAll($data_arr);
-            if (!$res) {
-                throw new SaveException([
-                    'msg' => '保存商品主图失败'
-                ]);
-            }
+        $res = (new GoodsMainImageT())->saveAll($imgs_arr);
+        if (!$res) {
+            throw new UpdateException([
+                'msg' => '更新商品主图失败'
+            ]);
         }
 
     }
@@ -183,6 +195,8 @@ class GoodsService
 
     private function prefixSku($g_id, $skus)
     {
+
+        $sku_img = array();
         foreach ($skus as $k => $v) {
 
             $v['zh'] = json_encode($v['zh']);
@@ -216,20 +230,20 @@ class GoodsService
             }
 
             if (count($img_url)) {
-                $list = array();
                 foreach ($img_url as $k2 => $v2) {
-                    $list[] = [
-                        's_id' => $sku_id,
-                        'url' => $v2['url'],
-                        'order' =>$v2['order'],
-                        'state' => CommonEnum::STATE_IS_OK
-                    ];
+                    if (key_exists('id', $v2)) {
+                        $img_url[$k2]['s_id'] = $sku_id;
+                        $img_url[$k2]['state'] = CommonEnum::STATE_IS_OK;
+                    }
+                    $sku_img[] = $sku_img[$k2];
                 }
-                if (count($list)) {
-                    (new GoodsSkuImgT())->saveAll($list);
-                }
+
             }
 
+        }
+
+        if (count($sku_img)) {
+            (new GoodsSkuImgT())->saveAll($sku_img);
         }
 
     }
