@@ -231,7 +231,7 @@ class GoodsService
 
             if (count($img_url)) {
                 foreach ($img_url as $k2 => $v2) {
-                    if (key_exists('id', $v2)) {
+                    if (key_exists('id', $v2) && $v2['id']) {
                         $img_url[$k2]['s_id'] = $sku_id;
                         $img_url[$k2]['state'] = CommonEnum::STATE_IS_OK;
                     }

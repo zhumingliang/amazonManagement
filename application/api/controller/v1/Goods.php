@@ -220,7 +220,7 @@ class Goods extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  更新商品价格
      * @apiExample {post}  请求样例:
-     * {"id":246,"price":10,"cost":10,"count":1000,"main_image":"[{"id":1,"order":1},{"id":2,"order":2}]","skus":[{"zh":{"color":"","size":""},"en":{"color":"","size":""},"sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp","order":3}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp","order"4}]}]}
+     * {"id":246,"price":10,"cost":10,"count":1000,"main_image":"[{"id":1,"order":1},{"id":2,"order":2}]","skus":[{"zh":{"color":"","size":""},"en":{"color":"","size":""},"sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp","order":3}]},{"id":5115,"size":"400mm×600mm","color":"天蓝色","sku":"qog1c4qr4i31-4","count":833,"price":109,"upc":null,"size_map":null,"color_map":null,"sex":null,"img_url":[{"id":1,"url":"img.alicdn.com/imgextra/i4/468372883/TB2gNn6mORnpuFjSZFCXXX2DXXa_!!468372883.jp","order"4}]}]}
      * @apiParam (请求参数说明) {int} id 商品id
      * @apiParam (请求参数说明) {int} price 售价
      * @apiParam (请求参数说明) {int} cost 成本
@@ -243,7 +243,7 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {String} skus-color_map color_map
      * @apiParam (请求参数说明) {String} skus-sex 性别
      * @apiParam (请求参数说明) {Obj} skus-img_url 变体图片
-     * @apiParam (请求参数说明) {String} skus-img_url-id 变体图片id
+     * @apiParam (请求参数说明) {String} skus-img_url-id 变体图片id(新增变体不需要此字段)
      * @apiParam (请求参数说明) {String} skus-img_url-url 变体图片地址
      * @apiParam (请求参数说明) {String} skus-img_url-order 图片排序
      * @apiSuccessExample {json} 返回样例:
