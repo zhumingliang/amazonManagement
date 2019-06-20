@@ -109,11 +109,11 @@ class AliexpressSpider extends Spider
                 $main[] = [
                     'g_id' => $this->g_id,
                     'url' => $v,
-                    'state' => CommonEnum::STATE_IS_OK
+                    'state' => CommonEnum::STATE_IS_OK,
                 ];
             }
 
-            (new GoodsMainImageT())->saveAll($main);
+            $this->saveMainImg($main);
         }
     }
 
@@ -153,7 +153,7 @@ class AliexpressSpider extends Spider
                     ['color' => $data['color'],
                         'size' => $data['size']]),
                 'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $this->sku_id . '-' . $i,
+                'sku' => $i,
                 'url' => $data['url']
 
             ];
@@ -170,7 +170,8 @@ class AliexpressSpider extends Spider
             $sku_img[] = [
                 'state' => CommonEnum::STATE_IS_OK,
                 's_id' => $v['id'],
-                'url' => $v['url']
+                'url' => $v['url'],
+                'order' => 1
 
             ];
         }
@@ -312,17 +313,18 @@ class AliexpressSpider extends Spider
     {
         $data = array();
         $sku_price = json_decode($sku_price, true);
-        //print_r($sku_price);
-        foreach ($sku_price as $k => $v) {
+        if (count($sku_price)) {
+            foreach ($sku_price as $k => $v) {
 
-            $price = 0;
-            if (key_exists('skuActivityAmount', $v['skuVal'])) {
-                $price = $v['skuVal']['skuActivityAmount']['value'];
-            } else {
-                $price = $v['skuVal']['skuAmount']['value'];
+                $price = 0;
+                if (key_exists('skuActivityAmount', $v['skuVal'])) {
+                    $price = $v['skuVal']['skuActivityAmount']['value'];
+                } else {
+                    $price = $v['skuVal']['skuAmount']['value'];
+                }
+                $data[$v['skuPropIds']] = ['price' => $price,
+                    'count' => $v['skuVal']['availQuantity']];
             }
-            $data[$v['skuPropIds']] = ['price' => $price,
-                'count' => $v['skuVal']['availQuantity']];
         }
         return $data;
 

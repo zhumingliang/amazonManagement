@@ -48,6 +48,7 @@ class AdminT extends Model
                 }
             })
             ->field($field)
+            ->order('create_time desc')
             ->paginate($size, false, ['page' => $page]);
         return $list;
 

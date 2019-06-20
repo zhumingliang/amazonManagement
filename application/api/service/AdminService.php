@@ -50,7 +50,7 @@ class AdminService
     }
 
 
-    public function admins($grade, $page, $size, $key)
+    public function  admins($grade, $page, $size, $key)
     {
         $current_grade = Token::getCurrentTokenVar('grade');
         $u_id = Token::getCurrentUid();

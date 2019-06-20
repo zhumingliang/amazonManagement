@@ -134,7 +134,7 @@ class TaobaoSpider extends Spider
                 'zh' => json_encode(['color' => $color,
                     'size' => $size,]),
                 'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $this->sku . '-' . $i
+                'sku' => $i
             ];
             $sku_image[] = strlen($url) ? $url : '';
 
@@ -158,7 +158,8 @@ class TaobaoSpider extends Spider
                         [
                             's_id' => $v['id'],
                             'url' => $image,
-                            'state' => CommonEnum::STATE_IS_OK
+                            'state' => CommonEnum::STATE_IS_OK,
+                            'order'=>1
                         ];
                 }
 

@@ -24,6 +24,7 @@ class AdminBelongV extends Model
                 }
             })
             ->field('u_id as id,username,account,grade,phone,ip,email,remark,create_time')
+            ->order('create_time desc')
             ->paginate($size, false, ['page' => $page]);
         return $list;
 

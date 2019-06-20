@@ -33,7 +33,7 @@ class TomtopSpider extends Spider
             $this->prefixDes();
             //保存主图
             $this->prefixMainImg();
-             Db::commit();
+            Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -94,7 +94,7 @@ class TomtopSpider extends Spider
                         'size' => $size
                     ]),
                     'state' => CommonEnum::STATE_IS_OK,
-                    'sku' => $this->sku . '-' . ($k + 1)
+                    'sku' => $k + 1
                 ];
                 $sku_image[] = $v['imgList'];
 
@@ -125,7 +125,8 @@ class TomtopSpider extends Spider
                                 [
                                     's_id' => $v['id'],
                                     'url' => "https://img.tttcdn.com/product/xy/500/500/" . $v2['imgUrl'],
-                                    'state' => CommonEnum::STATE_IS_OK
+                                    'state' => CommonEnum::STATE_IS_OK,
+                                    'order' => $k2
                                 ];
                         }
                     }

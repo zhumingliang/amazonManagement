@@ -22,7 +22,11 @@ class GoodsService
 
     public function goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size)
     {
-        $list = GoodsListV::goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size);
+        $grade = Token::getCurrentTokenVar('grade');
+        if ($grade == 5 || $grade == 6) {
+            $admin_id = Token::getCurrentUid();
+        }
+        $list = GoodsListV::goodsList($key_type, $key, $status, $g_type, $update_begin, $update_end, $order_field, $order_type, $c_id, $page, $size,$admin_id);
         return $list;
 
     }
@@ -217,6 +221,7 @@ class GoodsService
                     $list[] = [
                         's_id' => $sku_id,
                         'url' => $v2['url'],
+                        'order' =>$v2['order'],
                         'state' => CommonEnum::STATE_IS_OK
                     ];
                 }

@@ -159,6 +159,10 @@ class Spider
     public
     function saveMainImg($params)
     {
+        foreach ($params as $k => $v) {
+            $params[$k]['order'] = $k;
+        }
+
         $res = (new GoodsMainImageT())->saveAll($params);
         if (!$res) {
             throw new SaveException([

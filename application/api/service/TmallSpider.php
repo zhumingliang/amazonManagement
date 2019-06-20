@@ -180,7 +180,7 @@ class TmallSpider extends Spider
                     'price' => $price,
                     'zh' => json_encode(['size' => $size, 'color' => $color]),
                     'state' => CommonEnum::STATE_IS_OK,
-                    'sku' => $this->sku . '-' . ($k + 1)
+                    'sku' => $k + 1
                 ];
                 $sku_image[] = [
                     'url' => $url
@@ -209,7 +209,8 @@ class TmallSpider extends Spider
                             [
                                 's_id' => $v['id'],
                                 'url' => 'http:' . $image['url'],
-                                'state' => CommonEnum::STATE_IS_OK
+                                'state' => CommonEnum::STATE_IS_OK,
+                                'order' => 1
                             ];
                     }
                 }

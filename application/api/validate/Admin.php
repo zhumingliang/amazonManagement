@@ -12,7 +12,7 @@ class Admin extends BaseValidate
         'pwd' => 'require|isNotEmpty',
         'account' => 'require|isNotEmpty',
         'username' => 'require|isNotEmpty',
-        'grade' => 'require|in:2,3,4,5',
+        'grade' => 'require|in:2,3,4,5,6',
         'state' => 'require|in:1,2',
         'belong_ids' => 'require|isNotEmpty',
     ];

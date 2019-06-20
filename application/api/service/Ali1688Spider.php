@@ -49,7 +49,7 @@ class Ali1688Spider extends Spider
             //存储商品主图
             $main = $this->prefixImage($g_id);
             if (count($main)) {
-                (new GoodsMainImageT())->saveAll($main);
+               $this->saveMainImg($main);
             }
 
             //保存sku
@@ -66,7 +66,9 @@ class Ali1688Spider extends Spider
 
                 //存储sku_image
                 foreach ($sku_res as $k => $v) {
+
                     $sku_img[$k]['s_id'] = $v['id'];
+                    $sku_img[$k]['order'] = 1;
                 }
 
                 //将sku_image存入数据库
@@ -203,7 +205,7 @@ class Ali1688Spider extends Spider
                     'size' => $size
                 ]),
                 'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $sku . '-' . $i
+                'sku' => $i
             ];
             $return_sku_image[] = [
                 'url' => count($color_arr) ? $color_arr[$k_arr[$COLOR_NUM]] : '',

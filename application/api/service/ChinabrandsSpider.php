@@ -80,7 +80,7 @@ class ChinabrandsSpider extends Spider
                     'color' => $name
                 ]),
                 'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $this->sku . '-' . ($k + 1)
+                'sku' => $k + 1
             ];
             $data_sku_img[] = $main_image;
             $data_main_img = array_merge($data_main_img, $main_image);
@@ -106,7 +106,8 @@ class ChinabrandsSpider extends Spider
                                 [
                                     's_id' => $v['id'],
                                     'url' => $v2['url'],
-                                    'state' => CommonEnum::STATE_IS_OK
+                                    'state' => CommonEnum::STATE_IS_OK,
+                                    'order' => $k2,
                                 ];
                         }
                     }
