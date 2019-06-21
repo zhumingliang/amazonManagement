@@ -60,3 +60,9 @@ Route::get('api/:version/shops', 'api/:version.Shop/shops');
 Route::get('api/:version/counties', 'api/:version.Logistics/countries');
 Route::get('api/:version/price', 'api/:version.Logistics/price');
 
+Route::post('api/:version/notice/save', 'api/:version.Notice/save');
+Route::post('api/:version/notice/handel', 'api/:version.Notice/handel');
+Route::post('api/:version/notice/update', 'api/:version.Notice/update');
+Route::get('api/:version/notices/cms', 'api/:version.Notice/noticesForCMS');
+Route::get('api/:version/notices', 'api/:version.Notice/notices');
+Route::get('api/:version/notice', 'api/:version.Notice/notice');

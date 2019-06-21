@@ -95,12 +95,11 @@ class GoodsService
 
     public function uploadImage($params)
     {
+        $image = $params['image'];
+        $url = $this->saveImage($image);
         $id = $params['id'];
         $type = $params['type'];
-        $image = $params['image'];
         $res = 1;
-        $url = $this->saveImage($image);
-
         if (!$id) {
             return $url;
         }
