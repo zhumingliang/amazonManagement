@@ -46,7 +46,6 @@ class Category extends BaseController
 
 
     /**
-     * @throws UpdateException
      * @api {POST} /api/v1/category/handel  管理员分类状态操作
      * @apiGroup  CMS
      * @apiVersion 1.0.1
@@ -75,8 +74,6 @@ class Category extends BaseController
 
 
     /**
-     * @return \think\response\Json
-     * @throws UpdateException
      * @api {POST} /api/v1/category/update  管理员修改分类
      * @apiGroup  CMS
      * @apiVersion 1.0.1

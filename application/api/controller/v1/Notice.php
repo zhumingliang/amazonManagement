@@ -120,11 +120,13 @@ class Notice extends BaseController
      * @apiVersion 1.0.1
      * @apiDescription  CMS获取分类列表
      * @apiExample {get}  请求样例:
-     * http://api.tljinghua.com/api/v1/notices/cms?page=1&size=6&key=&type=1
+     * http://api.tljinghua.com/api/v1/notices/cms?page=1&size=6&key=&type=1&time_begin=&time_end=
      * @apiParam (请求参数说明) {int} page 当前页码
      * @apiParam (请求参数说明) {int} size 每页多少条数据
      * @apiParam (请求参数说明) {int} type 类别：1 | 通知公告/问题
      * @apiParam (请求参数说明) {String} key 关键词
+     * @apiParam (请求参数说明) {String} time_begin 开始时间
+     * @apiParam (请求参数说明) {String} time_end 结束时间
      * @apiSuccessExample {json} 返回样例:
      * {"total":1,"per_page":6,"current_page":1,"last_page":1,"data":[{"id":2,"title":"我是通知标题","state":1,"type":1,"create_time":"2019-06-21 10:56:49"}]}
      * @apiSuccess (返回参数说明) {int} total 数据总数
@@ -136,10 +138,10 @@ class Notice extends BaseController
      * @apiSuccess (返回参数说明) {int} state  状态： 1 | 停用；2 | 发布
      * @apiSuccess (返回参数说明) {int} type 新增类型：1 | 公告；2 | 问题
      */
-    public function noticesForCMS($page = 1, $size = 6, $type = 1, $key = '')
+    public function noticesForCMS($page = 1, $size = 6, $type = 1, $key = '', $time_begin = '', $time_end = '')
     {
 
-        $list = (new NoticeService())->noticesForCMS($page, $size, $type, $key);
+        $list = (new NoticeService())->noticesForCMS($page, $size, $type, $key, $time_begin, $time_end);
         return json($list);
 
 
