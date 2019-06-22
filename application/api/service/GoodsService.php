@@ -98,11 +98,11 @@ class GoodsService
         $image = $params['image'];
         $url = $this->saveImage($image);
         $id = $params['id'];
-        $type = $params['type'];
         $res = 1;
         if (!$id) {
             return $url;
         }
+        $type = $params['type'];
         if ($type == self::IMAGE_SKU) {
             $res = GoodsSkuImgT::create([
                 'state' => CommonEnum::STATE_IS_OK,
