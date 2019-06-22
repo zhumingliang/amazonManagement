@@ -75,7 +75,7 @@ class Notice extends BaseController
     public function handel()
     {
         $params = $this->request->param();
-        $id = CategoryT::update(['state' => $params['state']], ['id' => $params['id']]);
+        $id = NoticeT::update(['state' => $params['state']], ['id' => $params['id']]);
         if (!$id) {
             throw new UpdateException();
         }
