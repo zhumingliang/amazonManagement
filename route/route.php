@@ -63,6 +63,7 @@ Route::get('api/:version/price', 'api/:version.Logistics/price');
 Route::post('api/:version/notice/save', 'api/:version.Notice/save');
 Route::post('api/:version/notice/handel', 'api/:version.Notice/handel');
 Route::post('api/:version/notice/update', 'api/:version.Notice/update');
+Route::post('api/:version/notice/image', 'api/:version.Notice/uploadImage');
 Route::get('api/:version/notices/cms', 'api/:version.Notice/noticesForCMS');
 Route::get('api/:version/notices', 'api/:version.Notice/notices');
 Route::get('api/:version/notice', 'api/:version.Notice/notice');
