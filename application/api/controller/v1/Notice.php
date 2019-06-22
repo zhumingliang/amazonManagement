@@ -196,7 +196,6 @@ class Notice extends BaseController
     public function notice()
     {
         $info = NoticeT::where('id', $this->request->param('id'))
-            ->where('state',CommonEnum::STATE_IS_OK)
             ->hidden(['update_time'])
             ->find();
         return json($info);

@@ -5,6 +5,7 @@ namespace app\api\service;
 
 
 use app\api\model\NoticeT;
+use app\lib\enum\CommonEnum;
 
 class NoticeService
 {
@@ -32,6 +33,7 @@ class NoticeService
     public function notices($page, $size, $type)
     {
         $list = NoticeT::where('type', $type)
+            ->where('state',CommonEnum::STATE_IS_OK)
             ->field('id,title,create_time')
             ->order('create_time desc')
             ->paginate($size, false, ['page' => $page]);;
