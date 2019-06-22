@@ -33,7 +33,7 @@ class NoticeService
     public function notices($page, $size, $type)
     {
         $list = NoticeT::where('type', $type)
-            ->where('state',CommonEnum::STATE_IS_OK)
+            ->where('state',CommonEnum::STATE_IS_FAIL)
             ->field('id,title,create_time')
             ->order('create_time desc')
             ->paginate($size, false, ['page' => $page]);;
