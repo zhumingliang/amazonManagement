@@ -9,6 +9,7 @@ use app\api\model\CategoryT;
 use app\api\model\NoticeT;
 use app\api\service\GoodsService;
 use app\api\service\NoticeService;
+use app\lib\enum\CommonEnum;
 use app\lib\exception\SaveException;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\UpdateException;
@@ -195,6 +196,7 @@ class Notice extends BaseController
     public function notice()
     {
         $info = NoticeT::where('id', $this->request->param('id'))
+            ->where('state',CommonEnum::STATE_IS_OK)
             ->hidden(['update_time'])
             ->find();
         return json($info);
