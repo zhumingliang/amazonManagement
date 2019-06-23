@@ -56,36 +56,85 @@ class ChinabrandsSpider extends Spider
     private function prefixSku()
     {
         $colors = selector::select($this->html, "//ul[@data-type='Color']/li");
+        $size = selector::select($this->html, "//ul[@data-type='Size']/li/a[@data-value]");
+
+
         $data_sku = [];
         $data_sku_img = [];
         $data_main_img = [];
-        if (!count($colors)) {
+        if (!count($colors) && !count($size)) {
             return false;
         }
         if (gettype($colors) == 'string') {
             $arr = explode('AAAAA', $colors);
             $colors = $arr;
         }
-        foreach ($colors as $k => $v) {
 
-            $url = selector::select($v, "//@data-original");
-            $name = selector::select($v, "//@title");
-            $sku_url = selector::select($v, "//@data-url");
-            $main_image = $this->getMainImage($sku_url);
-            $data_sku [] = [
-                'g_id' => $this->g_id,
-                'price' => $this->price,
-                'zh' => json_encode([
-                    'size' => '',
-                    'color' => $name
-                ]),
-                'state' => CommonEnum::STATE_IS_OK,
-                'sku' => $k + 1
-            ];
-            $data_sku_img[] = $main_image;
-            $data_main_img = array_merge($data_main_img, $main_image);
+        if (count($colors)) {
+            foreach ($colors as $k => $v) {
 
+                $url = selector::select($v, "//@data-original");
+                $name = selector::select($v, "//@title");
+                $sku_url = selector::select($v, "//@data-url");
+                $main_image = $this->getMainImage($sku_url);
+                if (count($size)) {
+                    foreach ($size as $k => $v) {
+                        $data_sku [] = [
+                            'g_id' => $this->g_id,
+                            'price' => $this->price,
+                            'zh' => json_encode([
+                                'size' => $this->trimall($v),
+                                'color' => $name
+                            ]),
+                            'state' => CommonEnum::STATE_IS_OK,
+                            'sku' => $k + 1
+                        ];
+                        //$data_sku_img[] = $main_image;
+                        $data_sku_img[] = [
+                            'g_id' => $this->g_id,
+                            'url' => $url,
+                            'state' => CommonEnum::STATE_IS_OK
+                        ];
+                    }
+
+                } else {
+                    $data_sku [] = [
+                        'g_id' => $this->g_id,
+                        'price' => $this->price,
+                        'zh' => json_encode([
+                            'size' => '',
+                            'color' => $name
+                        ]),
+                        'state' => CommonEnum::STATE_IS_OK,
+                        'sku' => $k + 1
+                    ];
+                    //$data_sku_img[] = $main_image;
+                    $data_sku_img[] = [
+                        'g_id' => $this->g_id,
+                        'url' => $url,
+                        'state' => CommonEnum::STATE_IS_OK
+                    ];;
+                }
+
+
+                $data_main_img = array_merge($data_main_img, $main_image);
+
+            }
+        } else {
+            foreach ($size as $k => $v) {
+                $data_sku [] = [
+                    'g_id' => $this->g_id,
+                    'price' => $this->price,
+                    'zh' => json_encode([
+                        'size' => $this->trimall($v),
+                        'color' => ''
+                    ]),
+                    'state' => CommonEnum::STATE_IS_OK,
+                    'sku' => $k + 1
+                ];
+            }
         }
+
 
         if (count($data_sku)) {
             $sku_res = (new GoodsSkuT())->saveAll($data_sku)->toArray();
@@ -101,30 +150,37 @@ class ChinabrandsSpider extends Spider
                 foreach ($sku_res as $k => $v) {
                     $image = $data_sku_img[$k];
                     if (count($image)) {
-                        foreach ($image as $k2 => $v2) {
-                            $imgs[] =
-                                [
-                                    's_id' => $v['id'],
-                                    'url' => $v2['url'],
-                                    'state' => CommonEnum::STATE_IS_OK,
-                                    'order' => $k2,
-                                ];
-                        }
+
+                        $imgs[] =
+                            [
+                                's_id' => $v['id'],
+                                'url' => $image['url'],
+                                'state' => CommonEnum::STATE_IS_OK,
+                                'order' => 1,
+                            ];
                     }
-
+                    /*  foreach ($image as $k2 => $v2) {
+                          $imgs[] =
+                              [
+                                  's_id' => $v['id'],
+                                  'url' => $v2['url'],
+                                  'state' => CommonEnum::STATE_IS_OK,
+                                  'order' => $k2,
+                              ];
+                      }*/
                 }
 
-                //将sku_image存入数据库
-                $ku_image_res = (new GoodsSkuImgT())->saveAll($imgs);
-                if (!$ku_image_res) {
-                    throw  new SaveException([
-                        'msg' => '存储商品sku图片失败'
-                    ]);
-                }
             }
 
-
+            //将sku_image存入数据库
+            $ku_image_res = (new GoodsSkuImgT())->saveAll($imgs);
+            if (!$ku_image_res) {
+                throw  new SaveException([
+                    'msg' => '存储商品sku图片失败'
+                ]);
+            }
         }
+
 
         if (count($data_main_img)) {
             $this->saveMainImg($data_main_img);
@@ -132,7 +188,8 @@ class ChinabrandsSpider extends Spider
         }
     }
 
-    private function prefixDes()
+    private
+    function prefixDes()
     {
         $name_en = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/h1");
         $name_ch = selector::select($this->html, "/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/h3");
@@ -150,7 +207,8 @@ class ChinabrandsSpider extends Spider
         $this->saveDes($data_des);
     }
 
-    private function getMainImage($url)
+    private
+    function getMainImage($url)
     {
         $data_main_img = array();
         $html = $url == '#' ? $this->html : requests::get($url);
