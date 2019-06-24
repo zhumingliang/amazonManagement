@@ -42,6 +42,7 @@ class TaobaoSpider extends Spider
 
     private function prefixInfo($price)
     {
+
         $data_info['cost'] = $price;
         $data_info['c_id'] = $this->c_id;
         $data_info['source'] = SpiderEnum::TAOBAO;
@@ -67,7 +68,6 @@ class TaobaoSpider extends Spider
                 ];
             }
         }
-
         return [
             'price' => $price,
             'sku_price' => $price_arr
@@ -87,16 +87,20 @@ class TaobaoSpider extends Spider
                 $sku_ids = selector::select($v, '//@data-value');
                 $sku_name_obj = selector::select($v, '//li');
 
-                foreach ($sku_name_obj as $k2 => $v2) {
-                    $name = selector::select($v2, '//span');
-                    $url = selector::select($v2, '//@style');
+                if (!$sku_name_obj || !count($sku_name_obj)) {
+                    return false;
+                }
+
+                for ($i = 0; $i < count($sku_name_obj); $i++) {
+                    $name = selector::select($sku_name_obj[$i], '//span');
+                    $url = selector::select($sku_name_obj[$i], '//@style');
                     if (strlen($url)) {
                         $url = $this->get_between($url, '(//', ')');
                         $url = 'http://' . str_replace('30x30', '400x400', $url);
 
                     }
 
-                    $sku_all[$sku_ids[$k2]] = [
+                    $sku_all[$sku_ids[$i]] = [
                         'name' => $name,
                         'sku_type' => $sku_type,
                         'url' => $url
@@ -108,6 +112,10 @@ class TaobaoSpider extends Spider
         $sku_data = array();
         $sku_image = array();
         $i = 0;
+
+        if (!count($sku_price)){
+            return false;
+        }
         foreach ($sku_price as $k => $v) {
             ++$i;
             $ids = explode(';', $k);
@@ -159,7 +167,7 @@ class TaobaoSpider extends Spider
                             's_id' => $v['id'],
                             'url' => $image,
                             'state' => CommonEnum::STATE_IS_OK,
-                            'order'=>1
+                            'order' => 1
                         ];
                 }
 
@@ -178,8 +186,14 @@ class TaobaoSpider extends Spider
     private function prefixDes()
     {
         $des = selector::select($this->html, '//*[@id="attributes"]/ul/li');
-        $abstract = implode('</br>', array_slice($des, 0, 4));
-        $des = implode('</br>', $des);
+        if (!$des) {
+            $abstract = '';
+        } else {
+            $abstract = implode('</br>', array_slice($des, 0, 4));
+        }
+        if (strlen($des)) {
+            $des = implode('</br>', $des);
+        }
         $title = selector::select($this->html, '//*[@id="J_Title"]/h3');
         //保存商品标题描述
         $data_des = [
@@ -197,6 +211,10 @@ class TaobaoSpider extends Spider
     {
         $img_arr = array();
         $imgs = selector::select($this->html, '//*[@id="J_UlThumb"]/li/div/a/img/@data-src');
+        if (!$imgs || !count($imgs)) {
+            return false;
+        }
+
         foreach ($imgs as $k => $v) {
             $unit = substr($v, -4, 4);
             $v = $this->get_between($v, "//", '_50x50' . $unit);

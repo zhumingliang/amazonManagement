@@ -241,7 +241,7 @@ class GoodsService
                         $img_url[$k2]['s_id'] = $sku_id;
                         $img_url[$k2]['state'] = CommonEnum::STATE_IS_OK;
                     }
-                    $sku_img[] = $sku_img[$k2];
+                    $sku_img[] = $img_url[$k2];
                 }
 
             }

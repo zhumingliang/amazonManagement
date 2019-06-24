@@ -3,7 +3,11 @@
 namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
+use app\api\model\JiumufanT;
+use app\api\model\UsedT;
 use app\api\service\TranslateService;
+use app\lib\exception\SaveException;
+use app\lib\exception\SuccessMessage;
 use GoogleTranslate;
 use phpspider\core\requests;
 use phpspider\core\selector;
@@ -41,6 +45,139 @@ class Index extends BaseController
     public function index()
     {
 
+        $list = JiumufanT::where([
+            'state' => 1,
+            'used' => 1
+        ])->field('username,CONCAT_WS("",address,flor) as address ,month,money')
+            ->order('id,username')
+            ->select()->toArray();
+
+        $header = array(
+            '项目经理',
+            '工程地址',
+            '时间',
+            '总价'
+        );
+        $file_name = '玖木坊对账单.csv';
+        $this->put_csv($list, $header, $file_name);
+
+        /* $list=JiumufanT::order('create_time desc')->select();
+         return json($list);*/
+        /* $params = $this->request->param();
+         $data = explode('/', $params['data']);
+         if (count($data) !== 3) {
+             throw  new SaveException();
+         }
+         $res = JiumufanT::create([
+             'address' => $data[0],
+             'flor' => $data[1],
+             'money' => $data[2],
+             'month' => $params['month'],
+         ]);
+         if ($res) {
+             return json(new SuccessMessage());
+         }*/
+
+
+        /* $list = JiumufanT::field('id,flor,money,count(flor)as count')
+             ->group('flor,money')
+             ->having('count(flor)>1')
+             ->select();
+         $ids = [];
+         foreach ($list as $k => $v) {
+             $info = JiumufanT::where('flor', $v['flor'])
+                 ->where('money', $v['money'])
+                 ->select();
+             foreach ($info as $k2 => $v2) {
+                 if (count($info)-1>$k2) {
+                     $ids[] =[
+                         'id'=>$v2['id'],
+                         'used'=>2
+                     ];
+                 }
+             }
+         }
+
+         (new JiumufanT())->saveAll($ids);*/
+
+        /*$params = $this->request->param();
+        $data = explode('/', $params['data']);
+        $res = UsedT::create([
+            'money' => $data[0],
+            'flor' => $data[1]
+        ]);
+        if ($res) {
+            return json(new SuccessMessage());
+        }*/
+
+        /* $data = '4-902/7603';
+         $username = '王均';
+         $data = explode('S', $data);
+         foreach ($data as $k => $v) {
+             $info = explode('/', $v);
+
+             $msg = JiumufanT::where([
+                 'flor' => $info[0],
+                 'money' => $info[1]
+             ])->field('id')->find();
+             if ($msg) {
+                 $res = JiumufanT::update([
+
+                     'username' => $username
+                 ], [
+                     'flor' => $info[0],
+                     'money' => $info[1]
+                 ]);
+                 if (!$res) {
+                     throw new SaveException();
+                 }
+             } else {
+                 echo $v;
+             }
+
+         }*/
+
+
+    }
+
+
+    /**
+     * 导出数据到CSV文件
+     * @param array $list 数据
+     * @param array $title 标题
+     * @param string $filename CSV文件名
+     */
+    public function put_csv($list, $title, $filename)
+    {
+        $file_name = $filename;
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename=' . $file_name);
+        header('Cache-Control: max-age=0');
+        $file = fopen('php://output', "a");
+        $limit = 1000;
+        $calc = 0;
+        foreach ($title as $v) {
+            $tit[] = iconv('UTF-8', 'GB2312//IGNORE', $v);
+        }
+        fputcsv($file, $tit);
+        foreach ($list as $v) {
+
+            $calc++;
+            if ($limit == $calc) {
+                ob_flush();
+                flush();
+                $calc = 0;
+            }
+            foreach ($v as $t) {
+                $t = is_numeric($t) ? $t . "\t" : $t;
+                $tarr[] = iconv('UTF-8', 'GB2312//IGNORE', $t);
+            }
+            fputcsv($file, $tarr);
+            unset($tarr);
+        }
+        unset($list);
+        fclose($file);
+        exit();
     }
 
 
@@ -55,7 +192,7 @@ class Index extends BaseController
         curl_setopt($curl, CURLOPT_AUTOREFERER, 1); // 自动设置Referer
         curl_setopt($curl, CURLOPT_POST, 1); // 发送一个常规的Post请求
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data); // Post提交的数据包
-       // curl_setopt($curl, CURLOPT_COOKIEFILE, $this->cookie_file); // 读取上面所储存的Cookie信息
+        // curl_setopt($curl, CURLOPT_COOKIEFILE, $this->cookie_file); // 读取上面所储存的Cookie信息
         curl_setopt($curl, CURLOPT_TIMEOUT, 30); // 设置超时限制防止死循环
         curl_setopt($curl, CURLOPT_HEADER, 0); // 显示返回的Header区域内容
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
