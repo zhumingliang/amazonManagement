@@ -327,7 +327,7 @@ class Goods extends BaseController
      * @apiParam (请求参数说明) {String} type 商品图片类别：main | 主图；sku | sku图片
      * @apiParam (请求参数说明) {String} image 图片base64数据
      * @apiSuccessExample {json} 添加主图片或者已存在sku图片返回样例:
-     * {"msg": "ok","error_code": 0}
+     * {"msg": "ok","error_code": 0,"id":1}
      * @apiSuccess (返回参数说明) {int} error_code 错误代码 0 表示没有错误
      * @apiSuccess (返回参数说明) {String} msg 操作结果描述
      * @apiSuccessExample {json} 添加新增sku图片返回样例:
@@ -338,14 +338,16 @@ class Goods extends BaseController
     {
         $params = $this->request->param();
         $res = (new GoodsService())->uploadImage($params);
-        if ($res) {
+        if ($res['type']==1) {
             return json([
-                'url' => $res
+                'url' => $res['url¬']
             ]);
         }
-
-        return json(new SuccessMessage());
-
+        return json([
+            'msg'=>'ok',
+            'errorCode'=>0,
+            'id'=>$res['id']
+        ]);
     }
 
     /**

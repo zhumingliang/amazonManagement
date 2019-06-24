@@ -100,7 +100,10 @@ class GoodsService
         $id = $params['id'];
         $res = 1;
         if (!$id) {
-            return $url;
+            return [
+                'url' => $url,
+                'type' => 1
+            ];
         }
         $type = $params['type'];
         if ($type == self::IMAGE_SKU) {
@@ -119,6 +122,10 @@ class GoodsService
         if (!$res) {
             throw new SaveException();
         }
+        return [
+            'id' => $res->id,
+            'type' => 2
+        ];
     }
 
     private function saveImage($img)
