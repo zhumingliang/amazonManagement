@@ -340,7 +340,7 @@ class Goods extends BaseController
         $res = (new GoodsService())->uploadImage($params);
         if ($res['type']==1) {
             return json([
-                'url' => $res['url¬']
+                'url' => $res['url']
             ]);
         }
         return json([
