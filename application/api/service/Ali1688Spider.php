@@ -22,7 +22,7 @@ class Ali1688Spider extends Spider
     {
         Db::startTrans();
         try {
-            $sku = getSkuID();
+            $sku_id = getSkuID();
             $title = selector::select($this->html, '//*[@id="mod-detail-title"]/h1');
             $keys = $this->get_sitemeta('keywords');
             $des_info = $this->prefixInfo();
@@ -31,7 +31,7 @@ class Ali1688Spider extends Spider
             //保存商品基本信息
             $data_info['cost'] = $this->prefixPrice();
             $data_info['c_id'] = $this->c_id;
-            $data_info['sku'] = $sku;
+            $data_info['sku'] = $sku_id;
             $data_info['source'] = SpiderEnum::ALI_1688;
             $g_id = $this->saveGoodsInfo($data_info);
 
@@ -53,8 +53,10 @@ class Ali1688Spider extends Spider
             }
 
             //保存sku
-            $sku = $this->prefixSku($g_id, $sku);
+            $sku = $this->prefixSku($g_id, $sku_id);
             $sku_img = $sku['image'];
+
+
             if (count($sku['sku'])) {
                 //将sku存入数据库
                 $sku_res = (new GoodsSkuT())->saveAll($sku['sku']);
