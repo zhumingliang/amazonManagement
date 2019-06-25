@@ -42,11 +42,31 @@ class GoodsService
     public function goodsPrice($id)
     {
         $info = GoodsInfoT::price($id);
+        $info = $this->prefixSkus($info);
         return $info;
 
     }
 
-    public function updateInfo($params)
+
+    private function prefixSkus($info)
+    {
+        $sku = $info['sku'];
+        $skus = $info['skus'];
+        if (count($skus)) {
+            foreach ($skus as $k => $v) {
+                if (strpos($v['sku'], '-') == false) {
+                    continue;
+                }
+                $skus[$k]['sku'] = $sku . '-' . $v['sku'];
+            }
+        }
+        $info['skus'] = $skus;
+        return $info;
+    }
+
+
+    public
+    function updateInfo($params)
     {
         $res = GoodsInfoT::updateInfo($params);
         if (!$res) {
@@ -55,7 +75,8 @@ class GoodsService
 
     }
 
-    public function saveInfo($params)
+    public
+    function saveInfo($params)
     {
         $res = GoodsInfoT::create($params);
         if (!$res) {
@@ -65,7 +86,8 @@ class GoodsService
 
     }
 
-    public function deleteImage($params)
+    public
+    function deleteImage($params)
     {
         $id = $params['id'];
         $type = $params['type'];
@@ -84,7 +106,8 @@ class GoodsService
         }
     }
 
-    public function deleteSku($id, $delete_type)
+    public
+    function deleteSku($id, $delete_type)
     {
         $field = $delete_type == 'one' ? 'id' : 'g_id';
         $res = GoodsSkuT::update(['state' => CommonEnum::STATE_IS_FAIL], [$field => $id]);
@@ -93,7 +116,8 @@ class GoodsService
         }
     }
 
-    public function uploadImage($params)
+    public
+    function uploadImage($params)
     {
         $image = $params['image'];
         $url = $this->saveImage($image);
@@ -128,7 +152,8 @@ class GoodsService
         ];
     }
 
-    private function saveImage($img)
+    private
+    function saveImage($img)
     {
         $url = base64toImg($img);
         if (config('app_debug')) {
@@ -140,7 +165,8 @@ class GoodsService
         }
     }
 
-    public function updatePrice($params)
+    public
+    function updatePrice($params)
     {
         $skus = array();
         $main_image = array();
@@ -187,7 +213,8 @@ class GoodsService
 
      }
      */
-    private function prefixMainImage($imgs_arr)
+    private
+    function prefixMainImage($imgs_arr)
     {
         $res = (new GoodsMainImageT())->saveAll($imgs_arr);
         if (!$res) {
@@ -199,7 +226,8 @@ class GoodsService
     }
 
 
-    private function prefixSku($g_id, $skus)
+    private
+    function prefixSku($g_id, $skus)
     {
 
         $sku_img = array();
@@ -254,13 +282,15 @@ class GoodsService
 
     }
 
-    public function goodsDes($id)
+    public
+    function goodsDes($id)
     {
         $des = GoodsDesT::where('g_id', $id)->find();
         return $des;
     }
 
-    public function updateDes($params)
+    public
+    function updateDes($params)
     {
         $g_id = $params['g_id'];
         unset($params['g_id']);
@@ -270,7 +300,8 @@ class GoodsService
         }
     }
 
-    public function saveDes($params)
+    public
+    function saveDes($params)
     {
         $res = GoodsDesT::create($params);
         if (!$res) {
@@ -280,7 +311,8 @@ class GoodsService
         return $res->id;
     }
 
-    public function saveGoods($params)
+    public
+    function saveGoods($params)
     {
         $info_data = [
             'sku' => getSkuID(),
