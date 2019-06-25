@@ -50,14 +50,14 @@ class GoodsService
 
     private function prefixSkus($info)
     {
-        $sku = $info['sku'];
         $skus = $info['skus'];
         if (count($skus)) {
+            $sku_info=GoodsInfoT::where('id',$info['id'])->field('sku')->find();
             foreach ($skus as $k => $v) {
-                if (strpos($v['sku'], '-') == false) {
+                if (strpos($v['sku'], '-') == !false) {
                     continue;
                 }
-                $skus[$k]['sku'] = $sku . '-' . $v['sku'];
+                $skus[$k]['sku'] = $sku_info['sku'] . '-' . $v['sku'];
             }
         }
         $info['skus'] = $skus;
