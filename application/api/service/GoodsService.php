@@ -52,7 +52,7 @@ class GoodsService
     {
         $skus = $info['skus'];
         if (count($skus)) {
-            $sku_info=GoodsInfoT::where('id',$info['id'])->field('sku')->find();
+            $sku_info = GoodsInfoT::where('id', $info['id'])->field('sku')->find();
             foreach ($skus as $k => $v) {
                 if (strpos($v['sku'], '-') == !false) {
                     continue;
@@ -170,6 +170,7 @@ class GoodsService
     {
         $skus = array();
         $main_image = array();
+        $main_delete = array();
         if (key_exists('skus', $params)) {
             $sku_json = $params['skus'];
             $skus = json_decode($sku_json, true);
@@ -180,42 +181,51 @@ class GoodsService
             $main_image = json_decode($main, true);
             unset($params['main_image']);
         }
+        if (key_exists('main_delete', $params)) {
+            $delete = $params['main_delete'];
+            $main_delete = explode(',', $delete);
+            unset($params['main_delete']);
+        }
         $this->updateInfo($params);
         if (count($skus)) {
             $this->prefixSku($params['id'], $skus);
         }
 
         if (count($main_image)) {
-            // $this->prefixMainImage($params['id'], $main_image);
             $this->prefixMainImage($main_image);
+        }
+
+        if (count($main_delete)) {
+            $this->prefixMainImageDelete($main_delete);
         }
 
     }
 
-    /* private function prefixMainImage($g_id, $imgs_arr)
-     {
-         $data_arr = array();
-         foreach ($imgs_arr as $k => $v) {
-             $data_arr[] = [
-                 'g_id' => $g_id,
-                 'url' => $v,
-                 'state' => CommonEnum::STATE_IS_OK
-             ];
-         }
-         if (count($data_arr)) {
-             $res = (new GoodsMainImageT())->saveAll($data_arr);
-             if (!$res) {
-                 throw new SaveException([
-                     'msg' => '保存商品主图失败'
-                 ]);
-             }
-         }
 
-     }
-     */
+    private
+    function prefixMainImageDelete($main_delete)
+    {
+
+        $data = array();
+        foreach ($main_delete as $k => $v) {
+            $data[] = [
+                'id' => $v,
+                'state' => CommonEnum::STATE_IS_FAIL
+            ];
+        }
+        $res = (new GoodsMainImageT())->saveAll($data);
+        if (!$res) {
+            throw new UpdateException([
+                'msg' => '删除商品主图失败'
+            ]);
+        }
+
+    }
+
     private
     function prefixMainImage($imgs_arr)
     {
+
         $res = (new GoodsMainImageT())->saveAll($imgs_arr);
         if (!$res) {
             throw new UpdateException([
@@ -231,6 +241,7 @@ class GoodsService
     {
 
         $sku_img = array();
+        $delete_sku_img = array();
         foreach ($skus as $k => $v) {
 
             $v['zh'] = json_encode($v['zh']);
@@ -244,6 +255,17 @@ class GoodsService
             $img_url = array();
             if (key_exists('img_url', $v)) {
                 $img_url = $v['img_url'];
+                unset($v['img_url']);
+            }
+            if (key_exists('delete_image', $v)) {
+                $delete_image = $v['delete_image'];
+                $arr = explode(',', $delete_image);
+                foreach ($arr as $k3 => $v3) {
+                    $delete_sku_img[] = [
+                        'id' => $v3,
+                        'state' => CommonEnum::STATE_IS_FAIL
+                    ];
+                }
                 unset($v['img_url']);
             }
             if (key_exists('id', $v)) {
@@ -278,6 +300,10 @@ class GoodsService
 
         if (count($sku_img)) {
             (new GoodsSkuImgT())->saveAll($sku_img);
+        }
+
+        if (count($delete_sku_img)) {
+            (new GoodsSkuImgT())->saveAll($delete_sku_img);
         }
 
     }
