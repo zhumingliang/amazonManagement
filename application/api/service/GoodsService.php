@@ -381,8 +381,8 @@ class GoodsService
             $ids = $params['ids'];
             $goods = GoodsInfoT::goods($ids);
         } else {
-            if (key_exists('c_id', $params) && strlen($params['c_id'])
-                || key_exists('time_begin', $params) && key_exists('time_end', $params)) {
+            if ((key_exists('c_id', $params) && strlen($params['c_id']))
+                || (key_exists('time_begin', $params) && strlen($params['time_begin']) && key_exists('time_end', $params) && strlen($params['time_end']))) {
                 $goods = GoodsInfoT::goodsWithoutId($params['c_id'], $params['time_begin'], $params['time_end']);
             }
         }
