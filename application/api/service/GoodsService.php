@@ -640,7 +640,7 @@ class GoodsService
         $objWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel5');
         $name = '/static/excel/' . guid() . '.xls';
         $objWriter->save(dirname($_SERVER['SCRIPT_FILENAME']) . $name);
-        return config('setting.img_prefix').'public' . $name;
+        return config('setting.img_prefix') . $name;
     }
 
 }
