@@ -14,6 +14,7 @@ use app\lib\enum\CommonEnum;
 use app\lib\exception\DeleteException;
 use app\lib\exception\SaveException;
 use app\lib\exception\UpdateException;
+use think\Exception;
 
 class GoodsService
 {
@@ -390,7 +391,6 @@ class GoodsService
             return '';
         }
         $amazon_data = $this->prefixGoods($goods, $params);
-
         $excel_url = $this->excel($amazon_data);
         return $excel_url;
 
@@ -572,37 +572,42 @@ class GoodsService
 
     function getImage($url, $type = 0)
     {
-        $save_dir = dirname($_SERVER['SCRIPT_FILENAME']) . '/static/imgs/';
-        $url_arr = explode('.', $url);
-        $ext = $url_arr[count($url_arr) - 1];
-        $filename = time() . '.' . $ext;
+        try {
+            $save_dir = dirname($_SERVER['SCRIPT_FILENAME']) . '/static/imgs/';
+            $url_arr = explode('.', $url);
+            $ext = $url_arr[count($url_arr) - 1];
+            $filename = time() . '.' . $ext;
 
-        //创建保存目录
-        if (!file_exists($save_dir) && !mkdir($save_dir, 0777, true)) {
-            throw new SaveException(['msg' => '文件路径错误']);
+            //创建保存目录
+            if (!file_exists($save_dir) && !mkdir($save_dir, 0777, true)) {
+                throw new SaveException(['msg' => '文件路径错误']);
+            }
+            //获取远程文件所采用的方法
+            if ($type) {
+                $ch = curl_init();
+                $timeout = 5;
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+                $img = curl_exec($ch);
+                curl_close($ch);
+            } else {
+                ob_start();
+                readfile($url);
+                $img = ob_get_contents();
+                ob_end_clean();
+            }
+            //$size=strlen($img);
+            //文件大小
+            $fp2 = @fopen($save_dir . $filename, 'a');
+            fwrite($fp2, $img);
+            fclose($fp2);
+            unset($img, $url);
+            return config('setting.img_prefix_test') . 'static/imgs/' . $filename;
+
+        } catch (Exception $e) {
+            return '';
         }
-        //获取远程文件所采用的方法
-        if ($type) {
-            $ch = curl_init();
-            $timeout = 5;
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-            $img = curl_exec($ch);
-            curl_close($ch);
-        } else {
-            ob_start();
-            readfile($url);
-            $img = ob_get_contents();
-            ob_end_clean();
-        }
-        //$size=strlen($img);
-        //文件大小
-        $fp2 = @fopen($save_dir . $filename, 'a');
-        fwrite($fp2, $img);
-        fclose($fp2);
-        unset($img, $url);
-        return config('setting.img_prefix_test') . 'static/imgs/' . $filename;
     }
 
 

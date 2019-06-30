@@ -75,7 +75,7 @@ class GoodsInfoT extends BaseModel
         $goods = self::where('id', 'in', $ids)
             ->with([
                 'mainImage' => function ($query) {
-                    $query->where('state', CommonEnum::STATE_IS_OK);
+                    $query->where('state', CommonEnum::STATE_IS_OK)->order('order');
                 },
                 'skus' => function ($query) {
                     $query->with(['imgUrl' => function ($query2) {
