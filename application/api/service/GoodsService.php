@@ -620,14 +620,14 @@ class GoodsService
         $excelread = \PHPExcel_IOFactory::createReader($filetype);
         //加载文件
         $phpexcel = $excelread->load($file);
-       /* //读取一个工作表，可以通过索引或名称
-        $sheet = $phpexcel->getSheet(0);
-        //获取当前工作表的行数
-        $rows = $sheet->getHighestRow();
-        //获取当前工作表的列（在这里获取到的是字母列），
-        $column = $sheet->getHighestColumn();
-        //把字母列转换成数字，这里获取的是列的数，并且列的索引
-        $columns = \PHPExcel_Cell::columnIndexFromString($column);*/
+        /* //读取一个工作表，可以通过索引或名称
+         $sheet = $phpexcel->getSheet(0);
+         //获取当前工作表的行数
+         $rows = $sheet->getHighestRow();
+         //获取当前工作表的列（在这里获取到的是字母列），
+         $column = $sheet->getHighestColumn();
+         //把字母列转换成数字，这里获取的是列的数，并且列的索引
+         $columns = \PHPExcel_Cell::columnIndexFromString($column);*/
 
         for ($i = 4; $i <= count($data) + 3; $i++) {
 
@@ -638,9 +638,10 @@ class GoodsService
             }
         }
         $objWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel5');
-        $name = '/static/excel/' . guid() . '.xls';
+        $guid = guid();
+        $name = '/static/excel/' . $guid . '.xls';
         $objWriter->save(dirname($_SERVER['SCRIPT_FILENAME']) . $name);
-        return config('setting.img_prefix') . $name;
+        return config('setting.img_prefix') . 'static/excel/' . $guid . '.xls';
     }
 
 }
