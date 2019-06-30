@@ -537,5 +537,39 @@ class Goods extends BaseController
         return json(new SuccessMessage());
     }
 
+    /**
+     * @api {POST} /api/v1/goods/export/amazon 商品导出amazon格式
+     * @apiGroup  CMS
+     * @apiVersion 1.0.1
+     * @apiDescription   商品导出amazon格式
+     * @apiExample {post}  请求样例:
+     * {"ids":"1,2,3","language":"en","c_id":1,"time_begin":"2019-10-01",
+     * "time_end":"2019-10-07",
+     * "price_unit":"GBP","title":"","serial":"厂商","serial_number":"厂商编号",
+     * "brand":"品牌","tp":"模板分类","feed":"Feed名称","image_new":1}
+     * @apiParam (请求参数说明) {String} ids 商品id，多个id逗号分隔
+     * @apiParam (请求参数说明) {int} language 语言
+     * @apiParam (请求参数说明) {int} c_id 分类id
+     * @apiParam (请求参数说明) {int} time_begin 修改开始时间
+     * @apiParam (请求参数说明) {String} time_end 修改结束时间
+     * @apiParam (请求参数说明) {String} price_unit 币种
+     * @apiParam (请求参数说明) {String} title 标题前缀
+     * @apiParam (请求参数说明) {String} serial 厂商
+     * @apiParam (请求参数说明) {String} serial_number 厂商编号
+     * @apiParam (请求参数说明) {String} brand 品牌
+     * @apiParam (请求参数说明) {String} tp 模板分类
+     * @apiParam (请求参数说明) {String} condition_note 重要声明
+     * @apiParam (请求参数说明) {String} feed Feed名称
+     * @apiParam (请求参数说明) {String} image_new 生成新图片地址:1 | 是；2 | 否
+     * @apiSuccessExample {json} 返回样例:
+     * {"url": "http://"}
+     * @apiSuccess (返回参数说明) {String} url 导出excel地址，为空表示没有数据导出
+     */
+    public function exportAmazon()
+    {
+        $params = $this->request->param();
+        (new GoodsService())->exportAmazon($params);
+    }
+
 
 }

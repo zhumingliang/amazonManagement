@@ -42,6 +42,9 @@ class AdminService
 
     public function updateInfo($params)
     {
+        if (key_exists('pwd', $params)) {
+            $params['pwd'] = sha1($params['pwd']);
+        }
         $res = AdminT::update($params);
         if (!$res) {
             throw new UpdateException();
@@ -50,7 +53,7 @@ class AdminService
     }
 
 
-    public function  admins($grade, $page, $size, $key)
+    public function admins($grade, $page, $size, $key)
     {
         $current_grade = Token::getCurrentTokenVar('grade');
         $u_id = Token::getCurrentUid();

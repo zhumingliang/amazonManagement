@@ -49,7 +49,7 @@ class Ali1688Spider extends Spider
             //存储商品主图
             $main = $this->prefixImage($g_id);
             if (count($main)) {
-               $this->saveMainImg($main);
+                $this->saveMainImg($main);
             }
 
             //保存sku
@@ -117,13 +117,13 @@ class Ali1688Spider extends Spider
 
                 if ($k % 2 == 0) {
                     $des .= $v . ':';
-                    if ($k < 8) {
+                    if ($k < 10) {
                         $abs .= $v . ':';
                     }
                 }
                 if ($k % 2 == 1) {
                     $des .= $v . '</br>';
-                    if ($k < 8) {
+                    if ($k < 10) {
                         $abs .= $v . '</br>';
                     }
                 }
@@ -145,7 +145,7 @@ class Ali1688Spider extends Spider
         }
 
         return [
-            'abs' => $abs,
+            'abs' => substr($des, 0, -1),// $abs,
             'des' => substr($des, 0, -1)
         ];
 
@@ -183,7 +183,7 @@ class Ali1688Spider extends Spider
         $return_sku = [];
         $return_sku_image = [];
         foreach ($skuProps as $k => $v) {
-            if (strpos($v['prop'], '颜色') !== false) {
+            if (strpos($v['prop'], '颜色') !== false || strpos($v['prop'], '花型') !== false) {
                 $color_arr = $this->prefixColor($v['value']);
                 $IS_COLOR = 1;
                 $COLOR_NUM = $k;

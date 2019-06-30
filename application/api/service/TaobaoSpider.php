@@ -23,6 +23,8 @@ class TaobaoSpider extends Spider
     {
         Db::startTrans();
         try {
+           // echo $this->html;
+
             $this->sku = getSkuID();
             $sku_price = $this->prefixSkuPrice();
             //保存商品基本信息
@@ -33,7 +35,7 @@ class TaobaoSpider extends Spider
             $this->prefixDes();
             //保存主图
             $this->prefixMainImg();
-            Db::commit();
+             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
@@ -113,7 +115,7 @@ class TaobaoSpider extends Spider
         $sku_image = array();
         $i = 0;
 
-        if (!count($sku_price)){
+        if (!count($sku_price)) {
             return false;
         }
         foreach ($sku_price as $k => $v) {

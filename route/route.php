@@ -38,6 +38,7 @@ Route::post('api/:version/goods/sku/delete', 'api/:version.Goods/deleteSku');
 Route::post('api/:version/goods/sku/save', 'api/:version.Goods/saveSku');
 Route::post('api/:version/goods/sku/update', 'api/:version.Goods/updateSku');
 Route::post('api/:version/goods/image/upload', 'api/:version.Goods/uploadImage');
+Route::post('api/:version/goods/export/amazon', 'api/:version.Goods/exportAmazon');
 
 Route::post('api/:version/translate/des', 'api/:version.Translate/des');
 Route::post('api/:version/translate/sku', 'api/:version.Translate/sku');

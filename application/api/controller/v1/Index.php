@@ -45,21 +45,27 @@ class Index extends BaseController
     public function index()
     {
 
-        $list = JiumufanT::where([
-            'state' => 1,
-            'used' => 1
-        ])->field('username,CONCAT_WS("",address,flor) as address ,month,money')
-            ->order('id,username')
+         $money=JiumufanT::where(['state'=>1,'used'=>1])->sum('money');
+         print_r($money);
+
+        /*$list = JiumufanT::where('state', 1)->field('id,username,CONCAT_WS("",address,flor) as address ,month,money,used')
+            ->order('used')
             ->select()->toArray();
 
+        foreach ($list as $k => $v) {
+            $list[$k]['id'] = $k + 1;
+        }
+
         $header = array(
+            'id',
             '项目经理',
             '工程地址',
             '时间',
-            '总价'
+            '总价',
+            '是否结算'
         );
         $file_name = '玖木坊对账单.csv';
-        $this->put_csv($list, $header, $file_name);
+        $this->put_csv($list, $header, $file_name);*/
 
         /* $list=JiumufanT::order('create_time desc')->select();
          return json($list);*/
