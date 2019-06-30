@@ -56,6 +56,29 @@ class TranslateService
                 'info' => $this->translateSkuRes($query, $from, $v)
             ];
 
+        }
+
+        return $list;
+    }
+
+
+    public function translateSkuOne($from, $to, $data)
+    {
+        $info = json_decode($data, true);
+        $to = explode(',', $to);
+        $query_arr = array();
+
+        array_push($query_arr, $info['size'] == '' ? '=' : $info['size']);
+        array_push($query_arr, $info['color'] == '' ? '=' : $info['color']);
+
+
+        $query = implode("\n", $query_arr);
+        $list = array();
+        foreach ($to as $k => $v) {
+            $list[] = [
+                'type' => $v,
+                'info' => $this->translateSkuRes($query, $from, $v)
+            ];
 
         }
 

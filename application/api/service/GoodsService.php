@@ -389,15 +389,16 @@ class GoodsService
         if (!count($goods)) {
             return '';
         }
-        return $this->prefixGoods($goods, $params);
+        $amazon_data = $this->prefixGoods($goods, $params);
+
+        $excel_url = $this->excel($amazon_data);
+        return $excel_url;
 
 
     }
 
     private function prefixGoods($goods, $params)
     {
-        print_r($goods);
-        return 1;
         $data = array();
         foreach ($goods as $k => $v) {
             $skus = $goods[$k]['skus'];
@@ -410,33 +411,106 @@ class GoodsService
             $main_image = $v['main_image'];
             $main_count = count($main_image);
             $image_new = $params['image_new'];
+            $data[] = [
+                'A' => $v['sku'],
+                'B' => '',
+                'C' => count($skus) ? '' : 'UPC',
+                'D' => key_exists('title', $params) && strlen($params['title']) ? $params['title'] . ' ' . $des['title'] : $des['title'],
+                'E' => $brand,
+                'F' => $serial,
+                'G' => '',
+                'H' => $des['des'],
+                'I' => $params['feed'],
+                'J' => 'Update',
+                'K' => $v['price'],
+                'L' => $params['price_unit'],
+                'M' => 120,
+                'N' => 'New',
+                'O' => '',
+                'P' => $v['weight'],
+                'Q' => 'KG',
+                'R' => '',
+                'S' => '',
+                'T' => $abs_couunt >= 1 ? $abs[0] : '',
+                'U' => $abs_couunt >= 2 ? $abs[1] : '',
+                'V' => $abs_couunt >= 3 ? $abs[2] : '',
+                'W' => $abs_couunt >= 4 ? $abs[3] : '',
+                'X' => $abs_couunt >= 5 ? $abs[4] : '',
+                'Y' => '',
+                'Z' => '',
+                'AA' => $keyw,
+                'AB' => '',
+                'AC' => '',
+                'AD' => '',
+                'AE' => '',
+                'AF' => $main_count >= 1 ? $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'] : '',
+                'AG' => '',
+                'AH' => $main_count >= 2 ? $image_new == 1 ? $this->getImage($main_image[1]['url']) : $main_image[1]['url'] : '',
+                'AI' => $main_count >= 3 ? $image_new == 1 ? $this->getImage($main_image[2]['url']) : $main_image[2]['url'] : '',
+                'AJ' => $main_count >= 4 ? $image_new == 1 ? $this->getImage($main_image[3]['url']) : $main_image[3]['url'] : '',
+                'AK' => $main_count >= 5 ? $image_new == 1 ? $this->getImage($main_image[4]['url']) : $main_image[4]['url'] : '',
+                'AL' => $main_count >= 6 ? $image_new == 1 ? $this->getImage($main_image[5]['url']) : $main_image[5]['url'] : '',
+                'AM' => $main_count >= 7 ? $image_new == 1 ? $this->getImage($main_image[6]['url']) : $main_image[6]['url'] : '',
+                'AN' => $main_count >= 8 ? $image_new == 1 ? $this->getImage($main_image[7]['url']) : $main_image[7]['url'] : '',
+                'AO' => $main_count >= 9 ? $image_new == 1 ? $this->getImage($main_image[8]['url']) : $main_image[8]['url'] : '',
+                'AP' => count($skus) ? 'Parent' : '',
+                'AQ' => '',
+                'AR' => '',
+                'AS' => 'SizeColor',
+                'AT' => '',
+                'AU' => '',
+                'AV' => '',
+                'AW' => '',
 
-            if ($k = 1) {
+            ];
+            if (!count($skus)) {
+                continue;
+            }
+            foreach ($skus as $k2 => $v2) {
+
+                $colorSize = $this->prefixDes($v2, $params['language'], 'sku');
+                $sku_title = $des['title'] . ' ' . $colorSize['color'] . ' ' . $colorSize['size'];
+                $sku_image = $v2['img_url'];
+                $sku_count = count($sku_image);
+                //echo $sku_count < 1 ? '' : $image_new == 1 ? $this->getImage($sku_image[0]['url']) : $sku_image[0]['url'];
+                $variation_theme = '';
+                if (strlen($colorSize['size']) && strlen($colorSize['color'])) {
+                    $variation_theme = 'SizeColor';
+                } else {
+                    if (strlen($colorSize['size'])) {
+                        $variation_theme = 'Size';
+                    }
+                    if (strlen($colorSize['color'])) {
+                        $variation_theme = 'Color';
+                    }
+                }
+
                 $data[] = [
-                    'A' => $v['sku'],
-                    'B' => '',
-                    'C' => count($skus) ? '' : 'UPC',
-                    'D' => key_exists('title', $params) && strlen($params['title']) ? $params['title'] . ' ' . $des['title'] : $des['title'],
+                    'A' => $v['sku'] . '-' . $v2['sku'],
+                    'B' => $v2['upc'],
+                    'C' => 'UPC',
+                    'D' => key_exists('title', $params) && strlen($params['title']) ?
+                        $params['title'] . ' ' . $sku_title : $sku_title,
                     'E' => $brand,
                     'F' => $serial,
                     'G' => '',
                     'H' => $des['des'],
                     'I' => $params['feed'],
                     'J' => 'Update',
-                    'K' => $v['price'],
+                    'K' => $v2['price'],
                     'L' => $params['price_unit'],
-                    'M' => 120,
+                    'M' => $v2['count'],
                     'N' => 'New',
                     'O' => '',
                     'P' => $v['weight'],
                     'Q' => 'KG',
                     'R' => '',
                     'S' => '',
-                    'T' => $abs_couunt < 1 ? '' : $abs[0],
-                    'U' => $abs_couunt < 2 ? '' : $abs[1],
-                    'V' => $abs_couunt < 3 ? '' : $abs[2],
-                    'W' => $abs_couunt < 4 ? '' : $abs[3],
-                    'X' => $abs_couunt < 5 ? '' : $abs[4],
+                    'T' => $abs_couunt >= 1 ? $abs[0] : '',
+                    'U' => $abs_couunt >= 2 ? $abs[1] : '',
+                    'V' => $abs_couunt >= 3 ? $abs[2] : '',
+                    'W' => $abs_couunt >= 4 ? $abs[3] : '',
+                    'X' => $abs_couunt >= 5 ? $abs[4] : '',
                     'Y' => '',
                     'Z' => '',
                     'AA' => $keyw,
@@ -444,90 +518,33 @@ class GoodsService
                     'AC' => '',
                     'AD' => '',
                     'AE' => '',
-                    'AF' => $main_count < 1 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
+                    'AF' => $sku_count >= 1 ? $image_new == 1 ? $this->getImage($sku_image[0]['url']) : $sku_image[0]['url'] : '',
                     'AG' => '',
-                    'AH' => $main_count < 2 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AI' => $main_count < 3 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AJ' => $main_count < 4 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AK' => $main_count < 5 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AL' => $main_count < 6 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AM' => $main_count < 7 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AN' => $main_count < 8 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AO' => $main_count < 9 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                    'AP' => count($skus) ? 'Parent' : '',
-                    'AQ' => '',
-                    'AR' => '',
-                    'AS' => 'SizeColor',
-                    'AT' => '',
-                    'AU' => '',
-                    'AV' => '',
-                    'AW' => '',
+                    'AH' => $sku_count >= 2 ? $image_new == 1 ? $this->getImage($sku_image[1]['url']) : $sku_image[1]['url'] : '',
+                    'AI' => $sku_count >= 3 ? $image_new == 1 ? $this->getImage($sku_image[2]['url']) : $sku_image[2]['url'] : '',
+                    'AJ' => $sku_count >= 4 ? $image_new == 1 ? $this->getImage($sku_image[3]['url']) : $sku_image[3]['url'] : '',
+                    'AK' => $sku_count >= 5 ? $image_new == 1 ? $this->getImage($sku_image[4]['url']) : $sku_image[4]['url'] : '',
+                    'AL' => $sku_count >= 6 ? $image_new == 1 ? $this->getImage($sku_image[5]['url']) : $sku_image[5]['url'] : '',
+                    'AM' => '',
+                    'AN' => '',
+                    'AO' => '',
+                    'AP' => 'Child',
+                    'AQ' => $v['sku'],
+                    'AR' => 'Variation',
+                    'AS' => $variation_theme,
+                    'AT' => $colorSize['color'],
+                    'AU' => $v2['color_map'],
+                    'AV' => $colorSize['size'],
+                    'AW' => $v2['size_map'],
 
                 ];
-            } else {
-                foreach ($skus as $k2 => $v2) {
-                    $data[] = [
-                        'A' => $v2['sku'],
-                        'B' => '',
-                        'C' => count($skus) ? '' : 'UPC',
-                        'D' => key_exists('title', $params) && strlen($params['title']) ? $params['title'] . ' ' . $des['title'] : $des['title'],
-                        'E' => $brand,
-                        'F' => $serial,
-                        'G' => '',
-                        'H' => $des['des'],
-                        'I' => $params['feed'],
-                        'J' => 'Update',
-                        'K' => $v['price'],
-                        'L' => $params['price_unit'],
-                        'M' => 120,
-                        'N' => 'New',
-                        'O' => '',
-                        'P' => $v['weight'],
-                        'Q' => 'KG',
-                        'R' => '',
-                        'S' => '',
-                        'T' => $abs_couunt < 1 ? '' : $abs[0],
-                        'U' => $abs_couunt < 2 ? '' : $abs[1],
-                        'V' => $abs_couunt < 3 ? '' : $abs[2],
-                        'W' => $abs_couunt < 4 ? '' : $abs[3],
-                        'X' => $abs_couunt < 5 ? '' : $abs[4],
-                        'Y' => '',
-                        'Z' => '',
-                        'AA' => $keyw,
-                        'AB' => '',
-                        'AC' => '',
-                        'AD' => '',
-                        'AE' => '',
-                        'AF' => $main_count < 1 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AG' => '',
-                        'AH' => $main_count < 2 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AI' => $main_count < 3 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AJ' => $main_count < 4 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AK' => $main_count < 5 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AL' => $main_count < 6 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AM' => $main_count < 7 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AN' => $main_count < 8 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AO' => $main_count < 9 ? '' : $image_new == 1 ? $this->getImage($main_image[0]['url']) : $main_image[0]['url'],
-                        'AP' => count($skus) ? 'Parent' : '',
-                        'AQ' => '',
-                        'AR' => '',
-                        'AS' => 'SizeColor',
-                        'AT' => '',
-                        'AU' => '',
-                        'AV' => '',
-                        'AW' => '',
-
-                    ];
-                }
             }
-
         }
-
-        print_r($data);
-
+        return $data;
     }
 
-    private function prefixDes($des, $lan)
+    private
+    function prefixDes($des, $lan, $type = 'des')
     {
         if ($des[$lan]) {
             return json_decode($des[$lan], true);
@@ -543,9 +560,14 @@ class GoodsService
                 break;
             }
         }
+        if ($type == 'des') {
+            $info = (new TranslateService())->translateDes($from, $to, $data);
 
-        $info = (new TranslateService())->translateDes($from, $to, $data);
-        return $info[0]['info'];
+        } else {
+            $info = (new TranslateService())->translateSkuOne($from, $to, $data);
+
+        }
+        return $type == 'sku' ? $info[0]['info'][0] : $info[0]['info'];
     }
 
     function getImage($url, $type = 0)
@@ -584,7 +606,8 @@ class GoodsService
     }
 
 
-    public function excel()
+    public
+    function excel($data)
     {
         //读取
         $file = dirname($_SERVER['SCRIPT_FILENAME']) . '/static/excel/' . 'amazon.xls';
@@ -597,30 +620,27 @@ class GoodsService
         $excelread = \PHPExcel_IOFactory::createReader($filetype);
         //加载文件
         $phpexcel = $excelread->load($file);
-        //读取一个工作表，可以通过索引或名称
+       /* //读取一个工作表，可以通过索引或名称
         $sheet = $phpexcel->getSheet(0);
         //获取当前工作表的行数
         $rows = $sheet->getHighestRow();
         //获取当前工作表的列（在这里获取到的是字母列），
         $column = $sheet->getHighestColumn();
         //把字母列转换成数字，这里获取的是列的数，并且列的索引
-        $columns = \PHPExcel_Cell::columnIndexFromString($column);
+        $columns = \PHPExcel_Cell::columnIndexFromString($column);*/
 
-        //for ($i = 4; $i <= count($attr) + 1; $i++) {
-        for ($i = 4; $i <= 4 + 1; $i++) {
-            $phpexcel->getActiveSheet()->setCellValue("A4", 'test');
-            $phpexcel->getActiveSheet()->setCellValue("A5", 'test2');
+        for ($i = 4; $i <= count($data) + 3; $i++) {
 
-            // $j = 0;
-            /* foreach ($attr[$i - 2] as $key => $value) {
-                 $excel->getActiveSheet()->setCellValue("$letter[$j]$i", "$value");
-                 $j++;
-             }*/
+            foreach ($data[$i - 4] as $k => $v) {
+                $phpexcel->getActiveSheet()->getStyle("$k$i")->getFont()->setName('Arial');
+                $phpexcel->getActiveSheet()->getStyle("$k$i")->getFont()->setSize(10);
+                $phpexcel->getActiveSheet()->setCellValue("$k$i", "$v");
+            }
         }
         $objWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel5');
-        $objWriter->save(dirname($_SERVER['SCRIPT_FILENAME']) . '/static/excel/' . 'test2.xls');
-
-        return '';
+        $name = '/static/excel/' . guid() . '.xls';
+        $objWriter->save(dirname($_SERVER['SCRIPT_FILENAME']) . $name);
+        return config('setting.img_prefix') . $name;
     }
 
 }

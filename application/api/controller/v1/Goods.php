@@ -568,7 +568,8 @@ class Goods extends BaseController
     public function exportAmazon()
     {
         $params = $this->request->param();
-        (new GoodsService())->exportAmazon($params);
+        $url = (new GoodsService())->exportAmazon($params);
+        return json(['url' => $url]);
     }
 
 
