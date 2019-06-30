@@ -602,7 +602,7 @@ class GoodsService
         fwrite($fp2, $img);
         fclose($fp2);
         unset($img, $url);
-        return config('setting.img_prefix_test') . 'public/static/imgs/' . $filename;
+        return config('setting.img_prefix_test') . 'static/imgs/' . $filename;
     }
 
 
