@@ -12,6 +12,9 @@
 // 应用公共文件
 
 
+use app\lib\exception\SaveException;
+use think\Exception;
+
 function getRandChar($length)
 {
     $str = null;
@@ -130,16 +133,17 @@ function makeOrderNo()
     return $orderSn;
 }
 
-function curl_file_get_contents($durl,$headers){
+function curl_file_get_contents($durl, $headers)
+{
 
     // 初始化
     $curl = curl_init();
     // 设置url路径
     curl_setopt($curl, CURLOPT_URL, $durl);
     // 将 curl_exec()获取的信息以文件流的形式返回，而不是直接输出。
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true) ;
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     // 在启用 CURLOPT_RETURNTRANSFER 时候将获取数据返回
-    curl_setopt($curl, CURLOPT_BINARYTRANSFER, true) ;
+    curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
     // 添加头信息
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     // CURLINFO_HEADER_OUT选项可以拿到请求头信息
@@ -155,6 +159,47 @@ function curl_file_get_contents($durl,$headers){
     curl_close($curl);
     // 返回数据
     return $data;
+}
+
+
+function getImage($url, $type = 0)
+{
+    try {
+        $save_dir = dirname($_SERVER['SCRIPT_FILENAME']) . '/static/imgs/';
+        $url_arr = explode('.', $url);
+        $ext = $url_arr[count($url_arr) - 1];
+        $filename = time() . '.' . $ext;
+
+        //创建保存目录
+        if (!file_exists($save_dir) && !mkdir($save_dir, 0777, true)) {
+            throw new SaveException(['msg' => '文件路径错误']);
+        }
+        //获取远程文件所采用的方法
+        if ($type) {
+            $ch = curl_init();
+            $timeout = 5;
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+            $img = curl_exec($ch);
+            curl_close($ch);
+        } else {
+            ob_start();
+            readfile($url);
+            $img = ob_get_contents();
+            ob_end_clean();
+        }
+        //$size=strlen($img);
+        //文件大小
+        $fp2 = @fopen($save_dir . $filename, 'a');
+        fwrite($fp2, $img);
+        fclose($fp2);
+        unset($img, $url);
+        return 'static/imgs/' . $filename;
+
+    } catch (Exception $e) {
+        return '';
+    }
 }
 
 

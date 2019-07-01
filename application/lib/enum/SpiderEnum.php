@@ -18,5 +18,11 @@ class SpiderEnum
 
     const TOM_TOP = 6;
 
+    const COLLECTION_NO = 1;
+
+    const COLLECTION_ING = 2;
+
+    const COLLECTION_OK = 3;
+
 
 }

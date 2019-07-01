@@ -39,8 +39,8 @@ class Spider extends BaseController
         $params['state'] = 2;
         SpiderT::create($params);
 
-        /* (new SpiderService($url, $c_id, $cookie))->upload();
-         return json(new SuccessMessage());*/
+        (new SpiderService($url, $c_id, $cookie))->upload();
+        return json(new SuccessMessage());
 
     }
 

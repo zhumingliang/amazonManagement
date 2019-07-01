@@ -23,9 +23,12 @@ class ChinabrandsSpider extends Spider
     //环球华品
     public function uploadInfo()
     {
-
         Db::startTrans();
         try {
+            if (!strlen($this->html)) {
+                Db::rollback();
+                return false;
+            }
             $this->sku = getSkuID();
             //保存商品基本信息
             $this->prefixInfo();
@@ -36,7 +39,7 @@ class ChinabrandsSpider extends Spider
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
-            throw $e;
+            $this->saveCollectionFail($e->getMessage());
         }
     }
 

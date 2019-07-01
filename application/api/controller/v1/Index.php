@@ -8,6 +8,7 @@ use app\api\model\SpiderT;
 use app\api\model\UsedT;
 use app\api\service\SpiderService;
 use app\api\service\TranslateService;
+use app\lib\enum\SpiderEnum;
 use app\lib\exception\SaveException;
 use app\lib\exception\SuccessMessage;
 use GoogleTranslate;
@@ -48,17 +49,17 @@ class Index extends BaseController
     public function index()
     {
 
-        $spiders = SpiderT::all();
-
-        foreach ($spiders as $k => $v) {
+        $spider = SpiderT::where('state', SpiderEnum::COLLECTION_NO)->find();
+        SpiderT::update(['state' => SpiderEnum::COLLECTION_ING], ['id' => $spider->id]);
+        if (count($spider)) {
             try {
-                (new SpiderService($v->url, $v->c_id, $v->cookie))->upload();
-
+                (new SpiderService($spider->url, $spider->c_id, $spider->cookie,$spider->id))
+                    ->upload();
             } catch (Exception $e) {
                 $res = $e->getMessage();
-                SpiderT::update(['res' => $res], ['id' => $v->id]);
+                SpiderT::update(['res' => $res], ['id' => $spider->id]);
             }
-            break;
+
         }
 
         /* $money=JiumufanT::where(['state'=>1,'used'=>1])->sum('money');

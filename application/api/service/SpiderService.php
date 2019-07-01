@@ -10,13 +10,15 @@ use think\facade\Cache;
 class SpiderService
 {
     private $url = '';
+    private $s_id = '';
     private $c_id = 0;
     private $cookie = '';
 
-    public function __construct($url, $c_id, $cookie)
+    public function __construct($url, $c_id, $cookie, $s_id)
     {
         $this->url = str_replace(PHP_EOL, '', $url);
         $this->c_id = $c_id;
+        $this->s_id = $s_id;
         $this->cookie = $cookie;
     }
 
@@ -43,7 +45,7 @@ class SpiderService
         $type = $this->prefixUrlType();
         switch ($type) {
             case 'chinabrands':
-                (new ChinabrandsSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                (new ChinabrandsSpider($this->url, $this->c_id, $this->cookie,$this->s_id))->uploadInfo();
                 break;
             case 'tmall':
                 if (!$this->checkCookie($this->cookie)) {
@@ -51,19 +53,19 @@ class SpiderService
                         'msg' => '抓取天猫商品,需要传入cookie'
                     ]);
                 }
-                (new TmallSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                (new TmallSpider($this->url, $this->c_id, $this->cookie,$this->s_id))->uploadInfo();
                 break;
             case 'taobao':
-                (new TaobaoSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                (new TaobaoSpider($this->url, $this->c_id, $this->cookie,$this->s_id))->uploadInfo();
                 break;
             case 'aliexpress':
-                (new AliexpressSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                (new AliexpressSpider($this->url, $this->c_id, $this->cookie,$this->s_id))->uploadInfo();
                 break;
             case '1688':
-                (new Ali1688Spider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                (new Ali1688Spider($this->url, $this->c_id, $this->cookie,$this->s_id))->uploadInfo();
                 break;
             case 'tomtop':
-                (new TomtopSpider($this->url, $this->c_id, $this->cookie))->uploadInfo();
+                (new TomtopSpider($this->url, $this->c_id, $this->cookie,$this->s_id))->uploadInfo();
                 break;
             default:
                 '';

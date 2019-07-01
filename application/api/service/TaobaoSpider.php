@@ -23,7 +23,9 @@ class TaobaoSpider extends Spider
     {
         Db::startTrans();
         try {
-           // echo $this->html;
+            if (!strlen($this->html)) {
+                return false;
+            }
 
             $this->sku = getSkuID();
             $sku_price = $this->prefixSkuPrice();

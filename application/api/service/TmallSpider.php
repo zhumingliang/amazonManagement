@@ -26,6 +26,9 @@ class TmallSpider extends Spider
     {
         Db::startTrans();
         try {
+            if (!strlen($this->html)) {
+                return false;
+            }
             $this->sku = getSkuID();
             //保存商品基本信息
             $this->prefixInfo();

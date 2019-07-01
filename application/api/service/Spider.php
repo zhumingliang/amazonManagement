@@ -9,6 +9,7 @@ use app\api\model\GoodsInfoT;
 use app\api\model\GoodsMainImageT;
 use app\api\model\GoodsSkuImgT;
 use app\api\model\GoodsSkuT;
+use app\api\model\SpiderT;
 use app\lib\enum\CommonEnum;
 use app\lib\exception\SaveException;
 use phpspider\core\requests;
@@ -18,10 +19,12 @@ class Spider
     public $html = '';
     public $c_id = 0;
     public $url = 0;
+    public $s_id = 0;
 
-    public function __construct($url, $c_id, $cookie)
+    public function __construct($url, $c_id, $cookie, $s_id)
     {
         $this->c_id = $c_id;
+        $this->s_id = $s_id;
         $this->url = urldecode($url);
         //$this->checkUploaded();
         $cookie = urldecode($cookie);
@@ -199,6 +202,13 @@ class Spider
             return null;
         }
 
+    }
+
+    public function saveCollectionFail($msg)
+    {
+        SpiderT::update([
+            'res' => $msg
+        ], ['id' => $this->s_id]);
 
     }
 

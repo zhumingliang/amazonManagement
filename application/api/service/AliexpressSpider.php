@@ -25,6 +25,9 @@ class AliexpressSpider extends Spider
     {
         Db::startTrans();
         try {
+            if (!strlen($this->html)) {
+                return false;
+            }
             $this->sku_id = getSkuID();
             //保存商品基本信息
             $this->prefixInfo();
@@ -35,7 +38,7 @@ class AliexpressSpider extends Spider
             //保存主图
             $this->prefixMainImg();
 
-            Db::commit();
+           // Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;

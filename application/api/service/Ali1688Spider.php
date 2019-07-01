@@ -20,8 +20,12 @@ class Ali1688Spider extends Spider
 
     public function uploadInfo()
     {
+
         Db::startTrans();
         try {
+            if (!strlen($this->html)) {
+                return false;
+            }
             $sku_id = getSkuID();
             $title = selector::select($this->html, '//*[@id="mod-detail-title"]/h1');
             $keys = $this->get_sitemeta('keywords');
