@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
 use app\api\model\JiumufanT;
+use app\api\model\LogT;
 use app\api\model\SpiderT;
 use app\api\model\UsedT;
 use app\api\service\SpiderService;
@@ -49,11 +50,12 @@ class Index extends BaseController
     public function index()
     {
 
+        LogT::create(['msg' => '1']);
         $spider = SpiderT::where('state', SpiderEnum::COLLECTION_NO)->find();
         SpiderT::update(['state' => SpiderEnum::COLLECTION_ING], ['id' => $spider->id]);
         if (count($spider)) {
             try {
-                (new SpiderService($spider->url, $spider->c_id, $spider->cookie,$spider->id))
+                (new SpiderService($spider->url, $spider->c_id, $spider->cookie, $spider->id))
                     ->upload();
             } catch (Exception $e) {
                 $res = $e->getMessage();
