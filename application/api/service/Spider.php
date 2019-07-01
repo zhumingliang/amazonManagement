@@ -9,6 +9,7 @@ use app\api\model\GoodsInfoT;
 use app\api\model\GoodsMainImageT;
 use app\api\model\GoodsSkuImgT;
 use app\api\model\GoodsSkuT;
+use app\api\model\LogT;
 use app\api\model\SpiderT;
 use app\lib\enum\CommonEnum;
 use app\lib\exception\SaveException;
@@ -20,8 +21,9 @@ class Spider
     public $c_id = 0;
     public $url = 0;
     public $s_id = 0;
+    public $admin_id = 7;
 
-    public function __construct($url, $c_id, $cookie, $s_id)
+    public function __construct($url, $c_id, $cookie, $s_id, $admin_id)
     {
         $this->c_id = $c_id;
         $this->s_id = $s_id;
@@ -44,6 +46,7 @@ class Spider
 
         requests::$output_encoding = 'UTF-8';
         $this->html = requests::get($this->url);
+        LogT::create(['msg' => $this->html]);
 
     }
 
@@ -119,7 +122,7 @@ class Spider
     public
     function saveGoodsInfo($params)
     {
-        $params['admin_id'] = Token::getCurrentUid();
+        $params['admin_id'] = $this->admin_id;
         $params['status'] = CommonEnum::STATE_IS_OK;
         $params['theme'] = 'SizeColor';
         $params['sex'] = 'baby-boys';

@@ -60,8 +60,6 @@ class ChinabrandsSpider extends Spider
     {
         $colors = selector::select($this->html, "//ul[@data-type='Color']/li");
         $size = selector::select($this->html, "//ul[@data-type='Size']/li/a[@data-value]");
-
-
         $data_sku = [];
         $data_sku_img = [];
         $data_main_img = [];
