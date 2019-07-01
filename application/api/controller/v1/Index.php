@@ -4,13 +4,16 @@ namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
 use app\api\model\JiumufanT;
+use app\api\model\SpiderT;
 use app\api\model\UsedT;
+use app\api\service\SpiderService;
 use app\api\service\TranslateService;
 use app\lib\exception\SaveException;
 use app\lib\exception\SuccessMessage;
 use GoogleTranslate;
 use phpspider\core\requests;
 use phpspider\core\selector;
+use think\Exception;
 use yuntuApi\YunTu;
 
 class Index extends BaseController
@@ -45,8 +48,20 @@ class Index extends BaseController
     public function index()
     {
 
-         $money=JiumufanT::where(['state'=>1,'used'=>1])->sum('money');
-         print_r($money);
+        $spiders = SpiderT::all();
+
+        foreach ($spiders as $k => $v) {
+            try {
+                (new SpiderService())->upload($v['url'], $v['c_id'], $v['cookie']);
+                break;
+            } catch (Exception $e) {
+                $res = $e->getMessage();
+                SpiderT::update(['res' => $res], ['id' => $v['id']]);
+            }
+        }
+
+        /* $money=JiumufanT::where(['state'=>1,'used'=>1])->sum('money');
+         print_r($money);*/
 
         /*$list = JiumufanT::where('state', 1)->field('id,username,CONCAT_WS("",address,flor) as address ,month,money,used')
             ->order('used')
@@ -83,7 +98,6 @@ class Index extends BaseController
          if ($res) {
              return json(new SuccessMessage());
          }*/
-
 
         /* $list = JiumufanT::field('id,flor,money,count(flor)as count')
              ->group('flor,money')

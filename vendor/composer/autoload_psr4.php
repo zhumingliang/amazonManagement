@@ -9,4 +9,5 @@ return array(
     'think\\composer\\' => array($vendorDir . '/topthink/think-installer/src'),
     'phpspider\\' => array($vendorDir . '/owner888/phpspider'),
     'app\\' => array($baseDir . '/application'),
+    'GatewayClient\\' => array($vendorDir . '/workerman/gatewayclient'),
 );

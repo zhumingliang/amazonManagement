@@ -3,9 +3,10 @@
 
 namespace app\api\controller\v1;
 
-
 use app\api\controller\BaseController;
+use app\api\model\SpiderT;
 use app\api\service\SpiderService;
+use app\api\service\Token as TokenService;
 use app\lib\exception\SuccessMessage;
 
 class Spider extends BaseController
@@ -32,11 +33,16 @@ class Spider extends BaseController
     public function upload($url, $c_id = 0, $cookie = '')
     {
 
-        (new SpiderService($url, $c_id, $cookie))->upload();
-        return json(new SuccessMessage());
+
+        $params = $this->request->param();
+        $params['u_id'] = TokenService::getCurrentUid();
+        $params['state'] = 2;
+        SpiderT::create($params);
+
+        /* (new SpiderService($url, $c_id, $cookie))->upload();
+         return json(new SuccessMessage());*/
 
     }
-
 
 
 }
