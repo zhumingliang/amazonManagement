@@ -25,11 +25,11 @@ class SpiderService
      */
     public function upload()
     {
-      /*  if (Token::getCurrentTokenVar('grade') < 5) {
-            throw new SaveException([
-                'msg' => '权限不足'
-            ]);
-        }*/
+        /*  if (Token::getCurrentTokenVar('grade') < 5) {
+              throw new SaveException([
+                  'msg' => '权限不足'
+              ]);
+          }*/
 
         //环球华品 ：https://www.chinabrands.cn/item/1806286-p.html
         //天猫：https://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.1.6d1c53a4a0FlUu&id=537891514461&skuId=3211584895794&standard=1&user_id=883072941&cat_id=50920004&is_b=1&rn=db8c7c2bd50d782d427e137c2fa0c9f7

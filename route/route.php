@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 
-Route::rule('api/:version/test', 'api/:version.Index/index');
+Route::rule('/', 'api/v1.Index/index');
 
 Route::post('api/:version/spider', 'api/:version.Spider/upload');
 Route::post('api/:version/token/admin', 'api/:version.Token/getAdminToken');

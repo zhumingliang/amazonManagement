@@ -52,12 +52,13 @@ class Index extends BaseController
 
         foreach ($spiders as $k => $v) {
             try {
-                (new SpiderService())->upload($v['url'], $v['c_id'], $v['cookie']);
-                break;
+                (new SpiderService($v->url, $v->c_id, $v->cookie))->upload();
+
             } catch (Exception $e) {
                 $res = $e->getMessage();
-                SpiderT::update(['res' => $res], ['id' => $v['id']]);
+                SpiderT::update(['res' => $res], ['id' => $v->id]);
             }
+            break;
         }
 
         /* $money=JiumufanT::where(['state'=>1,'used'=>1])->sum('money');
